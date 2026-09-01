@@ -6,7 +6,8 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f4f8;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  background-attachment: fixed;
   color: #333;
 }
 
