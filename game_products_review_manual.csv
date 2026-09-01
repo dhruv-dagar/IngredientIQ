@@ -1,0 +1,211 @@
+code,display_name,brands,nova_group,ingredients_text,game_ready,review_status
+5.03466E+12,Bournville Cocoa,Cadbury,1,"Cocoa powder, acidity regulator (sodium carbonate).",FALSE,pending
+30000012000,Quick 1-Minute Oats,Quaker Oats,1,"whole grain rolled oats,",FALSE,pending
+5.01003E+12,Super smooth porridge imp,"Ready break, Weetabix",1,"wholegrain rolled oats (60%), wholegrain oat flour (38%), calcium, niacin, iron, riboflavin (b2), vitamin b6, thiamin (b1), folic acid, vitamin d, vitamin b12,",FALSE,pending
+34000052004,COCOA,HERSHEY'S,1,cocoa,FALSE,pending
+8.98999E+11,Coconut Water The Original,Vita Coco,1,"Coconut Water 99%, Vitamin C",FALSE,pending
+30000010204,OLD FASHIONED,QUAKER OATS,1,whole grain rolled oats.,FALSE,pending
+51500017005,Natural Creamy Peanut Butter,Smucker's,1,"PEANUTS, CONTAINS 1% OR LESS OF SALT.",FALSE,pending
+8.947E+11,Greek Yogurt Nonfat Plain,Chobani,1,"_cultured nonfat milk_, S. Thermophilus, L. Bulgaricus, L. Acidophilus, Bifidus, L. Casei, L. Rhamnosus",FALSE,pending
+96619483556,organic GREEK YOGURT plain,KIRKLAND Signature,1,"organic pasteurized grade a nonfat milk, live and active cultures (streptococcus thermophilus, lactobacillus bulgaricus, lactobacillus acidophilus, bifidus, lactobacillus casei).",FALSE,pending
+5.03659E+12,Yoghurt,Yeo Valley,1,milk,FALSE,pending
+96619885718,Extra Fancy Unsalted Mixed Nuts,Kirkland Signature,1,"Cashews, Almonds, Pistachios, Pecans, Highly refined peanut oil. May contain: Peanuts, Other tree nuts, Milk, Sesame, Soy, Wheat, Mustard, Sulfites.",FALSE,pending
+78742040370,Purified Drinking Water,"Great Value,Wal-Mart Stores Inc.",1,"PURIFIED WATER, CALCIUM CHLORIDE SODIUM BICARBONATE.",FALSE,pending
+96619756803,"Water, Bottled",Kirkland Signature,1,"Purified Water, Potassium Bicarbonate, Sodium Bicarbonate, Calcium Citrate, Sodium Chloride, Magnesium Oxide",FALSE,pending
+78742051451,Purified Water,Member's Mark,1,"PURIFIED WATER, CALCIUM CHLORIDE, SODIUM BICARBONATE.",FALSE,pending
+30000010402,Old Fashioned Oats,Quaker Oats,1,"whole grain rolled oats,",FALSE,pending
+8.99721E+12,Organic Coconut Milk,Kara,1,organic coconut milk,FALSE,pending
+5.05932E+12,Plain Wheats,Kellogg's,1,Wholewheat(100%).,FALSE,pending
+282123,Authentic Greek Yoghurt,Taste The Difference,1,Natural Greek Yogurt (Cows' _Milk_),FALSE,pending
+5.00017E+12,Chickpeas in water,"Essential Waitrose,Waitrose",1,"Chickpeas, water, antioxidant (ascorbic acid)",FALSE,pending
+4.05649E+12,Scottish Porridge Oats,Crownfield,1,wholegrain rolled oats,FALSE,pending
+5.06013E+12,Peanut Butter,Meridian,1,Roasted Peanuts,FALSE,pending
+5.05775E+12,Organic chickpeas in water,Tesco,1,"Organic Chickpeas, Water.",FALSE,pending
+5.03659E+12,Organic Natural Yoghurt,Yeo Valley,1,"Organic Milk, bifidobacterium live culture",FALSE,pending
+4.05649E+12,Simply porridge oats,Lidl,1,wholegrain rolled oats,FALSE,pending
+4.05649E+12,Cannellini Beans in Water,Freshona,1,"Cannellini Beans, Water",FALSE,pending
+5.00023E+12,Tuna,Princes,1,"tuna [fish], spring water.",FALSE,pending
+20942021,Mixed Beans,Lidl,1,"60% Mixed Beans in Varying Proportions (Cannellini Beans, Haricot Beans, Adzuki Beans), Water, Ascorbic Acid, Calcium Chloride",FALSE,pending
+29210053,Crafted Signature Sourdough Bread,Marks & Spencer,1,"Wheatflour contains Gluten (with Wheatflour, Calcium Carbonate Iron, Niacin, Thiamin) Water Rye Flour (contains Gluten) Wholegrain Wheatflour (contains Gluten) Malted Rye (contains Gluten) Sea Salt Malted Wheat (contains Gluten) Barley Malt Flour (contains Gluten) Barley Malt Extract (contains Gluten) Wheatflakes (contains Gluten).",FALSE,pending
+4.06146E+12,Crunchy 100% Peanut Butter,Grandessa,1,ROASTED PEANUTS (100%),FALSE,pending
+852166,Greek Style Yogurt Unsweetened,M&S Food,1,lait fermenté (Contient lait),FALSE,pending
+8.71053E+12,100% peanut butter smooth,Millies,1,_Peanuts_ 100%.,FALSE,pending
+5.0998E+12,Flahavans Microwave Quick Porridge Oats,Flahavan's,1,100% Wholegrain Rolled _Oats_,FALSE,pending
+4.0886E+12,Tomato Passata,Cucina,1,"TOMATOES (99%), Acidity Regulator: Citric Acid.",FALSE,pending
+4.05649E+12,Crunchy Peanut Butter,Maribel,1,100% peanuts,FALSE,pending
+5.00012E+12,Italian Tomato Passata,Tesco,1,"Tomato, Acidity Regulator (Citric Acid).",FALSE,pending
+5.20105E+12,Fage Total 0% Yogurt,Fage,1,"Pasteurised skimmed milk, cultures (L. Bulgaricus, S. Thermophilus, L.Acidophilus, Bifidus, L. Casei)",FALSE,pending
+4.05649E+12,Coconut milk,Freshona,1,"coconut extract 50%, water",FALSE,pending
+1.96634E+11,Spring Water,Kirkland,1,"Calcium, Magnesium, Sodium, Potassium, Bicarbonates, Sulphates, Chlorides, Nitrates",FALSE,pending
+5.449E+12,Smart Water,smartwater,1,"Vapour Distilled Spring Water, Electrolytes (Calcium Chloride, Magnesium Chloride, Potassium Bicarbonate)",FALSE,pending
+1898811,Greek Style Yogurt,Sainsbury's,1,Fat Free Greek Style Natural Yogurt (Cows' Milk),FALSE,pending
+5.05775E+12,Organic red kidney beans in water,Tesco,1,"Organic Red Kidney Beans, Water.",FALSE,pending
+5.05755E+12,Porridge Oats,Tesco - The Grower's Harvest,1,oat flakes,FALSE,pending
+20448554,Strong Wholemeal Bread Flour,Belbake,1,Wholemeal Wheat Flour.,FALSE,pending
+7.61304E+12,GOLD BLEND Instant Coffee,Nescafé,1,"soluble coffee, roast and ground coffee (3%)",FALSE,pending
+1642605,Chickpeas in water,Sainsbury's,1,"Organic Chickpeas, Water.",FALSE,pending
+5.20105E+12,5% Greek Yogurt,Fage,1,"Pasteurised skimmed milk, cream (milk), live active yoghurt cultures (L. Bulgaricus, S. Thermophilus, L. Acidophilus, Bifidus, L. Casei).
+
+no palm oil",FALSE,pending
+5.00044E+12,Lasagne Pasta,Tesco,1,Durum Wheat Semolina,FALSE,pending
+378208,PORRIDGE OATS,"Daily's,STAMFORD STREET CO.",1,Wholegrain Oat Flakes,FALSE,pending
+5.00011E+12,Oat so Simple,"Quaker, Quaker Oats",1,Wholegrain rolled oats,FALSE,pending
+5.05427E+12,Cocoa Powder,Tesco,1,"cocoa powder, potassium carbonate",FALSE,pending
+74305001161,APPLE CIDER VINEGAR,BRAGG,2,"ORGANIC APPLE CIDER VINEGAR, WATER.",FALSE,pending
+8.90109E+12,Parachnute 100% Pure Coconut Oil,Parachute,2,Coconut Oil,FALSE,pending
+6.19151E+12,Extra Virgin Olive Oil,Terra Delyssa,2,First Cold Pressed Extra Virgin Olive Oil,FALSE,pending
+6.19151E+12,Extra Virgin Olive Oil,Terra Delyssa,2,EXTRA VIRGIN OLIVE OIL,FALSE,pending
+37600106740,Peanut Butter Spread,Skippy Natural Creamy,2,"ROASTED PEANUTS, SUGAR, PALM OIL, SALT.",FALSE,pending
+96619555505,Organic Creamy Peanut Butter,Kirkland,2,"Dry roasted organic peanuts, sea salt",FALSE,pending
+7.67707E+11,Pure Irish Butter Salted,Kerrygold,2,"Pasteurized cream, salt.",FALSE,pending
+74305001321,Apple Cider Vinegar,Bragg,2,"Certified Organic, Raw Apple Cider Vinegar and Purified Water",FALSE,pending
+96619032938,Raw & Unfiltered Honey,Kirkland Signature,2,organic raw honey,FALSE,pending
+5.01184E+12,Smooth Peanut Butter imp,Whole earth,2,"roasted peanuts (96%), sustainable palm oil, sea salt",FALSE,pending
+5.00016E+12,Light Mayonnaise,Heinz,2,"Water, Rapeseed Oil 25%, Starch, Pasteurised Free Range Egg 3.5%, Spirit Vinegar, Sugar, Salt, Pasteurised Free Range Egg Yolk 1%, Lemon Juice Concentrate, Preservative (Potassium Sorbate), Mustard Seeds, Spice, Antioxidant (Calcium Disodium EDTA)",FALSE,pending
+50457014,Heinz Seriously Good Squeezy Mayonnaise,Heinz,2,"Rapeseed Oil (68%), Water, Pasteurised Free Range Egg Yolk (5%), Spirit Vinegar, Sugar, Starch, Salt, Mustard Seeds, Spices, Antioxidant (Calcium Disodium EDTA)",FALSE,pending
+5.01127E+12,Organic honey,Rowse,2,Organic honey.,FALSE,pending
+1292619,Basics Clear Honey,"Sainsbury's, Sainsbury's basics",2,honey 100%,FALSE,pending
+5.01364E+12,100% pure coconut oil,Ktc,2,"100% coconut oil,",FALSE,pending
+5.00044E+12,Organic Butter,Tesco,2,"Butter (_milk_), Salt (1.7%)",FALSE,pending
+5.7409E+12,Butter,Lurpak,2,"butter (milk), lactic culture (milk), salt,",FALSE,pending
+20436568,Clear Honey,"Highgate Fayre, Lidl",2,100% honey,FALSE,pending
+5.05101E+12,Organic Extra Virgin Olive Oil,Tesco,2,Extra Virgin Olive Oil,FALSE,pending
+5.7409E+12,Lurpak Spreadable Slightly Salted,Lurpak,2,"butter (64%) (milk), rapeseed oil, water, lactic culture (milk), salt, for allergens, see ingredients in bold,",FALSE,pending
+4.0886E+12,Nordpack Spreadable Butter,,2,"BUTTER 55% (_Milk_), Rapeseed Oil, RECONSTITUTED _BUTTERMILK_ 7%, Water, Lactic Cultures (_Milk_), Salt.",FALSE,pending
+5.01999E+12,Fine Sea Salt,Saxa,2,"Sea Salt, Anti-caking Agent (Sodium Hexacyanoferrate ll).",FALSE,pending
+5.7409E+12,Lupark Spreadable Lighter,Lurpak,2,"butter (40%) ( milk ), water, rapeseed oil, salt,",FALSE,pending
+5.01127E+12,Rowse organic honey,Rowse,2,Honey,FALSE,pending
+5.01017E+12,Spreadable Tub,Country Life,2,"Butter, Rapeseed Oil, Water, Salt",FALSE,pending
+5.01104E+12,Softer Butter,Kerrygold,2,"cream, salt (1.8%)",FALSE,pending
+5.06034E+12,Malt Vinegar,Sarson's,2,"barley malt vinegar, barley malt extract",FALSE,pending
+351546,Salted English Butter,"Sainsbury's,by sainsbury's",2,"_Butter_ (cow's _milk_) (98%), Salt (1.6%)",FALSE,pending
+4.0886E+12,Honey,Grandessa,2,honey,FALSE,pending
+5.06037E+12,Smooth Peanut Butter,Pip & Nut,2,"_Peanuts_ (99.6%), sea salt.",FALSE,pending
+5.01127E+12,Runny Honey imp,Rowse,2,honey,FALSE,pending
+4.0886E+12,Squeezy Honey,GRANDESSA,2,honey,FALSE,pending
+4.0886E+12,Balsamic Vinegar of Modena,,2,"Wine Vinegar (Sulphites), Concentrated Grape Musc (Sulphites)",FALSE,pending
+5.01127E+12,Honey,Rowse,2,honey,FALSE,pending
+5.0603E+12,Blossom Honey,Hiltop Honey,2,Honey,FALSE,pending
+4.05649E+12,Mild olive oil,"Lidl,Primadonna",2,"Olive oil (refined olive oils, virgin olive oils).",FALSE,pending
+4.06146E+12,EXTRA VIRGIN OLIVE OIL,Solesta,2,olive oil,FALSE,pending
+5.05553E+12,Peanut butter,"Myprotein, My Protein",2,100%  peanuts  (whole skin on),FALSE,pending
+5.00025E+12,Yeo Valley Salted Butter,Yeo Valley,2,"Organic unsalted butter (milk), salt.",FALSE,pending
+3.15525E+12,President spreadable lightly salted,"Lactalis, Président",2,"Beurre, crème légère, sel (1.3% max), ferments lactiques.",FALSE,pending
+5.00023E+12,Napolina Extra Virgin Olive Oil 500Ml,Napolina,2,Extra Virgin Olive Oil,FALSE,pending
+4.05649E+12,Spreadable west contry butter,Lidl,2,"64% Butter (Milk), 26% Rapeseed Oil, Water, 0.9% Cornish Sea Salt, Salt.",FALSE,pending
+4.05649E+12,Clear Honey,Lidl,2,"honey,",FALSE,pending
+5.01007E+12,Granulated Sugar,Silver Spoon,2,Sugar,FALSE,pending
+1789621,Runny Honey,Sainsbury's,2,Pure Honey (100%).,FALSE,pending
+4.0886E+12,Clear Honey,Aldi,2,honey,FALSE,pending
+5.03102E+12,Extra Virgin Olive Oil,Tesco,2,Extra Virgin Olive Oil.,FALSE,pending
+4.0886E+12,West country Butter,"Specially Selected, Aldi",2,"Butter (Milk), SEA SALT (1.5%).",FALSE,pending
+5.7409E+12,Butter,Lupark,2,"butter (milk), rapeseed oil, water, lactic culture (milk)",FALSE,pending
+5.05291E+12,Squeezy Honey,Tesco,2,Honey,FALSE,pending
+5.00017E+12,Wild Pacific Red Salmon,John West,3,"red salmon 99 %, salt.",FALSE,pending
+8.7157E+12,Tomato Ketchup BIO,Heinz,3,"Tomates (180 g pour 100 g de Ketchup), sucre, vinaigre, sel, épices (contient céleri), poudre d'oignon, poudre d'ail,",FALSE,pending
+28400199148,Classic,Lay's,3,"POTATOES, VEGETABLE OIL (CANOLA, CORN, SOYBEAN AND/OR SUNFLOWER OIL), AND SALT",FALSE,pending
+8.7989E+11,Multi-Grain Crackers 6-Seed,Crunchmaster,3,"brown rice flour, sesame seeds, potato starch, safflower oil, flax seeds, rice fiber, tamari soy sauce (soybeans, salt), quinoa seeds, amaranth seeds, millet, sea salt, chia seeds,",FALSE,pending
+5.00044E+12,Tesco Finest All Butter Croissant 4 Pack,Tesco,3,"Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin) Butter, Water, Sugar, Pasteurised Egg, Dried Skimmed Milk, Yeast, Salt, Inactive Wheat Sourdough, Acetoc Acid, Flour Treatment Agent (Ascorbic Acid), Lactic Acid.",FALSE,pending
+51500255650,Peanut Butter Spread,Jif Natural,3,"PEANUTS, SUGAR, PALM OIL, SALT, MOLASSES",FALSE,pending
+7.48404E+11,Organic Quinoa & Brown Rice with Garlic,Seeds of Change,3,"WATER, WHOLE GRAIN BROWN RICE, BLEND OF WHOLE GRAIN QUINOA (WHOLE GRAIN RED QUINOA, WHOLE GRAIN BLACK QUINOA), SUNFLOWER OIL, SEA SALT, GARLIC POWDER, DEHYDRATED GARLIC, ONION POWDER, MINCED GARLIC, PARSLEY, BLACK PEPPER",FALSE,pending
+5.01004E+12,Old English Medium Sliced White Bread,Warburtons,3,"_Wheat_ Flour [with Calcium, Iron, Niacin (B3) and Thiamin (B1)], Water, Yeast, Liquid Concentrated Sponge Extract (Water, _Wheat_ Flour, Yeast), Vegetable Oil (Rapeseed, Sustainable Palm), Salt, Fermented _Wheat_ Flour, _Soya_ Flour, Flour Treatment Agent: Ascorbic Acid (Vitamin C).",FALSE,pending
+78895126396,Premium Soy Sauce,Lee Kum Kee,3,"Water, Soybeans 17.5%, Salt, Sugar, Wheat Flour.",FALSE,pending
+44000050986,Triscuit Cracker,"Mondelez, Nabisco-Triscuit",3,"whole grain wheat, canola oil, sea salt.",FALSE,pending
+8.00032E+12,Rosii Cirio Diced Tomatoes,"Cirio, Cirio La polpa rustica",3,"chopped tomatoes, tomato paste, salt, acidity regulator: citric acid,",FALSE,pending
+8.50001E+11,MINI FRUIT BARS,That's it.,3,"APPLES, STRAWBERRIES. 
+
+APPLES, MANGOES. 
+
+APPLES BLUEBERRIES",FALSE,pending
+6.02652E+11,Oats & Honey Granola with Toasted Coconut,KIND,3,"Oats, tapioca syrup, cane sugar, brown rice, honey, millet, oat flour, coconut, canola oil, buckwheat, amaranth, molasses, quinoa, brown rice syrup, sea salt, Vitamin E tocopherols",FALSE,pending
+96619656493,Organic Tortilla Chips,Kirkland Signature,3,"Organic corn, organic vegetable oil (organic sunflower and/or organic canola oil), sea salt.",FALSE,pending
+51500243213,PEANUT BUTTER SPREAD,Jif,3,"PEANUTS, SUGAR, PALM OIL, SALT, MOLASSES",FALSE,pending
+8.5514E+11,Ancient Grain Granola,Purely Elizabeth,3,"Organic Certified Gluten-Free Oats, Organic Coconut Sugar, Organic Coconut Oil, Organic Sunflower Seeds, Organic Puffed Amaranth, Organic Quinoa Flakes, Organic Chia Seeds, Organic Cinnamon, Sea Salt.",FALSE,pending
+44000051693,original made with sea salt,triscuit,3,"WHOLE GRAIN WHEAT, CANOLA OIL, SEA SALT. CONTAINS: WHEAT",FALSE,pending
+6.12322E+11,Fruit & Seed Oatcakes,Nairn's,3,"Wholegrain _Oats_ (68%), Currants (12%) (Currants, Sunflower Oil), Brown Sugar, Sustainable Palm Fruit Oil, Brown Flaxseeds (6%), Raising Agent: Sodium Bicarbonate, Sea Salt.",FALSE,pending
+414234,Tortilla chips,Trader Giotto's,3,Maize Flour Vegetable Oil (Sunflower/Rapeseed),FALSE,pending
+30000169018,Lightly Salted Rice Cakes,Quaker,3,"Whole grain brown rice, salt",FALSE,pending
+4.0678E+12,Haferdrink Natur,DmBio,3,"Wasser, 11%Vollkornhafer, Sonnenblumenöl, Meersalz",FALSE,pending
+58449770565,PUMPKIN SEED + FLAX GRANOLA,NATURE'S PATH ORGANIC,3,"Whole grain rolled oats*, cane sugar, soy oil*, brown rice flour pumpkin seeds, flax seeds* oat syrup solids* [oat syrup solids*, tocopherols (added to enhance freshness)], sea salt, molasses*, cinnamon*. *Organic. Contains soy. Produced in a facility that uses wheat, peanuts and tree nuts. VEGAN Contains 700 mg of ALA per serving, which is 44% of the 1.6 g Daily Value for ALA.",FALSE,pending
+8.84912E+11,THE ORIGINAL grape-nuts CEREAL,Post,3,"whole grain wheat flour, malted barley flour, salt, dried yeast, vitamins and minerals: reduced iron, niacinamide, zinc oxide (source of zinc), vitamin b6, thiamin mononitrate (vitamin b1), folic acid.",FALSE,pending
+7.39438E+12,Barista edition oat drink,Oatly!,3,"water, oats 10%, rapeseed oil, acidity regulator (dipotassium phosphate), minerals (calcium carbonate, potassium iodide), salt, vitamins (d2, riboflavin, b12),",FALSE,pending
+5.0602E+12,Peter's Yard Original Sourdough Crackers,Peter's Yard,3,"_Milk_, _rye_ flour, _wheat_ flour, sourdough 11.5% (_rye_ flour, water), _wholewheat_ flour, honey, salt, yeast.",FALSE,pending
+8.98999E+11,Coconut Water The Original,Vita Coco,3,"COCONUT WATER, SUGAR, ASCORBIC ACID (VITAMIN C)",FALSE,pending
+8.56069E+11,Almond Flour Crackers,Simple Mills,3,"Nut & Seed Flour Blend (almonds, sunflower seeds, flax seeds), Tapioca Starch, Cassava Flour, Organic Sunflower Oil, Sea Salt, Organic Onion, Organic Garlic, Rosemary Extract.",FALSE,pending
+70303022160,Sardines in 100% Olive Oil,Season Brand,3,"Sardines (Fish), Olive Oil, Salt",FALSE,pending
+5.01116E+12,Pure Basmati Rice,Tilda,3,"basmati rice 98%, rice bran oil",FALSE,pending
+5.01131E+12,Pataks On the Side Lime Pickle,Patak's,3,"Limes (66%), Rapeseed Oil, Salt, Ground Spices (3%) [Spices, Paprika, MUSTARD), Acid (Acetic Acid), Cracked Yellow MUSTARD Seed (2%), Cracked Fenugreek Seed",FALSE,pending
+5.01116E+12,Tilda Coconut Basmati Rice,"Sainsbury's, Tilda",3,"Natural Basmati Rice - Steamed (89%), Coconut Cream (7.5%). Desiccated Coconut (2.3%), Sunflower Oil, Lime Leaf.",FALSE,pending
+20083892,lightly salted Rice Cakes,lidl,3,"99,7% brown rice, 0,3% salt, 
+may also contain sesame and soya",FALSE,pending
+5.01116E+12,Tilda Steamed Brown Basmati Rice,Tilda,3,"Natural Basmati Rice - Cooked (98%), Rice Bran Oil, Salt.",FALSE,pending
+5.02202E+12,Blueberry & Blackcurrant  Cordial,Belvoir Farm,3,"Sugar, water, blueberry juice 10%, blackcurrant juice 9%, blueberry juice from concentrate 7%, citric acid",FALSE,pending
+5.01116E+12,Wholegrain Basmati & Quinoa Rice,Tilda,3,"Natural Brown Basmati Rice - Steamed (90%), Natural Yellow and Red Quinoa - Steamed (7%), Sunflower Oil, Vegetable Stock Powder (Rice Flour, Salt, Onions, Parsnips, Carrots, Olive Oil, Turmeric, Parsley), Salt. handling",FALSE,pending
+6.92118E+12,Pearl River Bridge Soy Sauce,"Pearl River Bridge, guandong pro bio tech",3,"Water, Soybeans 29%, Salt, Wheat flour, Preservative: E202",FALSE,pending
+5.01837E+12,Italian Original Breadsticks,Tesco,3,"_Wheat_ Flour, Olive Oil 7%, Yeast, _Barley_ Malt Extract, Salt.",FALSE,pending
+5.05268E+12,Classic Butter Chicken Kit,The Spice Tailor,3,"water, tomato paste (20%), onion (17%), cream (milk), cashew nuts, butter (4%), ginger, garlic, spices (2%), salt, sugar, sunflower oil,",FALSE,pending
+5.05268E+12,Keralan Coconut Curry,The Spice Tailor,3,"Water, Coconut Milk Powder (21%), Onion, Garlic, Ginger, Sunflower Oil, Tomato Paste, Ground and Whole Spices, _MUSTARD_ Seeds, Salt, Curry Leaves, Rice Flour, Tamarind Paste, CASHEW _NUTS_ Turmeric Powder, Green Chillies, _MILK_ Powder.",FALSE,pending
+5.01131E+12,Korma spice paste,Patak's,3,"water, ground spices (12%) [coriander (4%), turmeric, spices, paprika, cumin, fenugreek], rapeseed oil (11%), sugar, oconcentrated tomato purée (5%), salt, maize flour, p ginger purée, garlic purée, 2desiccated coconut (3%), acid (acetic acid), dried ponion, mustard powder, dried coriander leaf,",FALSE,pending
+9.32297E+12,Corn Thins Original,Real Foods,3,"maize (99%), vegetable oil, sea salt",FALSE,pending
+3.04692E+12,70% chocolate,Lindt & Sprüngli,3,"Cocoa mass, sugar, cocoa butter, vanilla.",FALSE,pending
+3.05644E+12,Chipster,"Belin, Mondelez",3,"potato flakes and starch 76,6%, palm oil, salt 3,6%, antioxidant (rosemary extract), turmeric,",FALSE,pending
+5.00016E+12,Baked Bean In Tomato Sauce,Heinz,3,"Beans (49%), Tomatoes (35%), Water, Sugar, Modified Comflour, Spirit Vinegar, Salt, Spice Extracts, Herb Extract.",FALSE,pending
+50457236,Tomato Ketchup,Heinz,3,"tomatoes, spirit vinegar, sugar, salt, spice and herb extracts (contain _celery_), spice",FALSE,pending
+5.05932E+12,Rice Krispies,Kellogg’s,3,"(EN) TOASTED RICE CEREAL FORTIFIED WITH VITAMINS AND IRON. INGREDIENTS: Rice, sugar, salt, barley malt extract, niacin, iron, vitamin B6, riboflavin, thiamin, folic acid, vitamin D, vitamin B12. For allergens see ingredients highlighted in bold. May contain gluten from other cereals.",FALSE,pending
+5.00013E+12,CORN FLAKES 1kg,Kellogg's,3,"Maize, barley malt extract, sugar, salt, niacin, iron, vitamin B6, riboflavin, thiamin, folic acid, vitamin D, vitamin B12",FALSE,pending
+50457366,heinz ketchup,"Heinz, Morrisons",3,"tomatoes(148g per 100g), spirit vinegar, sugar, salt, spice and herb extracts( celery ), spice",FALSE,pending
+5.05932E+12,Rice krispies,Kellogg's,3,"Rice, sugar, salt, barley malt extract, niacin, iron, vitamin B6, riboflavin, thiamin, folic acid, vitamin D, vitamin B12.",FALSE,pending
+5.00016E+12,Sundried Cherry Tomato & Basil,Heinz,3,"Tomato (75%), tomato puree, sundried cherry tomato (6%), onion, extra virgin olive oil, basil (2%), garlic, sea salt, apple juice concentrate, lemon juice concentrate, black pepper.",FALSE,pending
+8.90106E+12,maggi,Nestle,4,"NOODLES: Refined wheat flour (Maida), Palm oil, lodized salt, Wheat gluten, Thickeners (508 & 412). Acidity regulators (501(i) & 500(i)) and Humectant (451(i)). MASALA TASTEMAKER®: Mixed spices (25.6%) (Onion powder, Coriander powder, Turmeric powder, Red chilli powder, Garlic powder, Cumin powder, Aniseed powder, Ginger powder, Fenugreek powder, Black pepper powder, Clove powder, Green cardamom powder & Nutmeg powder), Refined wheat flour (Maida), Hydrolysed groundnut protein, Sugar, Palm oil, Starch, lodized salt, Thickener (508), Flavour enhancer (635), Toasted onion flakes, Acidity regulator (330). Colour (150d), Mineral and Wheat gluten. Allergen Note: Contains Wheat & Nut. May contain Milk, Mustard, Oats And Soy.",FALSE,pending
+54491496,diet coke 500ml,"Coca-Cola, Diet Coke, The Coca-Cola Company, Tiffin Sandwiches",4,"csd water, caramel color, aspartame, phosphoric acid, potassium benzoate (to protect taste), natural flavors, citric acid, caffeine, contains phenylalaline 
+water gazeifiée, caramel colour e150d, sweeteners : aspartame, acesulfame k, flavourings, natural caffeine, phosphoric acid, citric acid",FALSE,pending
+7.1627E+11,Ginger Crystallized In Dark Chocolate,Chocolove,4,"dark chocolate (cocoa liquor*, sugar, cocoa butter*, soy lecithin, vanilla), crystallized ginger (ginger, sugar)",FALSE,pending
+8.90208E+12,Sting Energy,Sting,4,"CARBONATED WATER, SUGAR, ACIDITY REGULATORS (330, 331), SEQUESTERANTS (452(1), 385),TAURINE, CAFFEINE (0.03%), PRESERVATIVES (211, 202), SWEETENERS (955, 950), INOSITOL, VITAMINS PREMIX. CONTAINS PERMITTED SYNTHETIC FOOD COLOUR (129) AND ADDED FLAVOUR (NATURAL AND NATURE IDENTICAL FLAVOURING SUBSTANCES)",FALSE,pending
+7.62221E+12,Bournville Dark Chocolate bar,Cadbury,4,"sugar, cocoa butter, cocoa mass, palm oil, emulsifiers (soya lecithin, e476),skimmed milk powder",FALSE,pending
+49000042566,ZERO CALORIE COLA,Coca-Cola,4,"carbonated water, caramel color, phosphoric acid, aspartame, potassium benzoate, natural flavors, potassium citrate, acesulfame potassium, caffeine",FALSE,pending
+5.05932E+12,Coco Pops,Kellogg's,4,"(EN) CHOCOLATE FLAVOUR TOASTED RICE, FORTIFIED WITH VITAMINS AND MINERALS. INGREDIENTS: Rice, sugar, glucose syrup, fat reduced cocoa powder, salt, cocoa mass, barley malt extract, flavourings, niacin, iron, vitamin B6, riboflavin, thiamin, folic acid, vitamin D, vitamin B12. For allergens see ingredients highlighted",FALSE,pending
+7.50106E+12,COFFEE MATE AVELLANA,NESTLE,4,"INGREDIENIES: Agua, azúcar, aceite vegetal hidrogenado, jarabe de maiz, caseinato de sodio, saborizantes artificiales, matltodextrina, fosfato de potasio. ésteres de ácido acetil tartárico, dióxido de titanio, ceiulosa microcristalina. mono y diglcéridos de acidos  grasos, carragenina y carboxilmetilcelulosa Contiene: Caseinato de sodio (derivado de la proteína de leche).",FALSE,pending
+21000658831,Cheese Sauce Mix,Kraft Heinz,4,"ENRICHED MACARONI (WHEAT FLOUR, DURUM FLOUR, NIACIN, FERROUS SULFATE [IRON], THIAMIN MONONITRATE [VITAMIN B1], RIBOFLAVIN [VITAMIN B2], FOLIC ACID), CHEESE SAUCE MIX (WHEY, MILKFAT, SALT, MILK PROTEIN CONCENTRATE, SODIUM TRIPHOSPHATE, TAPIOCA FLOUR, CITRIC ACID, CALCIUM PHOSPHATE, SODIUM PHOSPHATE, LACTIC ACID, PAPRIKA, TURMERIC, ANNATTO, CHEESE CULTURE, ENZYMES)",FALSE,pending
+7.62221E+12,Dairymilk buttons,Cadbury,4,"milk**, sugar, cocoa butter, cocoa mass, vegetable fats (palm, shea), emulsifier (e442), flavourings, **the equivalent of 426 ml of fresh liquid milk in every 227 g of milk chocolate, milk solids 20 % minimum, actual 23 %, cocoa solids 20 % minimum, contains vegetable fats in addition to cocoa butter, we are passionate about our great quality cadbury products,  not completely satisfied? please contact us: freephone 0800 818181 (uk only), mondelez uk, po box 7008, birmingham, b30 2pt, mondelez ireland, freephone 1-800 678708, malahide road, coolock, dublin 5, www,cadbury,co,uk g best before: 23,04,2025 esto air",FALSE,pending
+13000006057,TOMATO KETCHUP,HEINZ,4,"TOMATO CONCENTRATE FROM RED RIPE TOMATOES, DISTILLED VINEGAR, HIGH FRUCTOSE CORN SYRUP, CORN SYRUP, SALT, SPICE, ONION POWDER, NATURAL FLAVORING",FALSE,pending
+5.00014E+12,The Original Cracker,Ritz Bakery,4,"Wheat flour, sunflower oil 22 %, sugar, glucose-fructose syrup, raising agents (calcium phosphates, ammonium carbonates, sodium carbonates, potassium carbonates), salt, barley malt flour. May contain egg, milk, sesame.",FALSE,pending
+7.62221E+12,Milk Chocolate Large Bar,Toblerone,4,"sugar, whole milk powder, cocoa butter, cocoa mass, honey (3,0%), milk fat, almonds (1,6%), emulsifier (soya lecithin), egg white, flavouring, milk chocolate: cocoa solids 28% minimum, milk solids 14% minimum,",FALSE,pending
+16000124790,Honey Nut Cheerios,General Mills,4,"Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Almond Flavor, Vitamin E, Calcium Carbonate, Vitamin C, sodium ascorbate, Iron, Zinc, mineral nutrients, niacinamide, Vitamin B6, pyridoxine hydrochloride, Vitamin B1, thiamin mononitrate, Vitamin A, palmitate, Vitamin B2, riboflavin, folic acid, Vitamin B13, Vitamin D3",FALSE,pending
+427920,Black beans in water,Sainsburys,4,"black beans, water, firming agent: calcium chloride",FALSE,pending
+16229001711,Coconut Milk,"aroy-d, thai-agri-foods-public-company-limited",4,"COCONUT MILK 99.96%, POLYSORBATE 60",FALSE,pending
+47495013054,Fig Bar Raspberry,Nature's Bakery,4,"Stone ground whole wheat flour, dried cane sugar, fig paste, brown rice syrup, raspberry paste [naturally milled sugar, dried cane sugar, glycerin, rice starch, raspberries, apple powder, natural flavor, pectin, citric acid, locust bean gum, red cabbage e",FALSE,pending
+5.05755E+12,Tesco Finest Oat And Barley Loaf 800G,Tesco,4,"Wheat Flour [Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, Oats (7%), Barley (4%), Oatmeal, Wheat Bran, Yeast, Salt, Wheat Gluten, Spirit Vinegar, Preservative (Calcium Propionate), Emulsifiers (Mono - and Di-Glycerides of Fatty Acids, Mono - and Di-Acetyl Tartaric Acid Esters of Mono - and Di-Glycerides of Fatty Acids), Rapeseed Oil, Flour Treatment Agent (Ascorbic Acid).",FALSE,pending
+24463061095,Sriracha Hot Chili Sauce,"HUY FONG FOODS, INC.",4,"Chilis, Zucker, Knoblauch, Salz, Essigsäure E260, Konservierungsmittel Kaliumsorbat E202, Konservierungsmittel Natriumbisulfit E222, Xanthan E415.",FALSE,pending
+7.05599E+11,Power Cakes Flapjack & Waffle Mix Buttermilk,Kodiak,4,"Whole grain wheat flour, Whole grain oat flour, wheat protein isolate, whey protein concentrate, brown sugar, milk protein concentrate, buttermilk powder, leavening (monocalcium phosphate, baking soda), sea salt. Contains milk and wheat. Due to processing on shared equipment, may also contain trace amounts of egg, soy, and tree nuts.",FALSE,pending
+37600223324,CREAMY PEANUT BUTTER,SKIPPY,4,"ROASTED PEANUTS SUGAR, HYDROGENATED VEGETABLE OIL (COTTONSEED, SOYBEAN AND RAPESEED OIL) TO PREVENT SEPARATION, SALT.",FALSE,pending
+44000004637,Grahams,Honey Maid,4,"UNBLEACHED ENRICHED FLOUR (WHEAT FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRATE (VITAMIN B1), RIBOFLAVIN (VITAMIN B2), FOLIC ACID), GRAHAM FLOUR (WHOLE GRAIN WHEAT FLOUR), SUGAR, SOYBEAN AND/OR CANOLA OIL, HONEY, LEAVENING (BAKING SODA, CALCIUM PHOSPHATE), SALT, SOY LECITHIN, ARTIFICIAL FLAVOR, WHEAT, SOY.",FALSE,pending
+5.06004E+12,Low Sugar Maple & Pecan Granola imp,Lizi's,4,"Wholegrain Oat Flakes (67%), Rapeseed Oil, Nuts (8%) [Pecan Nut Pieces, Walnut Pieces, Almond Pieces], Seeds (6%) [Sunflower, Pumpkin], Desiccated Coconut, Maple Syrup (2%), Chicory Fibre, Natural Flavouring, Sea Salt, Fructose.",FALSE,pending
+37600106252,Peanut Butter,Skippy,4,"ROASTED PEANUTS, SUGAR, HYDROGENATED VEGETABLE OIL (COTTONSEED, SOYBEAN AND RAPESEED OIL) TO PREVENT SEPARATION, SALT.",FALSE,pending
+5.05478E+12,White Folded Flatbreads,Tesco,4,"Wheat Flour (_Wheat_ Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, Rapeseed Oil, Yeast, Spirit Vinegar, Fermented _Wheat_ Flour, Raising Agents (Disodium Diphosphate, Sodium Bicarbonate, Calcium Phosphate), Salt, Emulsifier (Mono - and Di-Acetyl Tartaric Acid Esters of Mono - and Diglycerides of Fatty Acids), Dried Skimmed _Milk_, Flour Treatment Agent (Ascorbic Acid).",FALSE,pending
+5.02353E+12,Lancashire oven bottom muffins,Sheldon's,4,"wheat flour (with calcium carbonate, iron, thiamin (b1), niacin (b3)), water, yeast, sugar, salt, vinegar, rapeseed oil, soya flour, palm oil, emulsifier (sodium stearoyl-2-lactylate), preservative (calcium propionate), flour treatment agent: ascorbic acid (vitamin c)",FALSE,pending
+1.23457E+11,Peanut Butter Crunch,"Fleischer, Selbst gemacht, The Wholesome Bar, Uberti",4,"Unbleached enriched wheat flour [flour, barley malt, niacin (vitamin b3), iron, thiamin mononitrate (vitamin b1), riboflavin (vitamin b2), folic acid (vitamin b9)], water, sugar, yeast, wheat gluten, soybean oil, contains 2% or less of the following: salt, dough conditioners (mono - and diglycerides, sodium stearoyl lactylate, ethoxylated mono - and diglycerides, ascorbic acid), calcium propionate and sorbic acid (to retain freshness), yeast nutrients (calcium carbonate, calcium sulfate, monocalcium phosphate, ammonium sulfate), hydrogenated cottonseed oil, ground turmeric, soy lecithin.",FALSE,pending
+17077102322,KEFIR cultured lowfat milk,Lifeway,4,"Pasteurized lowfat milk, nonfat milk, pectin, vitamin a palmitate, vitamin d3, live and active cultures.",FALSE,pending
+77260062512,"Elegant collection a decadent 16 piece private reserve chocolate assortment, assortment",Russell Stover Candies  Inc.,4,"Sugar, milk ingredients, corn syrup, cocoa butter, cocoa mass, brown sugar, palm kernel oil, water, almonds, hazelnuts, hydrogenated coconut oil, salt, soy lecithin, raspberries, coconut oil, honey, dried egg-white, coffee, flavour, artificial flavour, citric acid, lemon oil, tapioca flour, invertase, colour, baking soda, potassium sorbate, sodium benzoate.",FALSE,pending
+61232201047,Stem ginger oat biscuits,Nairn's,4,"Wholegrain Oats (64%), Brown Sugar, Sustainable Palm Fruit Oil, Stem Ginger (6.3%) (Stem Ginger, Sugar), Dietary Fibre (Oligofructose), Ground Ginger, Partially Inverted Refiners Syrup, Barley Malt Syrup, Raising Agent: Sodium Carbonates, Sea Salt.
+
+May contain traces of milk.",FALSE,pending
+21000612239,original cream cheese,PHILADELPHIA,4,"pasteurized milk and cream, salt, carob bean gum, cheese culture",FALSE,pending
+51500720011,CREAMY PEANUT BUTTER,Jif,4,"roasted peanuts, sugar, molasses, fully hydrogenated vegetable oils (rapeseed and soybean), mono and diglycerides, salt",FALSE,pending
+6827465,Protein Waffles buttermilk vanilla,Eggo,4,"Water, enriched flour (wheat flour, niacin, reduced iron, vitamin B1 [thiamin mononitrate], vitamin B2 [riboflavin], folic acid), sugar, soy protein isolate, whey protein concentrate, vegetable oil (soybean, palm, canola and/or cottonseed), buttermilk, contains 2% or less of leavening (baking soda, sodium aluminum phosphate, monocalcium phosphate), salt, natural flavors, eggs, soy lecithin. Vitamins and Minerals: Iron, vitamin A palmitate, vitamin B6 (pyridoxine hydrochloride), vitamin B12.",FALSE,pending
+96619194261,Ancient Grains Probiotic Granola,Nature's Path Organic,4,"Whole grain rolled oats *, cane sugar *, soy oil *, khorasan wheat, rolled spelt *, almonds, inulin * rice starch *, rolled quinoa *, rolled amaranth *, sea salt, molasses *, cinnamon *, vanilla flavor *, Probiotics (Bacillus coagulans GBI-30 6086), tocopherols (vitamin E). * ORGANIC Contains soy, almonds and wheat Produced in a facility that uses peanuts and other tree nuts.",FALSE,pending
+51500255162,Peanutbutter,Jif,4,"MADE FROM ROASTED PEANUTS AND SUGAR, CONTAINS 2% OR LESS OF: MOLASSES, FULLY HYDROGENATED VEGETABLE OILS (RAPESEED AND SOYBEAN), MONO AND DIGLYCERIDES, SALT.",FALSE,pending
+72250037129,100% Whole Wheat Bread,Nature's Own,4,"WHOLE WHEAT FLOUR, WATER, YEAST, BROWN SUGAR, WHEAT GLUTEN, SALT, CULTURED WHEAT FLOUR, SOYBEAN OIL, VINEGAR, DISTILLED MONOGLYCERIDES, ENZYMES, MONOCALCIUM PHOSPHATE, ASCORBIC ACID, SOY LECITHIN, WHEAT BRAN.",FALSE,pending
+11117780,"Dark chocolate covered pretzels with peppermint pieces, peppermint",Nestlé,4,"Dark chocolate coating (sugar, chocolate liquor processed with alkali, cocoa butter, butterfat [milk], soy lecithin, and vanilla), pretzels (unbleached enriched wheat flour [flour, niacin, reduced iron, thiamine mononitrate-b1, riboflavin-b2, folic acid], malt, salt, soybean and/or canola oil, and yeast), peppermint flakes (sugar, corn syrup, vegetable juice concentrate, caramel color, natural peppermint oil).",FALSE,pending
+7.62221E+12,Cheese Triangles,Dairylea,4,"skimmed milk (water, skimmed milk powder), cheese, milk fat, skimmed milk powder, stabilisers (citric acid, sodium carbonate), milk protein, whey powder (from milk), calcium phosphate, inulin, emulsifying salt (triphosphate),",FALSE,pending
+73472001202,Flourless Sprouted Grain Bread,Food for Life,4,"organic sprouted wheat, filtered water, organic sprouted barley, organic sprouted millet, organic malted barley, organic sprouted lentils, organic sprouted soybeans, organic sprouted spelt, fresh yeast,organic wheat gluten, sea salt,",FALSE,pending
+20333737,Roasted Cashew-Peanut-Mix Honey & Salt,"Alesto, Lidl",4,"33% cashewnötter, 32 % jordnötter, socker, 3% honung, solrosolja geleringsmedel (gummi arabicum), salt, shea fett",FALSE,pending
+48121102081,Original Muffins,Thomas',4,"enriched wheat flour (flour, malted barley flour, reduced iron, niacin, thiamin mononitrate [vitamin B1], riboflavin [vitamin B2], folic acid), water, farina, yeast, salt, sugar, calcium propionate, sorbic acid, vegetable oil (soybean), wheat gluten, grain vinegar, soy lecithin, soy, whey",FALSE,pending
+96619336753,Peanut Butter Pretzels,Kirkland Signature,4,"Enriched Wheat Flour (Wheat Flour, Niacin, Reduced Iron, Thiamin Mononitrate, Riboflavin, Folic Acid), Peanut Butter (Valencia Peanuts, Molasses, Mono - and diglycerides), Salt, Soybean Oil, Corn Syrup, Barley Malt Extract.",FALSE,pending
+78895300024,Panda Brand Oyster Flavoured Sauce,Lee Kum Kee,4,"Water, sugar, salt, oyster extract 11% [oysters (molluscs) 90%, water, salt], salt, modified corn starch, flavour enhancer E621, wheat flour, colour E150a",FALSE,pending
+8.1162E+11,High Protein Milk Shake,Core Power,4,"filtered lowfat grade a milk, alkalized cocoa, natural flavors, lactase enzyme, sea salt, acesulfame potassium, carrageenan, cellulose gel, cellulose gum, stevia leaf extract, sucralose, vitamin a palmitate, vitamin d3",FALSE,pending
+34000400126,Creamy Peanut Butter,reese's,4,Peanuts; Sugar; hydrogenated Vegetable Oil [rapeseed Oil; Cottonseed Oil; Soybean Oil]; Salt; Peanut Oil; Monoglycerides; Molasses; Cornstarch.,FALSE,pending
+13764027121,Good Seed Bread,Dave’s Killer Bread,4,"organic whole wheat (organic whole wheat flour, organic cracked whole wheat), water, good seed mix (organic whole flax seeds, organic sunflower seeds, organic ground whole flax seeds, organic un-hulled brown sesame seeds, organic un-hulled black sesame seeds), organic dried cane syrup (sugar), organic wheat gluten, organic oat fiber, organic steel cut oats, organic molasses, sea salt, yeast, organic cultured whole wheat,",FALSE,pending
+3.66435E+12,Chocolate Orange Milk,Terry's,4,"Sugar, cocoa mass, cocoa butter, skimmed milk powder, whey powder (from milk), vegetable fats (palm, shea), milk fat, emulsifiers (soya lecithins, E476), orange oil, flavouring. May contain nuts, wheat. MILK SOLIDS 14 % MINIMUM. COCOA SOLIDS 25% MINIMUM. CONTAINS VEGETABLE FATS IN ADDITION TO COCOA BUTTER. B Rec INSERT",FALSE,pending
+25293600232,Organic Soy Milk: Unsweet,Silk,4,"Organic Soymilk (Filtered Water, Organic Soybeans), Contains 2% or Less of: Vitamin and Mineral Blend (Calcium Carbonate, Vitamin A Palmitate, Vitamin D2, Riboflavin [B2], Vitamin BIZ), Sea Salt, Gellan Gum, Ascorbic Acid (Vitamin C To Protect Freshness), Natural Flavor.",FALSE,pending
+8.5177E+11,Organic Protein Protein Powder,Orgain,4,"ORGAIN ORGANIC PROTEIN BLEND (PEA PROTEIN, BROWN RICE PROTEIN, CHIA SEED), ORGAIN ORGANIC CREAMER BASE ACACA HIGH OLEIC SUNFLOWER OIL, RICE DEXTRIN, SUNFLOWER LECITHIN, ROSEMARY EXTRACT), ERYTHRITOL, NATURAL FLAVORS, ACACIA ORCAIN ORGANIC 50 SUPERFOODS BLEND MILLET, AMARANTH, BUCKWHEAT, QUINOA CHIA, KALE POWDER, APPLE PULP, CINNAMON, ORGANIC SPROUTS BLEND (AMARANTH SPROUT, QUINOA SPROUT, MILLET SPROUT, BUCKWHEAT SPROUT, GARBANZO BEAN SPROUT, LENTIL SPROUT, ADZUKI SPROUT FLAX SPROUT, SUNFLOWER SPROUT, PUMPKIN SPROUT, CHIA SPROUT, SESAME SPROUT), ORGANIC SUPER VEGGIES, SUPER BERRIES SUPER GRASSES AND SUPER FOODS BLEND (ACAI&quot;, CRANBERRY, WHEAT GRASS, BARLEY GRASS, OAT GRASS, BANANA, MANGO, BEET, CARROT, SPINACH, BROCCOL TOMATO, KALE, CABBAGE, PARSLEY LEAF, BRUSSELS SPROUT, GREEN BELL PEPPER, CUCUMBER, CELERY, GARLIC, GINGER ROOT, GREEN ONION CAULIFLOWER, ASPARAGUS, PINEAPPLE, TURMERIC, STRAWBERRY&quot;, TART CHERRY, BLACKBERRY, BLUEBERRY, RASPBERRY REBA STEVIA EXTRACT, SEA SALT, GUAR GUM, XANTHAN GUM, NATURAL FLAVOR, ORGANIC FOOD BASED VITAMIN C (AMLA FRUIT EXTRACT ORGANIC FOOD BASED VITAMIN BLEND (GUAVA, HOLY BASIL, LEMON EXTRACT), PROBIOTIC (BACILLUS COAGULANS)",FALSE,pending
+7.6145E+12,Toblerone Dark Chocolate with Honey & Almond Nougat,"Mondelez, Toblerone",4,"cocoa mass, sugar, milk fat, honey (3,0 %), almonds (1,6%), cocoa butter, emulsifier (soya lecithin), egg white, chocolate contains: cocoa solids: 50% minimum,",FALSE,pending
