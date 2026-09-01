@@ -1,0 +1,9 @@
+node_modules/
+.env
+server/.env
+npm-debug.log*
+.pnpm-store/
+data/raw/
+.DS_Store
+docs/IngredientIQ_Personal_16_Week_Tracker.docx
+scripts/build_ingredientiq_personal_tracker.py

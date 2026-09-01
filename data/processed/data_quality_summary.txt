@@ -1,0 +1,10 @@
+Week 2 data audit
+Raw rows: 9804
+Clean rows (valid NOVA, name, and ingredient text): 8763
+Review candidates: 200 (50 per NOVA level)
+
+Clean NOVA distribution:
+Level 1: 1043
+Level 2: 379
+Level 3: 2190
+Level 4: 5151
