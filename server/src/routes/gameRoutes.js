@@ -1,11 +1,11 @@
-import { randomUUID } from "node:crypto";
-import { Router } from "express";
+const { randomUUID } = require("node:crypto");
+const { Router } = require("express");
 
-import { Food } from "../models/Food.js";
-import { Response } from "../models/Response.js";
-import { Session } from "../models/Session.js";
+const Food = require("../models/Food");
+const Response = require("../models/Response");
+const Session = require("../models/Session");
 
-export const gameRouter = Router();
+const gameRouter = Router();
 
 gameRouter.post("/sessions", async (_request, response, next) => {
   try {
@@ -25,8 +25,7 @@ gameRouter.get("/questions", async (request, response, next) => {
       : [];
 
     const match = {
-      gameReady: true,
-      reviewStatus: "approved",
+      approved: true, // using new schema field
       _id: { $nin: previousFoodIds },
     };
 
@@ -35,18 +34,29 @@ gameRouter.get("/questions", async (request, response, next) => {
       { $sample: { size: 1 } },
       {
         $project: {
-          displayName: 1,
+          name: 1, // using new schema field
           brand: 1,
-          categories: 1,
+          ingredientsText: 1, // Fix: provide ingredients to the user
+          imageUrl: 1,
+          source: 1
         },
       },
     ]);
 
     if (!food && sessionId) {
+      // Fallback if all approved foods have been seen in this session
       [food] = await Food.aggregate([
-        { $match: { gameReady: true, reviewStatus: "approved" } },
+        { $match: { approved: true } },
         { $sample: { size: 1 } },
-        { $project: { displayName: 1, brand: 1, categories: 1 } },
+        {
+          $project: {
+            name: 1,
+            brand: 1,
+            ingredientsText: 1,
+            imageUrl: 1,
+            source: 1
+          },
+        },
       ]);
     }
 
@@ -68,7 +78,7 @@ gameRouter.post("/answers", async (request, response, next) => {
       return response.status(400).json({ message: "sessionId, foodId, and guessedLevel (1-4) are required." });
     }
 
-    const food = await Food.findOne({ _id: foodId, gameReady: true, reviewStatus: "approved" });
+    const food = await Food.findOne({ _id: foodId, approved: true });
     if (!food) {
       return response.status(404).json({ message: "Game card not found." });
     }
@@ -80,7 +90,7 @@ gameRouter.post("/answers", async (request, response, next) => {
       guessedLevel,
       actualLevel: food.novaGroup,
       isCorrect,
-      responseTimeMs: Number.isFinite(responseTimeMs) ? responseTimeMs : null,
+      responseTimeMs: Number.isFinite(responseTimeMs) ? responseTimeMs : 0,
     });
 
     return response.json({
@@ -92,3 +102,5 @@ gameRouter.post("/answers", async (request, response, next) => {
     return next(error);
   }
 });
+
+module.exports = gameRouter;

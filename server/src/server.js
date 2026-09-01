@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const gameRoutes = require("./routes/gameRoutes");
 
 const app = express();
 
@@ -10,6 +11,8 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/game", gameRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({
