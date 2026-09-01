@@ -1,16 +1,16 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-export async function connectDatabase() {
-  const { MONGODB_URI, MONGODB_DB = "ingredientiq" } = process.env;
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
 
-  if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI is missing. Add it to server/.env before starting the server.");
-  }
+        console.log("MongoDB connected successfully");
+    } catch (error) {
+        console.error("MongoDB connection failed:");
+        console.error(error.message);
 
-  await mongoose.connect(MONGODB_URI, {
-    dbName: MONGODB_DB,
-    serverSelectionTimeoutMS: 10000,
-  });
+        process.exit(1);
+    }
+};
 
-  console.log(`Connected to MongoDB database: ${mongoose.connection.name}`);
-}
+module.exports = connectDB;
