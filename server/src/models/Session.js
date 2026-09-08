@@ -9,6 +9,13 @@ const sessionSchema = new mongoose.Schema(
             index: true
         },
 
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true
+        },
+
         questionCount: {
             type: Number,
             default: 10
