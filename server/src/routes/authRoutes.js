@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const authRouter = Router();
 
@@ -16,7 +17,6 @@ authRouter.post("/register", async (request, response, next) => {
     try {
         const { username, password } = request.body;
 
-        // Basic validation
         if (!username || !password) {
             return response.status(400).json({
                 message: "Username and password are required."
@@ -35,7 +35,6 @@ authRouter.post("/register", async (request, response, next) => {
             });
         }
 
-        // Check whether username already exists
         const existingUser = await User.findOne({ username });
 
         if (existingUser) {
@@ -44,10 +43,8 @@ authRouter.post("/register", async (request, response, next) => {
             });
         }
 
-        // Hash password
         const passwordHash = await bcrypt.hash(password, 10);
 
-        // Create user
         const user = await User.create({
             username,
             passwordHash,
@@ -65,12 +62,10 @@ authRouter.post("/register", async (request, response, next) => {
                 level: user.level
             }
         });
-
     } catch (error) {
         next(error);
     }
 });
-
 
 /*
  * LOGIN
@@ -86,7 +81,6 @@ authRouter.post("/login", async (request, response, next) => {
             });
         }
 
-        // Find user
         const user = await User.findOne({ username });
 
         if (!user) {
@@ -95,7 +89,6 @@ authRouter.post("/login", async (request, response, next) => {
             });
         }
 
-        // Compare password with stored hash
         const passwordMatches = await bcrypt.compare(
             password,
             user.passwordHash
@@ -107,7 +100,6 @@ authRouter.post("/login", async (request, response, next) => {
             });
         }
 
-        // Create JWT
         const token = jwt.sign(
             {
                 userId: user._id.toString(),
@@ -130,11 +122,39 @@ authRouter.post("/login", async (request, response, next) => {
                 level: user.level
             }
         });
-
     } catch (error) {
         next(error);
     }
 });
 
+/*
+ * CURRENT USER
+ * GET /api/auth/me
+ */
+authRouter.get("/me", authMiddleware, async (request, response, next) => {
+    try {
+        const user = await User.findById(request.user.userId)
+            .select("username totalPoints level")
+            .lean();
+
+        if (!user) {
+            return response.status(404).json({
+                message: "User not found."
+            });
+        }
+
+        return response.json({
+            success: true,
+            user: {
+                id: user._id,
+                username: user.username,
+                totalPoints: user.totalPoints,
+                level: user.level
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = authRouter;
