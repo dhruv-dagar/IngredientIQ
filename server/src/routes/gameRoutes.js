@@ -4,8 +4,9 @@ const { Router } = require("express");
 const Food = require("../models/Food");
 const Response = require("../models/Response");
 const Session = require("../models/Session");
-const User = require("../models/User");
 const authMiddleware = require("../middleware/authMiddleware");
+const User = require("../models/User");
+const { applyScore } = require("../services/scoringService");
 
 const gameRouter = Router();
 
@@ -60,7 +61,7 @@ gameRouter.get("/questions", async (request, response, next) => {
 
     const match = {
       approved: true,
-      _id: { $nin: previousFoodIds },
+      _id: { $nin: previousFoodIds }
     };
 
     const [food] = await Food.aggregate([
@@ -73,8 +74,8 @@ gameRouter.get("/questions", async (request, response, next) => {
           ingredientsText: 1,
           imageUrl: 1,
           source: 1
-        },
-      },
+        }
+      }
     ]);
 
     if (!food) {
@@ -161,6 +162,19 @@ gameRouter.post("/answers", async (request, response, next) => {
     const questionNumber = previousResponses + 1;
     const isCorrect = Number(guessedLevel) === Number(food.novaGroup);
 
+    const user = await User.findById(request.user.userId);
+
+    if (!user) {
+      return response.status(404).json({
+        message: "User not found."
+      });
+    }
+
+    const scoring = await applyScore({
+      user,
+      isCorrect
+    });
+
     await Response.create({
       sessionId,
       foodId: food._id,
@@ -174,21 +188,6 @@ gameRouter.post("/answers", async (request, response, next) => {
           : 0
     });
 
-    // Persist the player's score so it can be shown on the dashboard.
-    if (isCorrect) {
-      const user = await User.findByIdAndUpdate(
-        request.user.userId,
-        { $inc: { totalPoints: 10 } },
-        { new: true }
-      );
-
-      if (!user) {
-        return response.status(404).json({
-          message: "User not found."
-        });
-      }
-    }
-
     if (questionNumber === session.questionCount) {
       session.completedAt = new Date();
       await session.save();
@@ -199,7 +198,10 @@ gameRouter.post("/answers", async (request, response, next) => {
       questionNumber,
       isCorrect,
       actualLevel: food.novaGroup,
-      ingredientsText: food.ingredientsText
+      ingredientsText: food.ingredientsText,
+      pointsChange: scoring.pointsChange,
+      totalPoints: scoring.totalPoints,
+      level: scoring.level
     });
   } catch (error) {
     return next(error);
