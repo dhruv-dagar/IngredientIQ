@@ -1,81 +1,54 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
-
-import { useEffect, useRef, useState } from 'react';
 import '../index.css';
 
 const API_BASE = '/api/game';
 
 const NOVA_LEVELS = [
-  {
-    level: 1,
-    title: 'Tier 1',
-    desc: 'Not Processed / Minimally Processed',
-  },
-  {
-    level: 2,
-    title: 'Tier 2',
-    desc: 'Processed Culinary Ingredients',
-  },
-  {
-    level: 3,
-    title: 'Tier 3',
-    desc: 'Processed Foods',
-  },
-  {
-    level: 4,
-    title: 'Tier 4',
-    desc: 'Highly Processed Foods',
-  },
+  { level: 1, title: 'Tier 1', desc: 'Not Processed / Minimally Processed' },
+  { level: 2, title: 'Tier 2', desc: 'Processed Culinary Ingredients' },
+  { level: 3, title: 'Tier 3', desc: 'Processed Foods' },
+  { level: 4, title: 'Tier 4', desc: 'Highly Processed Foods' },
 ];
 
-
 function Game() {
-  const { token } = useContext(AuthContext);
+  const { token, refreshUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const hasStartedRef = useRef(false);
 
   const [sessionId, setSessionId] = useState(null);
   const [questionCount, setQuestionCount] = useState(10);
-
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [questionNumber, setQuestionNumber] = useState(0);
 
   const [selectedNova, setSelectedNova] = useState(null);
   const [answerResult, setAnswerResult] = useState(null);
+  const [scorePopup, setScorePopup] = useState(null); // { value: number, id: string }
 
   const [score, setScore] = useState(0);
   const [totalGuesses, setTotalGuesses] = useState(0);
   const [rightGuesses, setRightGuesses] = useState(0);
 
   const [questionStartedAt, setQuestionStartedAt] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
   const [showModal, setShowModal] = useState(false);
 
-  /*
-   * Start a new backend game session.
-   */
   const startGame = async () => {
     try {
       setLoading(true);
       setError(null);
-
       setSessionId(null);
       setCurrentQuestion(null);
       setQuestionNumber(0);
       setSelectedNova(null);
       setAnswerResult(null);
-
+      setScorePopup(null);
       setScore(0);
       setTotalGuesses(0);
       setRightGuesses(0);
-
       setShowModal(false);
 
       const response = await fetch(`${API_BASE}/sessions`, {
@@ -87,16 +60,10 @@ function Game() {
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || 'Failed to create game session'
-        );
-      }
+      if (!response.ok) throw new Error(data.message || 'Failed to create game session');
 
       setSessionId(data.sessionId);
       setQuestionCount(data.questionCount || 10);
-
       await fetchQuestion(data.sessionId);
     } catch (err) {
       console.error('Start game error:', err);
@@ -105,39 +72,23 @@ function Game() {
     }
   };
 
-  /*
-   * Ask the backend for the next question.
-   */
   const fetchQuestion = async (activeSessionId) => {
     try {
       setLoading(true);
       setError(null);
       setSelectedNova(null);
       setAnswerResult(null);
+      setScorePopup(null);
 
-      const response = await fetch(
-        `${API_BASE}/questions?sessionId=${encodeURIComponent(
-          activeSessionId
-        )}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+      const response = await fetch(`${API_BASE}/questions?sessionId=${encodeURIComponent(activeSessionId)}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || 'Failed to get question'
-        );
-      }
+      if (!response.ok) throw new Error(data.message || 'Failed to get question');
 
       setCurrentQuestion(data.food);
       setQuestionNumber(data.questionNumber);
-
-      // Start response-time measurement.
       setQuestionStartedAt(Date.now());
     } catch (err) {
       console.error('Fetch question error:', err);
@@ -147,29 +98,14 @@ function Game() {
     }
   };
 
-  /*
-   * Submit the user's guess to the backend.
-   *
-   * The frontend does NOT determine whether the answer
-   * is correct. The backend determines that.
-   */
   const handleCardClick = async (level) => {
-    if (
-      selectedNova !== null ||
-      submitting ||
-      !currentQuestion ||
-      !sessionId
-    ) {
-      return;
-    }
+    if (selectedNova !== null || submitting || !currentQuestion || !sessionId) return;
 
     setSelectedNova(level);
     setSubmitting(true);
     setError(null);
 
-    const responseTimeMs = questionStartedAt
-      ? Math.max(0, Date.now() - questionStartedAt)
-      : 0;
+    const responseTimeMs = questionStartedAt ? Math.max(0, Date.now() - questionStartedAt) : 0;
 
     try {
       const response = await fetch(`${API_BASE}/answers`, {
@@ -187,21 +123,21 @@ function Game() {
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || 'Failed to submit answer'
-        );
-      }
+      if (!response.ok) throw new Error(data.message || 'Failed to submit answer');
 
       setAnswerResult(data);
-
-      setTotalGuesses((previous) => previous + 1);
+      setTotalGuesses((prev) => prev + 1);
 
       if (data.isCorrect) {
-        setRightGuesses((previous) => previous + 1);
-        setScore((previous) => previous + 10);
+        setRightGuesses((prev) => prev + 1);
+        setScore((prev) => prev + 10); // Local session score
       }
+
+      // Show animated score popup
+      if (data.pointsChange !== undefined) {
+        setScorePopup({ value: data.pointsChange, id: Date.now().toString() });
+      }
+
     } catch (err) {
       console.error('Submit answer error:', err);
       setSelectedNova(null);
@@ -211,72 +147,49 @@ function Game() {
     }
   };
 
-  /*
-   * Move to the next question.
-   */
   const handleNext = async () => {
-    if (!sessionId || submitting) {
-      return;
-    }
-
-    /*
-     * Do not request question 11.
-     */
+    if (!sessionId || submitting) return;
     if (totalGuesses >= questionCount) {
-      setShowModal(true);
+      finishGame();
       return;
     }
-
     await fetchQuestion(sessionId);
   };
 
-  /*
-   * Stop the current game and show the scorecard.
-   */
   const handleStop = () => {
-    setShowModal(true);
+    finishGame();
   };
 
-  /*
-   * Start a completely fresh backend session.
-   */
+  const finishGame = () => {
+    setShowModal(true);
+    refreshUser(); // Sync points to dashboard when returning
+  };
+
   const handleRestart = async () => {
     await startGame();
   };
 
-  /*
-   * Start the first game when the component loads.
-   */
-  useEffect(() => {
-    if (hasStartedRef.current) {
-      return;
-    }
+  const goDashboard = () => {
+    navigate('/dashboard');
+  };
 
+  useEffect(() => {
+    if (hasStartedRef.current) return;
     hasStartedRef.current = true;
     startGame();
   }, []);
 
   const isGameOver = showModal;
 
-  /*
-   * Loading screen.
-   */
   if (loading && !currentQuestion) {
     return (
       <div className="app-container">
         <div style={{ padding: '40px', textAlign: 'center' }}>
           <h2>Loading game...</h2>
-
           {error && (
             <>
               <p>{error}</p>
-
-              <button
-                onClick={startGame}
-                className="btn-restart"
-              >
-                Try Again
-              </button>
+              <button onClick={startGame} className="btn-restart">Try Again</button>
             </>
           )}
         </div>
@@ -284,35 +197,20 @@ function Game() {
     );
   }
 
-  /*
-   * Error screen if a question could not be loaded.
-   */
   if (error && !currentQuestion) {
     return (
       <div className="app-container">
         <div style={{ padding: '40px', textAlign: 'center' }}>
           <h2>Unable to load game</h2>
           <p>{error}</p>
-
-          <button
-            onClick={startGame}
-            className="btn-restart"
-          >
-            Try Again
-          </button>
+          <button onClick={startGame} className="btn-restart">Try Again</button>
+          <button onClick={goDashboard} className="btn-stop" style={{marginLeft: '10px'}}>Dashboard</button>
         </div>
       </div>
     );
   }
 
-  /*
-   * Current backend-provided food.
-   */
   const food = currentQuestion?.food || currentQuestion;
-
-  /*
-   * Backend answer result.
-   */
   const actualLevel = answerResult?.actualLevel;
 
   return (
@@ -320,24 +218,12 @@ function Game() {
       {/* Top Bar */}
       <div className="top-bar">
         <div className="controls">
-          <button
-            onClick={handleStop}
-            className="btn-stop"
-            disabled={isGameOver}
-          >
-            Stop Game
-          </button>
-
-          <button
-            onClick={handleRestart}
-            className="btn-restart"
-          >
-            Restart Game
-          </button>
+          <button onClick={handleStop} className="btn-stop" disabled={isGameOver}>Stop Game</button>
+          <button onClick={handleRestart} className="btn-restart">Restart Game</button>
         </div>
 
         <div className="score-board">
-          <p>Score: {score}</p>
+          <p>Session Score: {score}</p>
           <p>Right Guesses: {rightGuesses}</p>
           <p>Total Guesses: {totalGuesses}</p>
         </div>
@@ -345,120 +231,52 @@ function Game() {
 
       {/* Main Content */}
       {!isGameOver && food && (
-        <div className="game-area">
-          <h1 className="product-title">
-            {food.name}
-          </h1>
-
-          <p className="product-brand">
-            {food.brand}
-          </p>
-
-          {error && (
-            <p
-              style={{
-                color: '#b91c1c',
-                textAlign: 'center',
-              }}
-            >
-              {error}
-            </p>
+        <div className="game-area" style={{ position: 'relative' }}>
+          
+          {scorePopup && (
+            <div key={scorePopup.id} className={`score-popup ${scorePopup.value > 0 ? 'positive' : scorePopup.value < 0 ? 'negative' : 'neutral'}`}>
+              {scorePopup.value > 0 ? '+' : ''}{scorePopup.value}
+            </div>
           )}
+
+          <h1 className="product-title">{food.name}</h1>
+          <p className="product-brand">{food.brand}</p>
+
+          {error && <p style={{ color: '#b91c1c', textAlign: 'center' }}>{error}</p>}
 
           <div className="cards-container">
             {NOVA_LEVELS.map((nova) => {
-              const isSelected =
-                selectedNova === nova.level;
-
-              const isCorrect =
-                answerResult &&
-                nova.level === Number(actualLevel);
-
-              const isWrongGuess =
-                isSelected && !isCorrect;
+              const isSelected = selectedNova === nova.level;
+              const isCorrect = answerResult && nova.level === Number(actualLevel);
+              const isWrongGuess = isSelected && !isCorrect;
 
               let cardClass = 'flip-card ';
-
               if (answerResult) {
-                /*
-                 * Flip the user's selected card.
-                 */
                 if (isSelected) {
-                  cardClass += 'flipped ';
-
-                  cardClass += isWrongGuess
-                    ? 'border-red '
-                    : 'border-green ';
-                }
-
-                /*
-                 * If the user was wrong, also flip
-                 * the actual correct card.
-                 */
-                else if (isCorrect) {
+                  cardClass += 'flipped ' + (isWrongGuess ? 'border-red ' : 'border-green ');
+                } else if (isCorrect) {
                   cardClass += 'flipped border-green ';
                 }
               }
 
               return (
-                <div
-                  key={nova.level}
-                  className={cardClass}
-                  onClick={() =>
-                    handleCardClick(nova.level)
-                  }
-                >
+                <div key={nova.level} className={cardClass} onClick={() => handleCardClick(nova.level)}>
                   <div className="flip-card-inner">
-                    {/* Front */}
                     <div className="flip-card-front">
                       <h2>{nova.title}</h2>
                       <p>{nova.desc}</p>
                     </div>
-
-                    {/* Back */}
                     <div className="flip-card-back">
-                      {(isSelected || isCorrect) &&
-                        answerResult && (
-                          <>
-                            <h3
-                              style={{
-                                fontSize: '1rem',
-                                margin: '5px 0',
-                                color: isCorrect
-                                  ? '#15803d'
-                                  : '#b91c1c',
-                              }}
-                            >
-                              {isCorrect
-                                ? 'Correct Answer!'
-                                : 'Your Guess'}
-                            </h3>
-
-                            <hr
-                              style={{
-                                width: '100%',
-                                borderColor: '#eee',
-                              }}
-                            />
-
-                            <p
-                              style={{
-                                margin: '5px 0',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              Actual Tier:{' '}
-                              {answerResult.actualLevel}
-                            </p>
-
-                            <p className="ingredient-text">
-                              <strong>
-                                Ingredients:
-                              </strong>{' '}
-                              {answerResult.ingredientsText}
-                            </p>
-                          </>
-                        )}
+                      {(isSelected || isCorrect) && answerResult && (
+                        <>
+                          <h3 style={{ fontSize: '1rem', margin: '5px 0', color: isCorrect ? '#15803d' : '#b91c1c' }}>
+                            {isCorrect ? 'Correct Answer!' : 'Your Guess'}
+                          </h3>
+                          <hr style={{ width: '100%', borderColor: '#eee' }} />
+                          <p style={{ margin: '5px 0', fontWeight: 'bold' }}>Actual Tier: {answerResult.actualLevel}</p>
+                          <p className="ingredient-text"><strong>Ingredients:</strong> {answerResult.ingredientsText}</p>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -468,14 +286,8 @@ function Game() {
 
           {answerResult && (
             <div className="next-container">
-              <button
-                onClick={handleNext}
-                className="btn-next"
-                disabled={submitting}
-              >
-                {totalGuesses >= questionCount
-                  ? 'View Results'
-                  : 'Next Question →'}
+              <button onClick={handleNext} className="btn-next" disabled={submitting}>
+                {totalGuesses >= questionCount ? 'View Results' : 'Next Question →'}
               </button>
             </div>
           )}
@@ -487,42 +299,14 @@ function Game() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Game Over!</h2>
-
             <div className="final-stats">
-              <p>
-                <strong>
-                  Total Questions Played:
-                </strong>{' '}
-                {totalGuesses}
-              </p>
-
-              <p>
-                <strong>Right Guesses:</strong>{' '}
-                {rightGuesses}
-              </p>
-
-              <p>
-                <strong>Final Score:</strong>{' '}
-                {score}
-              </p>
-
-              <p>
-                <strong>Accuracy:</strong>{' '}
-                {totalGuesses > 0
-                  ? Math.round(
-                      (rightGuesses / totalGuesses) * 100
-                    )
-                  : 0}
-                %
-              </p>
+              <p><strong>Questions Played:</strong> {totalGuesses}</p>
+              <p><strong>Right Guesses:</strong> {rightGuesses}</p>
+              <p><strong>Session Score:</strong> {score}</p>
+              <p><strong>Accuracy:</strong> {totalGuesses > 0 ? Math.round((rightGuesses / totalGuesses) * 100) : 0}%</p>
             </div>
-
-            <button
-              onClick={handleRestart}
-              className="btn-restart large"
-            >
-              Play Again
-            </button>
+            <button onClick={handleRestart} className="btn-restart large" style={{marginBottom: '10px'}}>Play Again</button>
+            <button onClick={goDashboard} className="btn-stop large" style={{width: '100%', padding: '15px', fontSize: '1.2rem'}}>Back to Dashboard</button>
           </div>
         </div>
       )}
