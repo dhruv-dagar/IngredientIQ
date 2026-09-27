@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const gameRoutes = require("./routes/gameRoutes");
 const authRoutes = require("./routes/authRoutes");
+const dailyRoutes = require("./routes/dailyRoutes");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use("/api/game", gameRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/daily", dailyRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({

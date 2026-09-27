@@ -44,6 +44,11 @@ const responseSchema = new mongoose.Schema(
             type: Number,
             required: true,
             min: 0
+        },
+
+        isDaily: {
+            type: Boolean,
+            default: false
         }
     },
     {

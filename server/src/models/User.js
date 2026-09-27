@@ -13,7 +13,20 @@ const userSchema = new mongoose.Schema(
 
         passwordHash: {
             type: String,
-            required: true
+            required: false // Optional for Google Auth users
+        },
+
+        email: {
+            type: String,
+            unique: true,
+            sparse: true,
+            trim: true
+        },
+
+        googleId: {
+            type: String,
+            unique: true,
+            sparse: true
         },
 
         totalPoints: {

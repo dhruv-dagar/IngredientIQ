@@ -157,4 +157,88 @@ authRouter.get("/me", authMiddleware, async (request, response, next) => {
     }
 });
 
+const { OAuth2Client } = require("google-auth-library");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com");
+
+/*
+ * GOOGLE LOGIN / REGISTER
+ * POST /api/auth/google
+ */
+authRouter.post("/google", async (request, response, next) => {
+    try {
+        const { token } = request.body;
+
+        if (!token) {
+            return response.status(400).json({
+                message: "Google ID token is required."
+            });
+        }
+
+        const ticket = await googleClient.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+        });
+
+        const payload = ticket.getPayload();
+        const { sub: googleId, email, name } = payload;
+        
+        if (!googleId) {
+            return response.status(400).json({ message: "Invalid Google ID token." });
+        }
+
+        const query = [{ googleId }];
+        if (email) {
+            query.push({ email });
+        }
+
+        let user = await User.findOne({ $or: query });
+
+        if (!user) {
+            // Check if username (name) is already taken, append random if needed
+            let username = name.replace(/\s+/g, '').slice(0, 20);
+            const existingNameUser = await User.findOne({ username });
+            if (existingNameUser) {
+                username = `${username}${Math.floor(Math.random() * 10000)}`;
+            }
+
+            user = await User.create({
+                username,
+                email,
+                googleId,
+                totalPoints: 0,
+                level: 1
+            });
+        } else if (!user.googleId) {
+            // Update existing user with googleId if email matched
+            user.googleId = googleId;
+            await user.save();
+        }
+
+        const jwtToken = jwt.sign(
+            {
+                userId: user._id.toString(),
+                username: user.username
+            },
+            JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        return response.json({
+            success: true,
+            message: "Google Login successful.",
+            token: jwtToken,
+            user: {
+                id: user._id,
+                username: user.username,
+                totalPoints: user.totalPoints,
+                level: user.level
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = authRouter;
