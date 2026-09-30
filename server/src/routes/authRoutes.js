@@ -181,6 +181,7 @@ authRouter.post("/google", async (request, response, next) => {
                 audience: process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
             });
         } catch (verifyError) {
+            console.error("Google Auth Error:", verifyError);
             return response.status(401).json({
                 message: "Invalid Google ID token.",
                 error: verifyError.message
