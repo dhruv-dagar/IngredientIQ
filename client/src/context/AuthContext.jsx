@@ -17,32 +17,19 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       return false;
     }
-
     try {
       const res = await fetch('/api/auth/me', {
-        headers: {
-          Authorization: `Bearer ${activeToken}`
-        }
+        headers: { Authorization: `Bearer ${activeToken}` }
       });
-
-      if (!res.ok) {
-        throw new Error('Authentication session expired.');
-      }
-
+      if (!res.ok) throw new Error('Authentication session expired.');
       const data = await res.json();
-
-      if (!data.success || !data.user) {
-        throw new Error('Could not load user profile.');
-      }
-
+      if (!data.success || !data.user) throw new Error('Could not load user profile.');
+      
       saveUser(data.user);
       return true;
     } catch (error) {
       console.error(error);
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      logout();
       return false;
     }
   };
@@ -54,10 +41,8 @@ export const AuthProvider = ({ children }) => {
       } else {
         setUser(null);
       }
-
       setLoading(false);
     };
-
     initializeAuth();
   }, []);
 
@@ -68,23 +53,17 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
-
       const data = await res.json();
-
       if (data.success) {
         setToken(data.token);
         localStorage.setItem('token', data.token);
         saveUser(data.user);
         return { success: true };
       }
-
       return { success: false, message: data.message };
     } catch (error) {
       console.error(error);
-      return {
-        success: false,
-        message: 'Could not connect to the backend server. Is it running?'
-      };
+      return { success: false, message: 'Could not connect to the backend server. Is it running?' };
     }
   };
 
@@ -95,20 +74,33 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
-
       const data = await res.json();
-
-      if (data.success) {
-        return { success: true };
-      }
-
+      if (data.success) return { success: true };
       return { success: false, message: data.message };
     } catch (error) {
       console.error(error);
-      return {
-        success: false,
-        message: 'Could not connect to the backend server. Is it running?'
-      };
+      return { success: false, message: 'Could not connect to the backend server. Is it running?' };
+    }
+  };
+
+  const googleLogin = async (googleToken) => {
+    try {
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: googleToken })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setToken(data.token);
+        localStorage.setItem('token', data.token);
+        saveUser(data.user);
+        return { success: true };
+      }
+      return { success: false, message: data.message };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: 'Could not connect to the backend server. Is it running?' };
     }
   };
 
@@ -120,9 +112,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, token, login, register, logout, refreshUser, loading }}
-    >
+    <AuthContext.Provider value={{ user, token, login, register, googleLogin, logout, refreshUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
