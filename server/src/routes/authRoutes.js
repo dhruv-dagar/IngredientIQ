@@ -174,10 +174,18 @@ authRouter.post("/google", async (request, response, next) => {
             });
         }
 
-        const ticket = await googleClient.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-        });
+        let ticket;
+        try {
+            ticket = await googleClient.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+            });
+        } catch (verifyError) {
+            return response.status(401).json({
+                message: "Invalid Google ID token.",
+                error: verifyError.message
+            });
+        }
 
         const payload = ticket.getPayload();
         const { sub: googleId, email, name } = payload;
