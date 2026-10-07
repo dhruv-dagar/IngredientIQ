@@ -93,7 +93,7 @@ async function run() {
     const validProducts = [];
     let page = 1;
     
-    while (validProducts.length < 200) {
+    while (validProducts.length < 400) {
       console.log(`Fetching page ${page}... (Current valid: ${validProducts.length})`);
       const data = await fetchPage(page);
       if (!data || !data.products) break;
@@ -118,7 +118,7 @@ async function run() {
             source: "Open Food Facts",
             approved: true
           });
-          if (validProducts.length >= 200) break;
+          if (validProducts.length >= 400) break;
         }
       }
       page++;
