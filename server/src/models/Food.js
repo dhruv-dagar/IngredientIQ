@@ -42,6 +42,11 @@ const foodSchema = new mongoose.Schema(
             default: "Open Food Facts"
         },
 
+        explanationText: {
+            type: String,
+            default: ""
+        },
+
         approved: {
             type: Boolean,
             default: false
