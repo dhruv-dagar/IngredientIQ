@@ -7,7 +7,7 @@ const fs = require("fs");
 async function run() {
   await connectDB();
   const foods = await Food.find({}, "name brand novaGroup");
-  let md = "# Current Database Inventory (200 Items)\n\n";
+  let md = "# Current Database Inventory (600 Items)\n\n";
   foods.forEach((f, i) => {
     md += `${i + 1}. **${f.name}** (${f.brand}) - Tier ${f.novaGroup}\n`;
   });
