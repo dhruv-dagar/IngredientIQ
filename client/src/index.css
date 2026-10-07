@@ -645,3 +645,15 @@ button:active {
   color: #fff;
   transform: scale(1.05);
 }
+
+/* Custom scrollbar for Explanation Text on cards */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}

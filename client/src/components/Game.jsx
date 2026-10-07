@@ -41,6 +41,20 @@ export default function Game() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
+  const [enlargedCard, setEnlargedCard] = useState(null);
+
+  useEffect(() => {
+    // Reset landscape status when question changes
+    setIsLandscape(false);
+    setEnlargedCard(null);
+  }, [currentQuestion]);
+
+  const handleImageLoad = (e) => {
+    if (e.target.naturalWidth > e.target.naturalHeight) {
+      setIsLandscape(true);
+    }
+  };
 
   const startGame = async () => {
     try {
@@ -241,8 +255,82 @@ export default function Game() {
            <CardPack mode={endlessModeConfig} isOpen={true} />
         </div>
 
-        {/* Current Food Information */}
-        <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-500 ${showLoadingCards ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Photo Card (Left) */}
+        <AnimatePresence mode="wait">
+          {!showLoadingCards && food && (
+            <motion.div
+              key={`photo-${questionNumber}`}
+              initial={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
+              animate={
+                enlargedCard === 'photo' 
+                ? { y: "-50%", x: "-50%", top: "50%", left: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
+                : { y: 0, x: "-50%", top: "5%", left: "20%", rotateZ: -3, scale: 0.65, opacity: (answerResult && !enlargedCard) ? 0.2 : (enlargedCard ? 0 : 1), zIndex: 20 }
+              }
+              onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
+              exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
+              className="absolute z-20 bg-white rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500"
+              style={{
+                width: isLandscape ? 480 : 340,
+                height: isLandscape ? 340 : 480,
+                transformOrigin: "center center"
+              }}
+            >
+                              {enlargedCard === 'photo' && (
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                 >
+                   ✕
+                 </button>
+               )}
+               <div className="w-full h-full bg-gray-100 flex items-center justify-center relative">
+                 {food.imageUrl ? (
+                   <img src={food.imageUrl} alt="Food" onLoad={handleImageLoad} className="w-full h-full object-contain rounded-md" />
+                 ) : (
+                   <div className="text-gray-400 font-bold uppercase tracking-widest text-sm">No Image</div>
+                 )}
+               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Ingredients Card (Right) */}
+        <AnimatePresence mode="wait">
+          {!showLoadingCards && food && (
+            <motion.div
+              key={`ingredients-${questionNumber}`}
+              initial={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
+              animate={
+                enlargedCard === 'ingredients'
+                ? { y: "-50%", x: "50%", top: "50%", right: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
+                : { y: 0, x: "50%", top: "5%", right: "20%", rotateZ: 3, scale: 0.65, opacity: (answerResult && !enlargedCard) ? 0.2 : (enlargedCard ? 0 : 1), zIndex: 20 }
+              }
+              onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
+              exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
+              className="absolute z-20 w-[340px] h-[480px] bg-[#f4efe8] rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
+            >
+                              {enlargedCard === 'ingredients' && (
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                 >
+                   ✕
+                 </button>
+               )}
+               <div className="w-full h-full p-8 flex flex-col cursor-auto">
+                  <strong className="text-black uppercase text-xl mb-4 tracking-widest text-center border-b-2 border-black/10 pb-4">Ingredients</strong>
+                  <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-2">
+                    <p className="text-[18px] text-gray-800 leading-relaxed font-semibold">
+                      {food.ingredientsText || 'Not listed.'}
+                    </p>
+                  </div>
+               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Current Food Information (Floating Text) */}
+        <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-500 pointer-events-none ${(showLoadingCards || answerResult) ? 'opacity-0' : 'opacity-100'}`}>
            <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#1a1a1a] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
              {food?.name || "..."}
            </h1>
@@ -275,10 +363,6 @@ export default function Game() {
               const descContent = showLoadingCards ? "" : nova.desc;
 
               // Aesthetic tilted layout
-              // Card 0: tilted left
-              // Card 1: slightly left
-              // Card 2: slightly right
-              // Card 3: tilted right
               const fanAngle = (i - 1.5) * 8; 
               const fanY = Math.abs(i - 1.5) * 15; // Arc effect
 
@@ -299,7 +383,8 @@ export default function Game() {
                     x: 0,
                     opacity: 1,
                     rotateY: (isSelected || isCorrect) && answerResult && !showLoadingCards ? 0 : 180, // Flip over if answered
-                    rotateZ: isSelected ? 0 : fanAngle // Flatten out when selected
+                    rotateZ: isSelected ? 0 : fanAngle, // Flatten out when selected
+                    zIndex: (isSelected || isCorrect) && answerResult ? 50 : 30
                   }}
                   exit={{
                     scale: 0.8,
@@ -333,16 +418,18 @@ export default function Game() {
                   </div>
 
                   {/* FRONT OF CARD (White Side - Visible after guessing) */}
-                  <div className={`absolute inset-0 bg-white rounded-[10px] shadow-2xl border-[6px] p-4 flex flex-col items-center justify-center text-center backface-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-neutral-200'}`}>
-                     <h3 className={`text-xl font-black mb-3 tracking-widest ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`absolute inset-0 bg-white rounded-[10px] shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-neutral-200'}`}>
+                     <h3 className={`text-xl font-black mt-2 mb-2 tracking-widest ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
                        {isCorrect ? 'CORRECT' : 'YOUR GUESS'}
                      </h3>
-                     <div className="w-full h-[2px] bg-neutral-200 mb-3" />
-                     <p className="text-black font-black text-3xl mb-2">Tier {answerResult?.actualLevel}</p>
+                     <div className="w-full h-[2px] bg-neutral-200 mb-2 shrink-0" />
+                     <p className="text-black font-black text-2xl mb-1 shrink-0">Tier {nova.level}</p>
                      
-                     {answerResult?.ingredientsText && (
-                       <div className="text-[11px] text-neutral-600 mt-2 overflow-y-auto max-h-[100px] text-left leading-snug font-medium">
-                         <strong className="text-black uppercase tracking-widest">Ingredients:</strong> {answerResult.ingredientsText}
+                     {(food?.explanationText || answerResult?.explanationText) && (
+                       <div className="flex-1 w-full mt-2 overflow-y-auto text-left border-t-2 border-neutral-100 pt-2 custom-scrollbar">
+                         <p className="text-[15px] text-neutral-800 leading-relaxed font-bold pb-2">
+                           {food?.explanationText || answerResult?.explanationText}
+                         </p>
                        </div>
                      )}
                   </div>

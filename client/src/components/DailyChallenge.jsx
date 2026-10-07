@@ -1,38 +1,69 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import '../index.css';
+import { motion, AnimatePresence } from "framer-motion";
+import { CardPack } from "./ui/card-pack";
+import { GAME_MODES } from "@/lib/game-modes";
 
 const API_BASE = '/api/daily';
 
 const NOVA_LEVELS = [
-  { level: 1, title: 'Tier 1', desc: 'Not Processed / Minimally Processed' },
-  { level: 2, title: 'Tier 2', desc: 'Processed Culinary Ingredients' },
-  { level: 3, title: 'Tier 3', desc: 'Processed Foods' },
-  { level: 4, title: 'Tier 4', desc: 'Highly Processed Foods' },
+  { level: 1, title: 'Tier 1', desc: 'Unprocessed' },
+  { level: 2, title: 'Tier 2', desc: 'Ingredients' },
+  { level: 3, title: 'Tier 3', desc: 'Processed' },
+  { level: 4, title: 'Tier 4', desc: 'Ultra-Processed' },
 ];
 
-function DailyChallenge() {
-  const { token, refreshUser } = useContext(AuthContext);
+const LOADING_TEXT = ["LO", "AD", "IN", "G"];
+
+export default function DailyChallenge() {
+  const { token, refreshUser, user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const hasFetchedRef = useRef(false);
+  const hasStartedRef = useRef(false);
 
   const [foods, setFoods] = useState([]);
   const [currentFoodIndex, setCurrentFoodIndex] = useState(-1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [scorePopup, setScorePopup] = useState(null);
-  
-  // Temporary state for the current answer animation before moving to next question
-  const [answerResult, setAnswerResult] = useState(null); 
+
   const [selectedNova, setSelectedNova] = useState(null);
+  const [answerResult, setAnswerResult] = useState(null);
+  const [scorePopup, setScorePopup] = useState(null);
+
+  const [score, setScore] = useState(0);
+  const [totalGuesses, setTotalGuesses] = useState(0);
+  const [rightGuesses, setRightGuesses] = useState(0);
+
   const [questionStartedAt, setQuestionStartedAt] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showLoadingCards, setShowLoadingCards] = useState(false);
+  const loadingTimerRef = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
+  const [enlargedCard, setEnlargedCard] = useState(null);
+
+  useEffect(() => {
+    // Reset landscape status when question changes
+    setIsLandscape(false);
+    setEnlargedCard(null);
+  }, [currentFoodIndex]);
+
+  const handleImageLoad = (e) => {
+    if (e.target.naturalWidth > e.target.naturalHeight) {
+      setIsLandscape(true);
+    }
+  };
 
   const fetchDailyChallenge = async () => {
     try {
       setLoading(true);
+      setShowLoadingCards(true);
       setError(null);
+      setSelectedNova(null);
+      setAnswerResult(null);
+      setScorePopup(null);
+      setShowModal(false);
+
       const res = await fetch(`${API_BASE}/today`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -41,27 +72,34 @@ function DailyChallenge() {
       
       setFoods(data.foods);
       
-      // Find first unanswered question
       const nextIndex = data.foods.findIndex(f => f.status === 'unanswered');
-      setCurrentFoodIndex(nextIndex); // will be -1 if all answered
-      setQuestionStartedAt(Date.now());
+      setCurrentFoodIndex(nextIndex);
+      
+      const rights = data.foods.filter(f => f.status === 'correct').length;
+      const total = data.foods.filter(f => f.status !== 'unanswered').length;
+      setRightGuesses(rights);
+      setTotalGuesses(total);
+
+      setTimeout(() => {
+         setQuestionStartedAt(Date.now());
+         setLoading(false);
+         setShowLoadingCards(false);
+         if (nextIndex === -1) {
+           setShowModal(true);
+         }
+      }, 600);
+
     } catch (err) {
       console.error(err);
       setError(err.message || 'Failed to load daily challenge');
-    } finally {
       setLoading(false);
+      setShowLoadingCards(false);
     }
   };
 
-  useEffect(() => {
-    if (hasFetchedRef.current) return;
-    hasFetchedRef.current = true;
-    fetchDailyChallenge();
-  }, []);
-
   const handleCardClick = async (level) => {
-    if (selectedNova !== null || submitting || currentFoodIndex === -1) return;
-    const currentFood = foods[currentFoodIndex];
+    if (selectedNova !== null || submitting || currentFoodIndex === -1 || loading) return;
+    const currentQuestion = foods[currentFoodIndex];
 
     setSelectedNova(level);
     setSubmitting(true);
@@ -70,28 +108,36 @@ function DailyChallenge() {
     const responseTimeMs = questionStartedAt ? Math.max(0, Date.now() - questionStartedAt) : 0;
 
     try {
-      const res = await fetch(`${API_BASE}/answer`, {
+      const response = await fetch(`${API_BASE}/answer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          foodId: currentFood._id,
+          foodId: currentQuestion._id,
           guessedLevel: level,
-          responseTimeMs
-        })
+          responseTimeMs,
+        }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to submit answer');
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to submit answer');
 
       setAnswerResult(data);
+      setTotalGuesses((prev) => prev + 1);
+
+      if (data.isCorrect) {
+        setRightGuesses((prev) => prev + 1);
+        setScore((prev) => prev + 10); 
+      }
+
       if (data.pointsChange !== undefined) {
         setScorePopup({ value: data.pointsChange, id: Date.now().toString() });
       }
 
     } catch (err) {
-      console.error(err);
+      console.error('Submit answer error:', err);
       setSelectedNova(null);
       setError(err.message || 'Failed to submit answer');
     } finally {
@@ -99,14 +145,9 @@ function DailyChallenge() {
     }
   };
 
-  const handleNext = () => {
-    // Reset local state and move to next question
-    setSelectedNova(null);
-    setAnswerResult(null);
-    setScorePopup(null);
-    setQuestionStartedAt(Date.now());
+  const handleNext = async () => {
+    if (submitting) return;
     
-    // Update local foods array to mark current as answered
     const updatedFoods = [...foods];
     updatedFoods[currentFoodIndex].status = answerResult.isCorrect ? 'correct' : 'incorrect';
     setFoods(updatedFoods);
@@ -114,115 +155,328 @@ function DailyChallenge() {
     const nextIndex = updatedFoods.findIndex(f => f.status === 'unanswered');
     setCurrentFoodIndex(nextIndex);
     
+    setSelectedNova(null);
+    setAnswerResult(null);
+    setScorePopup(null);
+    setQuestionStartedAt(Date.now());
+
     if (nextIndex === -1) {
-      refreshUser(); // Sync final points if completed
+      finishGame();
     }
   };
 
-  const goDashboard = () => navigate('/dashboard');
+  const finishGame = () => {
+    setShowModal(true);
+    refreshUser();
+  };
 
-  if (loading) {
-    return <div className="app-container"><h2 style={{textAlign: 'center', marginTop: '50px'}}>Loading Daily Challenge...</h2></div>;
-  }
+  useEffect(() => {
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
+    fetchDailyChallenge();
+  }, []);
 
-  // Lockout Screen
-  if (currentFoodIndex === -1 && !error) {
-    const correctCount = foods.filter(f => f.status === 'correct').length;
-    return (
-      <div className="app-container" style={{justifyContent: 'center', alignItems: 'center'}}>
-        <div className="modal-content" style={{animation: 'scaleIn 0.5s ease-out'}}>
-          <h1 style={{fontSize: '3rem', margin: '0 0 20px 0'}}>🎉 5/5</h1>
-          <h2>Daily Challenge Completed!</h2>
-          <p style={{fontSize: '1.2rem', color: '#4b5563', margin: '20px 0'}}>
-            You got <strong>{correctCount}</strong> out of 5 correct today.
-          </p>
-          <div style={{background: '#f3f4f6', padding: '15px', borderRadius: '12px', marginBottom: '30px'}}>
-            <h3 style={{margin: '0 0 10px 0'}}>Come back tomorrow!</h3>
-            <p style={{margin: 0, fontSize: '0.9rem'}}>New foods will be available at midnight.</p>
-          </div>
-          <button onClick={goDashboard} className="btn-primary large">Return to Dashboard</button>
-        </div>
-      </div>
-    );
-  }
+  const currentQuestion = currentFoodIndex !== -1 ? foods[currentFoodIndex] : null;
+  const food = currentQuestion;
+  const endlessModeConfig = GAME_MODES.find(m => m.id === 'daily');
 
-  const currentFood = foods[currentFoodIndex];
-  const actualLevel = answerResult?.actualLevel;
+  const dealKey = showLoadingCards ? `loading-${Date.now()}` : `question-${currentFoodIndex}`;
 
   return (
-    <div className="app-container">
-      <div className="top-bar">
-        <div className="controls">
-          <button onClick={goDashboard} className="btn-logout">← Back</button>
+    <div className="w-screen h-screen overflow-hidden fixed top-0 left-0 bg-[#d4d4d4] text-[#1a1a1a] flex flex-col perspective-[1200px]">
+      
+      {/* Dynamic Background: Blurs and dims when dealing/loading */}
+      <div 
+        className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.6),transparent_70%)] transition-all duration-700 ${showLoadingCards || !currentQuestion ? 'backdrop-blur-xl bg-black/10' : ''}`} 
+      />
+
+      {/* Top Bar HUD */}
+      <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-50">
+        <div className="flex gap-4">
+          <button onClick={finishGame} className="px-4 py-2 bg-transparent border border-black/20 text-[#1a1a1a] text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors">
+            End Game
+          </button>
+          <button onClick={fetchDailyChallenge} className="px-4 py-2 bg-transparent border border-black/20 text-[#1a1a1a] text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors">
+            Restart
+          </button>
         </div>
-        <div className="score-board">
-          <p>Daily Progress: {currentFoodIndex + 1} / 5</p>
+
+        {error && (
+          <div className="absolute top-24 left-1/2 -translate-x-1/2 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg font-bold z-50 text-center">
+            <p>{error}</p>
+            <button onClick={() => navigate('/dashboard')} className="mt-2 text-sm underline">Go to Dashboard</button>
+          </div>
+        )}
+        <div className="flex gap-8 text-right">
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Question</p>
+            <p className="text-xl font-bold m-0">{(currentFoodIndex + 1) || 0} / {5}</p>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Accuracy</p>
+            <p className="text-xl font-bold m-0">{totalGuesses > 0 ? Math.round((rightGuesses/totalGuesses)*100) : 0}%</p>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Score</p>
+            <p className="text-xl font-bold text-[#d11124] m-0">{score}</p>
+          </div>
         </div>
       </div>
 
-      <div className="game-area" style={{ position: 'relative' }}>
-        {scorePopup && (
-          <div key={scorePopup.id} className={`score-popup ${scorePopup.value > 0 ? 'positive' : scorePopup.value < 0 ? 'negative' : 'neutral'}`}>
-            {scorePopup.value > 0 ? '+' : ''}{scorePopup.value}
-          </div>
-        )}
+      {/* Main Game Area */}
+      <div className="flex-1 w-full h-full relative flex flex-col items-center justify-center pt-20">
+        
+        {/* The Card Pack (Decks the cards) */}
+        <div className="absolute top-[2%] left-1/2 -translate-x-1/2 z-10" style={{ transform: "scale(0.55)" }}>
+           <CardPack mode={endlessModeConfig} isOpen={true} />
+        </div>
 
-        <h2 style={{color: '#3b82f6', marginBottom: '0'}}>Daily Challenge</h2>
-        <h1 className="product-title">{currentFood?.name}</h1>
-        <p className="product-brand">{currentFood?.brand}</p>
-
-        {error && <p style={{ color: '#b91c1c', textAlign: 'center' }}>{error}</p>}
-
-        <div className="cards-container">
-          {NOVA_LEVELS.map((nova) => {
-            const isSelected = selectedNova === nova.level;
-            const isCorrect = answerResult && nova.level === Number(actualLevel);
-            const isWrongGuess = isSelected && !isCorrect;
-
-            let cardClass = 'flip-card ';
-            if (answerResult) {
-              if (isSelected) {
-                cardClass += 'flipped ' + (isWrongGuess ? 'border-red ' : 'border-green ');
-              } else if (isCorrect) {
-                cardClass += 'flipped border-green ';
+        {/* Photo Card (Left) */}
+        <AnimatePresence mode="wait">
+          {!showLoadingCards && food && (
+            <motion.div
+              key={`photo-${(currentFoodIndex + 1)}`}
+              initial={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
+              animate={
+                enlargedCard === 'photo' 
+                ? { y: "-50%", x: "-50%", top: "50%", left: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
+                : { y: 0, x: "-50%", top: "5%", left: "20%", rotateZ: -3, scale: 0.65, opacity: (answerResult && !enlargedCard) ? 0.2 : (enlargedCard ? 0 : 1), zIndex: 20 }
               }
-            }
+              onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
+              exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
+              className="absolute z-20 bg-white rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500"
+              style={{
+                width: isLandscape ? 480 : 340,
+                height: isLandscape ? 340 : 480,
+                transformOrigin: "center center"
+              }}
+            >
+                              {enlargedCard === 'photo' && (
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                 >
+                   ✕
+                 </button>
+               )}
+               <div className="w-full h-full bg-gray-100 flex items-center justify-center relative">
+                 {food.imageUrl ? (
+                   <img src={food.imageUrl} alt="Food" onLoad={handleImageLoad} className="w-full h-full object-contain rounded-md" />
+                 ) : (
+                   <div className="text-gray-400 font-bold uppercase tracking-widest text-sm">No Image</div>
+                 )}
+               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            return (
-              <div key={nova.level} className={cardClass} onClick={() => handleCardClick(nova.level)}>
-                <div className="flip-card-inner">
-                  <div className="flip-card-front">
-                    <h2>{nova.title}</h2>
-                    <p>{nova.desc}</p>
+        {/* Ingredients Card (Right) */}
+        <AnimatePresence mode="wait">
+          {!showLoadingCards && food && (
+            <motion.div
+              key={`ingredients-${(currentFoodIndex + 1)}`}
+              initial={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
+              animate={
+                enlargedCard === 'ingredients'
+                ? { y: "-50%", x: "50%", top: "50%", right: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
+                : { y: 0, x: "50%", top: "5%", right: "20%", rotateZ: 3, scale: 0.65, opacity: (answerResult && !enlargedCard) ? 0.2 : (enlargedCard ? 0 : 1), zIndex: 20 }
+              }
+              onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
+              exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
+              className="absolute z-20 w-[340px] h-[480px] bg-[#f4efe8] rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
+            >
+                              {enlargedCard === 'ingredients' && (
+                 <button 
+                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                 >
+                   ✕
+                 </button>
+               )}
+               <div className="w-full h-full p-8 flex flex-col cursor-auto">
+                  <strong className="text-black uppercase text-xl mb-4 tracking-widest text-center border-b-2 border-black/10 pb-4">Ingredients</strong>
+                  <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-2">
+                    <p className="text-[18px] text-gray-800 leading-relaxed font-semibold">
+                      {food.ingredientsText || 'Not listed.'}
+                    </p>
                   </div>
-                  <div className="flip-card-back">
-                    {(isSelected || isCorrect) && answerResult && (
-                      <>
-                        <h3 style={{ fontSize: '1rem', margin: '5px 0', color: isCorrect ? '#15803d' : '#b91c1c' }}>
-                          {isCorrect ? 'Correct Answer!' : 'Your Guess'}
-                        </h3>
-                        <hr style={{ width: '100%', borderColor: '#eee' }} />
-                        <p style={{ margin: '5px 0', fontWeight: 'bold' }}>Actual Tier: {answerResult.actualLevel}</p>
-                        <p className="ingredient-text"><strong>Ingredients:</strong> {answerResult.ingredientsText}</p>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Current Food Information (Floating Text) */}
+        <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-500 pointer-events-none ${(showLoadingCards || answerResult) ? 'opacity-0' : 'opacity-100'}`}>
+           <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#1a1a1a] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+             {food?.name || "..."}
+           </h1>
+           <p className="text-neutral-600 font-bold text-lg uppercase tracking-widest mt-2">{food?.brand}</p>
         </div>
 
-        {answerResult && (
-          <div className="next-container">
-            <button onClick={handleNext} className="btn-next" disabled={submitting}>
-              {currentFoodIndex === 4 ? 'View Results' : 'Next Question →'}
-            </button>
-          </div>
-        )}
+        {/* Score Popup Animation */}
+        <AnimatePresence>
+          {scorePopup && (
+            <motion.div 
+              key={scorePopup.id}
+              initial={{ opacity: 0, y: 0, scale: 0.5 }}
+              animate={{ opacity: 1, y: -100, scale: 1.5 }}
+              exit={{ opacity: 0 }}
+              className={`absolute top-[45%] font-bold text-4xl z-50 drop-shadow-lg ${scorePopup.value > 0 ? 'text-green-600' : 'text-red-600'}`}
+            >
+              {scorePopup.value > 0 ? '+' : ''}{scorePopup.value}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* The Dealing Cards */}
+        <div className="absolute bottom-[10%] w-full max-w-5xl px-8 flex justify-center gap-6 z-30 perspective-[1200px]">
+          <AnimatePresence mode="popLayout">
+            {NOVA_LEVELS.map((nova, i) => {
+              const isSelected = selectedNova === nova.level;
+              const isCorrect = answerResult && nova.level === Number(answerResult.actualLevel);
+              const isWrongGuess = isSelected && !isCorrect;
+              const textContent = showLoadingCards ? LOADING_TEXT[i] : nova.title;
+              const descContent = showLoadingCards ? "" : nova.desc;
+
+              // Aesthetic tilted layout
+              const fanAngle = (i - 1.5) * 8; 
+              const fanY = Math.abs(i - 1.5) * 15; // Arc effect
+
+              return (
+                <motion.div
+                  key={`${dealKey}-${i}`} // Forces re-deal when key changes
+                  initial={{ 
+                    scale: 0.3, 
+                    y: -400, // Starts way up inside the deck
+                    x: (1.5 - i) * -30, // Clustered in the deck
+                    opacity: 0,
+                    rotateY: 180, // Back facing up
+                    rotateZ: (1.5 - i) * -20 // Extreme fan in the deck
+                  }}
+                  animate={{
+                    scale: 1,
+                    y: fanY,
+                    x: 0,
+                    opacity: 1,
+                    rotateY: (isSelected || isCorrect) && answerResult && !showLoadingCards ? 0 : 180, // Flip over if answered
+                    rotateZ: isSelected ? 0 : fanAngle, // Flatten out when selected
+                    zIndex: (isSelected || isCorrect) && answerResult ? 50 : 30
+                  }}
+                  exit={{
+                    scale: 0.8,
+                    opacity: 0,
+                    y: 100, // Drop down to exit
+                    transition: { duration: 0.2 }
+                  }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 110, 
+                    damping: 14,
+                    delay: i * 0.1 // Stagger dealing
+                  }}
+                  className={`relative w-[220px] h-[320px] cursor-pointer ${answerResult || loading ? 'pointer-events-none' : 'hover:-translate-y-6 hover:scale-105 transition-all duration-300'}`}
+                  onClick={() => handleCardClick(nova.level)}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  {/* BACK OF CARD (Red Side - Visible before guessing) */}
+                  <div className="absolute inset-0 bg-[#d11124] rounded-[10px] shadow-2xl border-[6px] border-white p-2 flex items-center justify-center backface-hidden" style={{ transform: "rotateY(180deg)" }}>
+                     <div className="w-full h-full border border-white/50 rounded-sm flex flex-col items-center justify-center text-center p-2">
+                       {loading ? (
+                         <h2 className="text-white font-black text-7xl tracking-widest">{textContent}</h2>
+                       ) : (
+                         <>
+                           <span className="text-white text-5xl mb-4" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>♠</span>
+                           <h2 className="text-white font-black text-3xl mb-1 uppercase tracking-widest">{textContent}</h2>
+                           <p className="text-white/90 text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight">{descContent}</p>
+                         </>
+                       )}
+                     </div>
+                  </div>
+
+                  {/* FRONT OF CARD (White Side - Visible after guessing) */}
+                  <div className={`absolute inset-0 bg-white rounded-[10px] shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-neutral-200'}`}>
+                     <h3 className={`text-xl font-black mt-2 mb-2 tracking-widest ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                       {isCorrect ? 'CORRECT' : 'YOUR GUESS'}
+                     </h3>
+                     <div className="w-full h-[2px] bg-neutral-200 mb-2 shrink-0" />
+                     <p className="text-black font-black text-2xl mb-1 shrink-0">Tier {nova.level}</p>
+                     
+                     {(food?.explanationText || answerResult?.explanationText) && (
+                       <div className="flex-1 w-full mt-2 overflow-y-auto text-left border-t-2 border-neutral-100 pt-2 custom-scrollbar">
+                         <p className="text-[15px] text-neutral-800 leading-relaxed font-bold pb-2">
+                           {food?.explanationText || answerResult?.explanationText}
+                         </p>
+                       </div>
+                     )}
+                  </div>
+
+                  {/* Selected Indicator Glow */}
+                  {isSelected && !answerResult && !loading && (
+                    <div className="absolute -inset-4 bg-white/30 rounded-xl blur-xl -z-10" />
+                  )}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+
+        {/* Next Question Button */}
+        <AnimatePresence>
+          {answerResult && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute bottom-6 z-40"
+            >
+              <button 
+                onClick={handleNext} 
+                disabled={submitting}
+                className="px-12 py-5 bg-[#1a1a1a] text-white font-black tracking-[4px] text-lg uppercase hover:scale-105 transition-transform rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+              >
+                {currentFoodIndex === -1 ? 'View Results' : 'Next Question →'}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </div>
+
+      {/* Game Over Modal */}
+      {showModal && (
+        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-[#f4efe8] text-[#1a1a1a] p-10 rounded-2xl max-w-md w-full text-center shadow-2xl border-4 border-white"
+          >
+            <h2 className="text-5xl font-bold mb-6 text-[#d11124]" style={{ fontFamily: '"Playfair Display", serif' }}>Challenge Complete!</h2>
+            <div className="space-y-4 mb-8 text-lg font-bold">
+              <p className="flex justify-between border-b border-black/10 pb-2">
+                <span className="text-neutral-500 uppercase tracking-widest text-sm">Questions Played</span> 
+                <span>5 / 5</span>
+              </p>
+              <p className="flex justify-between border-b border-black/10 pb-2">
+                <span className="text-neutral-500 uppercase tracking-widest text-sm">Right Guesses</span> 
+                <span className="text-green-600">{rightGuesses}</span>
+              </p>
+              <p className="flex justify-between pb-2">
+                <span className="text-neutral-500 uppercase tracking-widest text-sm">Accuracy</span> 
+                <span>{Math.round((rightGuesses / 5) * 100)}%</span>
+              </p>
+            </div>
+            <div className="bg-[#f3f4f6] p-4 rounded-xl mb-6 text-left">
+               <h3 className="font-bold text-sm mb-1 uppercase tracking-widest">Come back tomorrow!</h3>
+               <p className="text-xs text-neutral-600">New foods will be available at midnight.</p>
+            </div>
+            <div className="flex gap-4">
+              <button onClick={() => { refreshUser(); navigate('/dashboard'); }} className="flex-1 py-4 bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] font-bold tracking-widest uppercase hover:bg-black/5 transition-colors rounded-lg">
+                Dashboard
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
     </div>
   );
 }
-
-export default DailyChallenge;

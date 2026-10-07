@@ -39,30 +39,32 @@ export default function GameDashboard() {
 
       {/* Top Left HUD */}
       <motion.div 
-        className="absolute top-10 left-10 z-50"
+        className="absolute top-10 left-10 z-50 bg-[#f4efe8] p-6 rounded-2xl shadow-2xl border-[8px] border-white max-w-[250px]"
       >
-        <h1 className="text-4xl mb-5 border-b-2 border-black/20 pb-2" style={{ fontFamily: '"Playfair Display", serif' }}>
+        <div className="absolute top-0 left-0 w-full h-2 bg-[#d11124]"></div>
+        
+        <h1 className="text-3xl mb-5 border-b border-black/10 pb-2 text-center" style={{ fontFamily: '"Playfair Display", serif' }}>
           IngredientIQ
         </h1>
         
-        <div className="flex flex-col gap-4">
-          <div>
-            <p className="m-0 text-xs uppercase tracking-widest text-neutral-600">Player</p>
-            <p className="m-0 text-lg font-bold">{user.username}</p>
+        <div className="flex flex-col gap-3">
+          <div className="bg-white p-2 rounded-lg border border-black/5 text-center">
+            <p className="m-0 text-[10px] uppercase tracking-widest text-neutral-500">Player</p>
+            <p className="m-0 text-md font-black">{user.username}</p>
           </div>
-          <div>
-            <p className="m-0 text-xs uppercase tracking-widest text-neutral-600">Tier</p>
-            <p className="m-0 text-lg font-bold text-[#d11124]">{badge.title} {badge.icon}</p>
+          <div className="bg-white p-2 rounded-lg border border-black/5 text-center">
+            <p className="m-0 text-[10px] uppercase tracking-widest text-neutral-500">Tier</p>
+            <p className="m-0 text-md font-black text-[#d11124]">{badge.title} {badge.icon}</p>
           </div>
-          <div>
-            <p className="m-0 text-xs uppercase tracking-widest text-neutral-600">Score</p>
-            <p className="m-0 text-lg font-bold">{user.totalPoints || 0} PTS</p>
+          <div className="bg-white p-2 rounded-lg border border-black/5 text-center">
+            <p className="m-0 text-[10px] uppercase tracking-widest text-neutral-500">Score</p>
+            <p className="m-0 text-md font-black">{user.totalPoints || 0} PTS</p>
           </div>
         </div>
 
         <button 
           onClick={() => { logout(); navigate('/login'); }} 
-          className="mt-8 px-5 py-2 bg-transparent border border-black/20 text-[#1a1a1a] cursor-pointer uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors"
+          className="mt-6 w-full py-3 bg-[#1a1a1a] text-white rounded-lg font-black uppercase tracking-widest hover:bg-[#d11124] transition-colors text-xs shadow-md"
         >
           Log Out
         </button>
