@@ -24,7 +24,7 @@ dailyRouter.get("/today", async (request, response, next) => {
     try {
         const todayStr = getTodayString();
         
-        let dailyChallenge = await DailyChallenge.findOne({ date: todayStr }).populate("foodIds", "name brand ingredientsText imageUrl source novaGroup");
+        let dailyChallenge = await DailyChallenge.findOne({ date: todayStr }).populate("foodIds", "name brand ingredientsText imageUrl source novaGroup explanationText");
 
         if (!dailyChallenge) {
             // Pick 5 random approved foods
@@ -45,7 +45,7 @@ dailyRouter.get("/today", async (request, response, next) => {
             });
 
             // Populate the newly created challenge
-            dailyChallenge = await DailyChallenge.findById(dailyChallenge._id).populate("foodIds", "name brand ingredientsText imageUrl source novaGroup");
+            dailyChallenge = await DailyChallenge.findById(dailyChallenge._id).populate("foodIds", "name brand ingredientsText imageUrl source novaGroup explanationText");
         }
 
         const dailySessionId = `${request.user.userId}-${todayStr}`;
@@ -67,6 +67,7 @@ dailyRouter.get("/today", async (request, response, next) => {
             
             if (!answered) {
                 delete foodObj.novaGroup; // Hide answer
+                delete foodObj.explanationText; // Hide explanation
             }
             
             return {
@@ -150,6 +151,7 @@ dailyRouter.post("/answer", async (request, response, next) => {
             isCorrect,
             actualLevel: food.novaGroup,
             ingredientsText: food.ingredientsText,
+            explanationText: food.explanationText,
             pointsChange: scoring.pointsChange,
             totalPoints: scoring.totalPoints,
             level: scoring.level
