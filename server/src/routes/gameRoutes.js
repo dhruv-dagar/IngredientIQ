@@ -199,6 +199,7 @@ gameRouter.post("/answers", async (request, response, next) => {
       isCorrect,
       actualLevel: food.novaGroup,
       ingredientsText: food.ingredientsText,
+      explanationText: food.explanationText,
       pointsChange: scoring.pointsChange,
       totalPoints: scoring.totalPoints,
       level: scoring.level
