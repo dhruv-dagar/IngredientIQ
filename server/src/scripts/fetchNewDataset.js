@@ -115,6 +115,7 @@ async function run() {
             ingredientsText: p.ingredients_text,
             novaGroup: p.nova_group,
             imageUrl: p.image_front_url,
+            explanationText: generateReason(p.nova_group, p.ingredients_text),
             source: "Open Food Facts",
             approved: true
           });
