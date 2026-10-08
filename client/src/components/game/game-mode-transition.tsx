@@ -60,8 +60,8 @@ export function GameModeTransition({ mode, onComplete }: GameModeTransitionProps
             style={{ transformStyle: "preserve-3d" }}
           >
             {/* The Red Card matching Game.jsx */}
-            <div className="absolute inset-0 bg-[#b91c1c] rounded-xl shadow-2xl border-4 border-white/90 p-2 flex items-center justify-center">
-               <div className="w-full h-full border-2 border-white/40 flex flex-col items-center justify-center text-center bg-[#a01313]">
+            <div className="absolute inset-0 bg-[#b91c1c] rounded-2xl shadow-2xl border-4 border-slate-100/90 p-2 flex items-center justify-center">
+               <div className="w-full h-full border-2 border-slate-100/40 flex flex-col items-center justify-center text-center bg-[#a01313]">
                  <h2 className="text-white font-black text-6xl tracking-widest">{text}</h2>
                </div>
             </div>

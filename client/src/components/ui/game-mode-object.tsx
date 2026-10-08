@@ -68,6 +68,7 @@ export function GameModeObject({ mode, relativeIndex, isActive, onClick, isDragg
     
     // Slight initial tilt for side items facing inwards
     const baseRotateY = isActive ? 0 : -sign * 15;
+    const baseRotateZ = isActive ? 0 : sign * (abs === 1 ? 5 : 10);
     
     // Opacity
     const opacity = isActive ? 1 : abs === 1 ? 0.8 : 0.5;
@@ -77,6 +78,7 @@ export function GameModeObject({ mode, relativeIndex, isActive, onClick, isDragg
       z: translateZ,
       scale,
       baseRotateY,
+      baseRotateZ,
       opacity,
       zIndex: 10 - abs
     };
@@ -112,9 +114,10 @@ export function GameModeObject({ mode, relativeIndex, isActive, onClick, isDragg
           transformStyle: "preserve-3d",
           rotateX,
           // Add base rotateY + cursor rotateY
-          rotateY: useSpring(pos.baseRotateY, { stiffness: 200, damping: 30 })
+          rotateY: useSpring(pos.baseRotateY, { stiffness: 200, damping: 30 }),
+          rotateZ: useSpring(pos.baseRotateZ, { stiffness: 200, damping: 30 })
         }}
-        className="w-full h-full relative"
+        className="w-full h-full relative" draggable={false}
       >
         <CardPack mode={mode} isOpen={isOpen && isActive} className={cn(
           "transition-shadow duration-500",

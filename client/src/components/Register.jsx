@@ -28,17 +28,21 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#d4d4d4] flex items-center justify-center p-4">
-      <div className="bg-[#f4efe8] w-full max-w-md rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-[12px] border-white p-10 flex flex-col items-center relative overflow-hidden">
-        {/* Decorative Top Banner */}
-        <div className="absolute top-0 left-0 w-full h-4 bg-[#d11124]"></div>
+    <div className="min-h-screen bg-[#000522] flex items-center justify-center p-4">
+      <div className="bg-[#0B1B42] w-full max-w-md rounded-3xl border border-[#254174]/50 shadow-[0_0_80px_rgba(37,65,116,0.5)] p-10 flex flex-col items-center relative overflow-hidden">
+        {/* Back Link */}
+        <Link to="/" className="absolute top-6 left-6 text-[#F2EBD1]/60 hover:text-[#F2EBD1] transition-colors flex items-center gap-2 text-sm font-bold">
+          ← Back
+        </Link>
         
-        <span className="text-black text-4xl mb-4" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>♠</span>
-        <h2 className="text-4xl font-black mb-8 text-[#1a1a1a] tracking-widest text-center" style={{ fontFamily: '"Playfair Display", serif' }}>
-          REGISTER
+
+        
+        <span className="text-[#F2EBD1] text-5xl mb-4 drop-shadow-[0_0_15px_rgba(242,235,209,0.8)]">♠</span>
+        <h2 className="text-4xl font-black mb-8 text-[#F2EBD1] tracking-widest text-center" style={{ fontFamily: '"Playfair Display", serif' }}>
+          Create Account
         </h2>
         
-        {error && <p className="text-[#d11124] text-sm font-bold text-center mb-4">{error}</p>}
+        {error && <p className="text-[#F2EBD1] text-sm font-bold text-center mb-4">{error}</p>}
         
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
           <input 
@@ -47,7 +51,7 @@ function Register() {
             value={username} 
             onChange={(e) => setUsername(e.target.value)} 
             required 
-            className="w-full bg-white border-2 border-black/10 px-4 py-4 rounded-xl text-black font-bold uppercase tracking-widest focus:outline-none focus:border-[#d11124] transition-colors"
+            className="w-full bg-[#000522] border border-[#254174]/50 text-[#F2EBD1] placeholder-[#254174] px-4 py-4 rounded-2xl text-[#F2EBD1] font-bold uppercase tracking-widest focus:outline-none focus:border-[#254174] focus:ring-1 focus:ring-[#254174] transition-colors"
           />
           <input 
             type="password" 
@@ -55,7 +59,7 @@ function Register() {
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             required 
-            className="w-full bg-white border-2 border-black/10 px-4 py-4 rounded-xl text-black font-bold uppercase tracking-widest focus:outline-none focus:border-[#d11124] transition-colors"
+            className="w-full bg-[#000522] border border-[#254174]/50 text-[#F2EBD1] placeholder-[#254174] px-4 py-4 rounded-2xl text-[#F2EBD1] font-bold uppercase tracking-widest focus:outline-none focus:border-[#254174] focus:ring-1 focus:ring-[#254174] transition-colors"
           />
           <input 
             type="password" 
@@ -63,15 +67,15 @@ function Register() {
             value={confirmPassword} 
             onChange={(e) => setConfirmPassword(e.target.value)} 
             required 
-            className="w-full bg-white border-2 border-black/10 px-4 py-4 rounded-xl text-black font-bold uppercase tracking-widest focus:outline-none focus:border-[#d11124] transition-colors"
+            className="w-full bg-[#000522] border border-[#254174]/50 text-[#F2EBD1] placeholder-[#254174] px-4 py-4 rounded-2xl text-[#F2EBD1] font-bold uppercase tracking-widest focus:outline-none focus:border-[#254174] focus:ring-1 focus:ring-[#254174] transition-colors"
           />
-          <button type="submit" className="w-full mt-4 bg-[#1a1a1a] text-white py-5 rounded-xl font-black uppercase tracking-widest hover:bg-[#d11124] transition-colors shadow-lg">
+          <button type="submit" className="w-full mt-4 bg-[#254174] text-[#F2EBD1] text-[#F2EBD1] py-4 rounded-2xl font-bold hover:bg-[#000522] transition-colors shadow-lg">
             Create Account
           </button>
         </form>
 
-        <p className="mt-8 text-neutral-500 font-bold uppercase tracking-widest text-xs text-center">
-          Already a player? <Link to="/login" className="text-[#d11124] hover:underline">Login here</Link>
+        <p className="mt-8 text-[#F2EBD1]/60 font-bold uppercase tracking-widest text-xs text-center">
+          Already a player? <Link to="/login" className="text-[#F2EBD1] hover:underline">Login here</Link>
         </p>
       </div>
     </div>

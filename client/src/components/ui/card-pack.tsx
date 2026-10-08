@@ -18,9 +18,19 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
     
     // Aesthetic colors matching the premium deck
     const isLocked = !mode.enabled;
-    const baseColor = isLocked ? "bg-[#3a3a3a]" : "bg-[#f4efe8]"; // Ivory/off-white matching the photo
-    const accentColor = isLocked ? "text-neutral-500" : "text-[#d11124]"; // Deep bright red from photo
-    const borderColor = isLocked ? "border-[#4a4a4a]" : "border-[#e0d8cf]"; // Slightly darker edge
+    const baseColor = isLocked ? "bg-[#000522]/50" : "bg-[#0B1B42]"; // Ivory/off-white matching the photo
+    const accentColor = isLocked ? "text-[#000522]/50" : "text-[#F2EBD1]"; // Deep bright red from photo
+    const borderColor = isLocked ? "border-[#254174]/20" : "border-[#254174]/50"; // Slightly darker edge
+
+    const getSuit = (id: string) => {
+      switch (id) {
+        case 'daily': return '♥';
+        case 'endless': return '♠';
+        case 'timeAttack': return '♣';
+        case 'settings': return '♦';
+        default: return '★';
+      }
+    };
 
     return (
       <div
@@ -35,7 +45,7 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
       >
         {/* CARDS INSIDE (Visible when lid is open and through the thumb notch) */}
         <div 
-          className="absolute bg-white border border-neutral-200 rounded-[8px] shadow-md flex items-start justify-center"
+          className="absolute bg-[#F2EBD1] border border-[#254174]/30 rounded-[8px] shadow-md flex items-start justify-center"
           style={{ 
             transform: `translateZ(-${BOX_DEPTH / 2 - 4}px)`,
             width: BOX_WIDTH - 6,
@@ -45,15 +55,15 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
           }}
         >
           {/* First Card Red Back (seen when looking inside) */}
-          <div className="w-[94%] h-[98%] mt-2 border-2 border-white rounded-[6px] bg-[#d11124] flex items-center justify-center p-1">
-             <div className="w-full h-full border border-white/40 rounded-[4px] flex items-center justify-center">
-                <span className="text-white/30 text-4xl">♠</span>
+          <div className="w-[94%] h-[98%] mt-2 border-2 border-[#254174] rounded-[6px] bg-[#000522] flex items-center justify-center p-1">
+             <div className="w-full h-full border border-[#254174]/40 rounded-[4px] flex items-center justify-center">
+                <span className="text-[#F2EBD1]/30 text-4xl"></span>
              </div>
           </div>
           
           {/* Card Edges Pattern (sides of the deck) */}
-          <div className="absolute -left-[2px] top-[10px] w-[4px] h-[95%] bg-[repeating-linear-gradient(0deg,#fff_0px,#fff_2px,#e5e5e5_2px,#e5e5e5_4px)] opacity-80" />
-          <div className="absolute -right-[2px] top-[10px] w-[4px] h-[95%] bg-[repeating-linear-gradient(0deg,#fff_0px,#fff_2px,#e5e5e5_2px,#e5e5e5_4px)] opacity-80" />
+          <div className="absolute -left-[2px] top-[10px] w-[4px] h-[95%] bg-[repeating-linear-gradient(0deg,#F2EBD1_0px,#F2EBD1_2px,#d1c5a1_2px,#d1c5a1_4px)] opacity-80" />
+          <div className="absolute -right-[2px] top-[10px] w-[4px] h-[95%] bg-[repeating-linear-gradient(0deg,#F2EBD1_0px,#F2EBD1_2px,#d1c5a1_2px,#d1c5a1_4px)] opacity-80" />
         </div>
 
         {/* BACK FACE */}
@@ -65,7 +75,7 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
           }}
         >
            {/* Simple back design */}
-           <div className="absolute inset-4 border-2 border-[#d11124] opacity-50" />
+           <div className="absolute inset-4 border-2 border-[#254174] opacity-50" />
         </div>
 
         {/* BOTTOM FACE */}
@@ -129,8 +139,8 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
           transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
         >
            {/* Flap design underneath (matches photo red inner flap) */}
-           <div className="absolute inset-2 bg-[#d11124] border border-[#a00] flex items-center justify-center" style={{ transform: "rotateX(180deg) translateZ(1px)" }}>
-              <span className="text-white text-xl">♠</span>
+           <div className="absolute inset-2 bg-[#000522] border border-[#254174]/50 flex items-center justify-center" style={{ transform: "rotateX(180deg) translateZ(1px)" }}>
+              <span className="text-[#F2EBD1] text-xl"></span>
            </div>
 
            {/* Tuck flap inside piece (the part that inserts) */}
@@ -153,10 +163,10 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
           
           {/* Fake Thumb Notch Cutout */}
           <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[50px] h-[25px] bg-white rounded-b-full border-b border-black/10 shadow-inner z-20 flex items-start justify-center overflow-hidden" 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[50px] h-[25px] bg-[#F2EBD1] rounded-b-full border-b border-[#254174] shadow-inner z-20 flex items-start justify-center overflow-hidden" 
           >
             {/* Show a tiny bit of red card back through the hole */}
-            <div className="w-[120%] h-[200%] bg-[#d11124] -mt-1 rounded-sm" />
+            <div className="w-[120%] h-[200%] bg-[#000522] -mt-1 rounded-sm" />
           </div>
 
           {/* Decorative Red Border Layer */}
@@ -164,15 +174,15 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
             className="absolute inset-[14px] border-[4px] p-[6px] flex flex-col items-center justify-between rounded-sm"
             style={{ 
               transform: "translateZ(1px)",
-              borderColor: isLocked ? "rgba(255,255,255,0.1)" : "#d11124"
+              borderColor: isLocked ? "rgba(255,255,255,0.1)" : "#254174"
             }}
           >
             {/* Inner Red Border */}
-            <div className="absolute inset-2 border border-[#d11124] rounded-sm" />
+            <div className="absolute inset-2 border border-[#254174] rounded-sm" />
 
             {/* Top Ornate Area / Title */}
             <div className={cn("w-full pt-8 pb-2 text-center z-10", accentColor)}>
-               <h3 className={cn("text-2xl font-bold leading-none tracking-[0.2em] uppercase", isLocked ? "text-neutral-400" : "text-[#d11124]")}>
+               <h3 className={cn("text-2xl font-bold leading-none tracking-[0.2em] uppercase", isLocked ? "text-[#000522]/40" : "text-[#F2EBD1]")}>
                  {mode.title}
                </h3>
             </div>
@@ -183,10 +193,10 @@ export const CardPack = React.forwardRef<HTMLDivElement, CardPackProps>(
                  <Lock className="w-20 h-20 text-neutral-600 mb-2" />
                ) : (
                  <div className="flex items-center justify-center">
-                   <span className="text-[#1a1a1a] text-[160px] leading-[0.8]" style={{ textShadow: "0 2px 15px rgba(0,0,0,0.15)" }}>♠</span>
+                   <span className="text-[#F2EBD1] text-[160px] leading-[0.8] drop-shadow-[0_0_20px_rgba(242,235,209,0.3)]">{getSuit(mode.id)}</span>
                  </div>
                )}
-               {isLocked && <p className="text-sm text-neutral-500 font-bold tracking-widest mt-6">LOCKED</p>}
+               {isLocked && <p className="text-sm text-[#000522]/50 font-bold tracking-widest mt-6">LOCKED</p>}
             </div>
 
             {/* Bottom info */}

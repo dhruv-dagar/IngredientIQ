@@ -93,7 +93,7 @@ function Dashboard() {
       
       {/* Top Left HUD */}
       <div 
-        className="absolute top-10 left-10 z-50 text-black transition-opacity duration-500"
+        className="absolute top-10 left-10 z-50 text-[#F2EBD1] transition-opacity duration-500"
         style={{ opacity: focused ? 0 : 1, pointerEvents: focused ? 'none' : 'auto' }}
       >
         <h1 className="text-4xl mb-5 border-b-2 border-black pb-2" style={{ fontFamily: '"Playfair Display", serif' }}>
@@ -119,7 +119,7 @@ function Dashboard() {
 
         <button 
           onClick={() => { logout(); navigate('/login'); }} 
-          className="mt-8 px-5 py-2 bg-transparent border border-black text-black cursor-pointer uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+          className="mt-8 px-5 py-2 bg-transparent border border-black text-[#F2EBD1] cursor-pointer uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
         >
           Log Out
         </button>

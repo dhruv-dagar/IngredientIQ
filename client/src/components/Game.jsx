@@ -214,35 +214,35 @@ export default function Game() {
   const dealKey = showLoadingCards ? `loading-${Date.now()}` : `question-${questionNumber}`;
 
   return (
-    <div className="w-screen h-screen overflow-hidden fixed top-0 left-0 bg-[#d4d4d4] text-[#1a1a1a] flex flex-col perspective-[1200px]">
+    <div className="w-screen h-screen overflow-hidden fixed top-0 left-0 bg-[#000522] text-[#F2EBD1] flex flex-col perspective-[1200px]">
       
       {/* Dynamic Background: Blurs and dims when dealing/loading */}
       <div 
-        className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.6),transparent_70%)] transition-all duration-700 ${showLoadingCards || !currentQuestion ? 'backdrop-blur-xl bg-black/10' : ''}`} 
+        className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.6),transparent_70%)] transition-all duration-700 ${showLoadingCards || !currentQuestion ? 'backdrop-blur-xl bg-[#000522]/10' : ''}`} 
       />
 
       {/* Top Bar HUD */}
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-50">
         <div className="flex gap-4">
-          <button onClick={finishGame} className="px-4 py-2 bg-transparent border border-black/20 text-[#1a1a1a] text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors">
+          <button onClick={finishGame} className="px-4 py-2 bg-transparent border border-slate-200 text-[#F2EBD1] text-xs font-bold uppercase tracking-widest hover:bg-[#254174] hover:text-[#F2EBD1] transition-colors">
             End Game
           </button>
-          <button onClick={startGame} className="px-4 py-2 bg-transparent border border-black/20 text-[#1a1a1a] text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-colors">
+          <button onClick={startGame} className="px-4 py-2 bg-transparent border border-slate-200 text-[#F2EBD1] text-xs font-bold uppercase tracking-widest hover:bg-[#254174] hover:text-[#F2EBD1] transition-colors">
             Restart
           </button>
         </div>
         <div className="flex gap-8 text-right">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Question</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Question</p>
             <p className="text-xl font-bold m-0">{questionNumber || 0} / {questionCount}</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Accuracy</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Accuracy</p>
             <p className="text-xl font-bold m-0">{totalGuesses > 0 ? Math.round((rightGuesses/totalGuesses)*100) : 0}%</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 m-0">Score</p>
-            <p className="text-xl font-bold text-[#d11124] m-0">{score}</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Score</p>
+            <p className="text-xl font-bold text-[#000522] m-0">{score}</p>
           </div>
         </div>
       </div>
@@ -268,7 +268,7 @@ export default function Game() {
               }
               onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
               exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
-              className="absolute z-20 bg-white rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500"
+              className="absolute z-20 bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500"
               style={{
                 width: isLandscape ? 480 : 340,
                 height: isLandscape ? 340 : 480,
@@ -278,12 +278,12 @@ export default function Game() {
                               {enlargedCard === 'photo' && (
                  <button 
                    onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
-                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                   className="absolute top-2 right-2 bg-[#254174] text-[#000522] rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-[#254174] font-black shadow-lg text-lg border-2 border-[#254174]/50"
                  >
                    ✕
                  </button>
                )}
-               <div className="w-full h-full bg-gray-100 flex items-center justify-center relative">
+               <div className="w-full h-full bg-[#000522] flex items-center justify-center relative">
                  {food.imageUrl ? (
                    <img src={food.imageUrl} alt="Food" onLoad={handleImageLoad} className="w-full h-full object-contain rounded-md" />
                  ) : (
@@ -307,20 +307,20 @@ export default function Game() {
               }
               onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
               exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
-              className="absolute z-20 w-[340px] h-[480px] bg-[#f4efe8] rounded-2xl shadow-2xl overflow-hidden border-[12px] border-white flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
+              className="absolute z-20 w-[340px] h-[480px] bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
             >
                               {enlargedCard === 'ingredients' && (
                  <button 
                    onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
-                   className="absolute top-2 right-2 bg-[#d11124] text-white rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-black font-black shadow-lg text-lg border-2 border-white"
+                   className="absolute top-2 right-2 bg-[#254174] text-[#000522] rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-[#254174] font-black shadow-lg text-lg border-2 border-[#254174]/50"
                  >
                    ✕
                  </button>
                )}
                <div className="w-full h-full p-8 flex flex-col cursor-auto">
-                  <strong className="text-black uppercase text-xl mb-4 tracking-widest text-center border-b-2 border-black/10 pb-4">Ingredients</strong>
+                  <strong className="text-[#000522] uppercase text-xl mb-4 tracking-widest text-center border-b-2 border-[#254174]/50 pb-4">Ingredients</strong>
                   <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-2">
-                    <p className="text-[18px] text-gray-800 leading-relaxed font-semibold">
+                    <p className="text-[18px] text-[#000522]/80 leading-relaxed font-semibold">
                       {food.ingredientsText || 'Not listed.'}
                     </p>
                   </div>
@@ -331,10 +331,10 @@ export default function Game() {
 
         {/* Current Food Information (Floating Text) */}
         <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-500 pointer-events-none ${(showLoadingCards || answerResult) ? 'opacity-0' : 'opacity-100'}`}>
-           <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#1a1a1a] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+           <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#F2EBD1] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
              {food?.name || "..."}
            </h1>
-           <p className="text-neutral-600 font-bold text-lg uppercase tracking-widest mt-2">{food?.brand}</p>
+           <p className="text-[#000522]/60 font-bold text-lg uppercase tracking-widest mt-2">{food?.brand}</p>
         </div>
 
         {/* Score Popup Animation */}
@@ -403,31 +403,31 @@ export default function Game() {
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   {/* BACK OF CARD (Red Side - Visible before guessing) */}
-                  <div className="absolute inset-0 bg-[#d11124] rounded-[10px] shadow-2xl border-[6px] border-white p-2 flex items-center justify-center backface-hidden" style={{ transform: "rotateY(180deg)" }}>
-                     <div className="w-full h-full border border-white/50 rounded-sm flex flex-col items-center justify-center text-center p-2">
+                  <div className="absolute inset-0 bg-[#254174] rounded-3xl shadow-2xl border-[6px] border-[#254174]/50 p-2 flex items-center justify-center backface-hidden" style={{ transform: "rotateY(180deg)" }}>
+                     <div className="w-full h-full border border-[#254174]/50/50 rounded-sm flex flex-col items-center justify-center text-center p-2">
                        {loading ? (
-                         <h2 className="text-white font-black text-7xl tracking-widest">{textContent}</h2>
+                         <h2 className="text-[#F2EBD1] font-black text-7xl tracking-widest">{textContent}</h2>
                        ) : (
                          <>
-                           <span className="text-white text-5xl mb-4" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>♠</span>
-                           <h2 className="text-white font-black text-3xl mb-1 uppercase tracking-widest">{textContent}</h2>
-                           <p className="text-white/90 text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight">{descContent}</p>
+                           <span className="text-[#F2EBD1] text-5xl mb-4 drop-shadow-[0_0_10px_rgba(242,235,209,0.5)]">♠</span>
+                           <h2 className="text-[#F2EBD1] font-bold text-2xl mb-1">{textContent}</h2>
+                           <p className="text-[#F2EBD1]/90 text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight">{descContent}</p>
                          </>
                        )}
                      </div>
                   </div>
 
                   {/* FRONT OF CARD (White Side - Visible after guessing) */}
-                  <div className={`absolute inset-0 bg-white rounded-[10px] shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-neutral-200'}`}>
+                  <div className={`absolute inset-0 bg-[#F2EBD1] rounded-3xl shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-[#254174]/50'}`}>
                      <h3 className={`text-xl font-black mt-2 mb-2 tracking-widest ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
                        {isCorrect ? 'CORRECT' : 'YOUR GUESS'}
                      </h3>
-                     <div className="w-full h-[2px] bg-neutral-200 mb-2 shrink-0" />
-                     <p className="text-black font-black text-2xl mb-1 shrink-0">Tier {nova.level}</p>
+                     <div className="w-full h-[2px] bg-[#000522]/10 mb-2 shrink-0" />
+                     <p className="text-[#000522] font-black text-2xl mb-1 shrink-0">Tier {nova.level}</p>
                      
                      {(food?.explanationText || answerResult?.explanationText) && (
-                       <div className="flex-1 w-full mt-2 overflow-y-auto text-left border-t-2 border-neutral-100 pt-2 custom-scrollbar">
-                         <p className="text-[15px] text-neutral-800 leading-relaxed font-bold pb-2">
+                       <div className="flex-1 w-full mt-2 overflow-y-auto text-left border-t-2 border-[#254174]/50 pt-2 custom-scrollbar">
+                         <p className="text-[15px] text-[#000522]/80 leading-relaxed font-bold pb-2">
                            {food?.explanationText || answerResult?.explanationText}
                          </p>
                        </div>
@@ -436,7 +436,7 @@ export default function Game() {
 
                   {/* Selected Indicator Glow */}
                   {isSelected && !answerResult && !loading && (
-                    <div className="absolute -inset-4 bg-white/30 rounded-xl blur-xl -z-10" />
+                    <div className="absolute -inset-4 bg-[#F2EBD1]/30 rounded-2xl blur-xl -z-10" />
                   )}
                 </motion.div>
               );
@@ -455,7 +455,7 @@ export default function Game() {
               <button 
                 onClick={handleNext} 
                 disabled={submitting}
-                className="px-12 py-5 bg-[#1a1a1a] text-white font-black tracking-[4px] text-lg uppercase hover:scale-105 transition-transform rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                className="px-12 py-5 bg-[#254174] text-[#F2EBD1] font-black tracking-[4px] text-lg uppercase hover:scale-105 transition-transform rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
               >
                 {totalGuesses >= questionCount ? 'View Results' : 'Next Question →'}
               </button>
@@ -467,25 +467,25 @@ export default function Game() {
 
       {/* Game Over Modal */}
       {showModal && (
-        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center">
+        <div className="absolute inset-0 z-[100] bg-[#000522]/60 backdrop-blur-md flex items-center justify-center">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-[#f4efe8] text-[#1a1a1a] p-10 rounded-2xl max-w-md w-full text-center shadow-2xl border-4 border-white"
+            className="bg-[#F2EBD1] text-[#000522] p-10 rounded-[2rem] max-w-md w-full text-center shadow-2xl border-4 border-[#254174]/50"
           >
-            <h2 className="text-5xl font-bold mb-6 text-[#d11124]" style={{ fontFamily: '"Playfair Display", serif' }}>Game Over!</h2>
+            <h2 className="text-5xl font-bold mb-6 text-[#000522]" style={{ fontFamily: '"Playfair Display", serif' }}>Game Over!</h2>
             <div className="space-y-4 mb-8 text-lg font-bold">
-              <p className="flex justify-between border-b border-black/10 pb-2">
+              <p className="flex justify-between border-b border-[#254174]/50 pb-2">
                 <span className="text-neutral-500 uppercase tracking-widest text-sm">Questions Played</span> 
                 <span>{totalGuesses}</span>
               </p>
-              <p className="flex justify-between border-b border-black/10 pb-2">
+              <p className="flex justify-between border-b border-[#254174]/50 pb-2">
                 <span className="text-neutral-500 uppercase tracking-widest text-sm">Right Guesses</span> 
                 <span className="text-green-600">{rightGuesses}</span>
               </p>
-              <p className="flex justify-between border-b border-black/10 pb-2">
+              <p className="flex justify-between border-b border-[#254174]/50 pb-2">
                 <span className="text-neutral-500 uppercase tracking-widest text-sm">Session Score</span> 
-                <span className="text-[#d11124]">{score}</span>
+                <span className="text-[#254174]">{score}</span>
               </p>
               <p className="flex justify-between pb-2">
                 <span className="text-neutral-500 uppercase tracking-widest text-sm">Accuracy</span> 
@@ -493,10 +493,10 @@ export default function Game() {
               </p>
             </div>
             <div className="flex gap-4">
-              <button onClick={startGame} className="flex-1 py-4 bg-[#1a1a1a] text-white font-bold tracking-widest uppercase hover:bg-black transition-colors rounded-lg">
+              <button onClick={startGame} className="flex-1 py-4 bg-[#254174] text-[#F2EBD1] font-bold tracking-widest uppercase hover:bg-[#254174] transition-colors rounded-lg">
                 Play Again
               </button>
-              <button onClick={() => { refreshUser(); navigate('/dashboard'); }} className="flex-1 py-4 bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] font-bold tracking-widest uppercase hover:bg-black/5 transition-colors rounded-lg">
+              <button onClick={() => { refreshUser(); navigate('/dashboard'); }} className="flex-1 py-4 bg-transparent border-2 border-[#254174] text-[#000522] font-bold tracking-widest uppercase hover:bg-[#254174]/5 transition-colors rounded-lg">
                 Dashboard
               </button>
             </div>

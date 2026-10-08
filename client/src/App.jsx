@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useContext } from 'react';
+import Landing from './components/Landing';
 import Login from './components/Login';
 import Register from './components/Register';
 import GameDashboard from './components/game/game-dashboard';
@@ -25,7 +26,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route 

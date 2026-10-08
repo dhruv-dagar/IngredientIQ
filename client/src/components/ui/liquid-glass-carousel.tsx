@@ -1552,20 +1552,20 @@ export function LiquidGlassCarousel({
 
       <p
         ref={titleRef}
-        className="pointer-events-none absolute left-1/2 top-[4.5%] z-10 m-0 text-center text-[15px] font-medium tracking-[-0.02em] text-black opacity-0 sm:text-[17px]"
+        className="pointer-events-none absolute left-1/2 top-[4.5%] z-10 m-0 text-center text-[15px] font-medium tracking-[-0.02em] text-[#F2EBD1] opacity-0 sm:text-[17px]"
       >
         {current?.title}
       </p>
       <p
         ref={counterRef}
-        className="pointer-events-none absolute bottom-[6%] left-1/2 z-10 m-0 text-center text-[13px] font-medium tabular-nums tracking-[-0.02em] text-black opacity-0 sm:text-[15px]"
+        className="pointer-events-none absolute bottom-[6%] left-1/2 z-10 m-0 text-center text-[13px] font-medium tabular-nums tracking-[-0.02em] text-[#F2EBD1] opacity-0 sm:text-[15px]"
       >
         {pad(active + 1)}/{pad(items.length)}
       </p>
 
       <div
         ref={cursorRef}
-        className="pointer-events-none absolute left-0 top-0 z-20 text-[13px] font-medium text-black mix-blend-exclusion"
+        className="pointer-events-none absolute left-0 top-0 z-20 text-[13px] font-medium text-[#F2EBD1] mix-blend-exclusion"
       >
         View
       </div>
@@ -1574,7 +1574,7 @@ export function LiquidGlassCarousel({
         type="button"
         onClick={() => engineRef.current?.closeFocus()}
         aria-label="Close focused project"
-        className="absolute right-[4%] top-[4.5%] z-20 text-[13px] font-medium text-black mix-blend-exclusion transition-opacity duration-300"
+        className="absolute right-[4%] top-[4.5%] z-20 text-[13px] font-medium text-[#F2EBD1] mix-blend-exclusion transition-opacity duration-300"
         style={{
           opacity: focused ? 1 : 0,
           pointerEvents: focused ? "auto" : "none",
