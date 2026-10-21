@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const gameRoutes = require("./routes/gameRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dailyRoutes = require("./routes/dailyRoutes");
+const timeAttackRoutes = require("./routes/timeAttackRoutes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/game", gameRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/daily", dailyRoutes);
+app.use("/api/time-attack", timeAttackRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({
