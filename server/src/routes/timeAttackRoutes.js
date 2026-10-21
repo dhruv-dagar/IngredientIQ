@@ -221,18 +221,21 @@ timeAttackRouter.post("/finish", async (request, response, next) => {
                     ? Math.round((session.correctCount / session.totalCards) * 100)
                     : 0;
 
+            const currentTotal = Number.isFinite(user.totalPoints) ? user.totalPoints : 0;
+            const currentLevel = Number.isFinite(user.level) ? user.level : 1;
+
             let totalPointsChange = 0;
             for (const card of session.cardsPlayed) {
                 const pointsChange = calculatePointsChange({
                     isCorrect: card.isCorrect,
-                    currentLevel: user.level
+                    currentLevel
                 });
                 totalPointsChange += pointsChange;
             }
 
             const newTotalPoints = Math.max(
-                MIN_TOTAL_POINTS,
-                user.totalPoints + totalPointsChange
+                MIN_TOTAL_POINTS ?? 0,
+                currentTotal + totalPointsChange
             );
 
             user.totalPoints = newTotalPoints;

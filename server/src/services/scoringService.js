@@ -49,6 +49,7 @@ module.exports = {
     WRONG_ANSWER_PENALTY,
     PENALTY_LEVEL,
     POINTS_PER_LEVEL,
+    MIN_TOTAL_POINTS,
     calculateLevel,
     calculatePointsChange,
     applyScore
