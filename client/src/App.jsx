@@ -8,6 +8,7 @@ import Register from './components/Register';
 import GameDashboard from './components/game/game-dashboard';
 import Game from './components/Game';
 import DailyChallenge from './components/DailyChallenge';
+import TimeAttack from './components/TimeAttack';
 import './index.css';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
@@ -40,6 +41,10 @@ function App() {
             <Route 
               path="/daily" 
               element={<ProtectedRoute><DailyChallenge /></ProtectedRoute>} 
+            />
+            <Route 
+              path="/time-attack" 
+              element={<ProtectedRoute><TimeAttack /></ProtectedRoute>} 
             />
           </Routes>
         </Router>

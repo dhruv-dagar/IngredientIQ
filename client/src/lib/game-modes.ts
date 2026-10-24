@@ -27,7 +27,7 @@ export const GAME_MODES: GameModeConfig[] = [
     id: "timeAttack",
     title: "Time Attack",
     description: "Test your speed in a rapid-fire ingredient challenge.",
-    route: null,
+    route: "/time-attack",
     enabled: true,
   },
   {
