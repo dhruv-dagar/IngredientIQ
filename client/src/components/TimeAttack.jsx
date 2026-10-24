@@ -535,12 +535,12 @@ export default function TimeAttack() {
                       className={`absolute inset-0 rounded-3xl shadow-2xl border-[6px] p-2 flex items-center justify-center transition-colors duration-200 ${
                         isSelected 
                           ? (isLight ? 'border-amber-500 bg-[#E5DEC3]' : 'border-amber-400 bg-[#0B1B42]')
-                          : (isLight ? 'border-[#254174] bg-[#FAF6EA] shadow-[0_15px_35px_rgba(37,65,116,0.18)]' : 'border-[#254174]/60 bg-[#254174]')
+                          : (isLight ? 'border-[#254174] bg-[#FAF6EA] shadow-[0_15px_35px_rgba(37,65,116,0.18)]' : 'border-[#F2EBD1] bg-[#254174] shadow-[0_15px_35px_rgba(0,0,0,0.6)]')
                       }`} 
                       style={{ transform: "rotateY(180deg)" }}
                     >
-                      <div className={`w-full h-full border rounded-sm flex flex-col items-center justify-center text-center p-2 transition-colors ${
-                        isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#254174]/40"
+                      <div className={`w-full h-full border rounded-2xl flex flex-col items-center justify-center text-center p-2 transition-colors ${
+                        isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#F2EBD1]/40"
                       }`}>
                         <span className={`text-5xl mb-4 transition-all duration-300 ${
                           isLight 

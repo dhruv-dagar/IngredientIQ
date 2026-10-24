@@ -511,12 +511,12 @@ export default function Game() {
                     className={`absolute inset-0 rounded-3xl shadow-2xl border-[6px] p-2 flex items-center justify-center backface-hidden transition-colors duration-300 ${
                       isLight 
                         ? "bg-[#FAF6EA] border-[#254174] shadow-[0_15px_35px_rgba(37,65,116,0.18)]" 
-                        : "bg-[#254174] border-[#254174]/50"
+                        : "bg-[#254174] border-[#F2EBD1] shadow-[0_15px_35px_rgba(0,0,0,0.6)]"
                     }`} 
                     style={{ transform: "rotateY(180deg)" }}
                   >
-                     <div className={`w-full h-full border rounded-sm flex flex-col items-center justify-center text-center p-2 transition-colors ${
-                       isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#254174]/40"
+                     <div className={`w-full h-full border rounded-2xl flex flex-col items-center justify-center text-center p-2 transition-colors ${
+                       isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#F2EBD1]/40"
                      }`}>
                        {loading ? (
                          <h2 className={`font-black text-7xl tracking-widest ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{textContent}</h2>

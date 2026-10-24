@@ -65,12 +65,12 @@ export function GameModeTransition({ mode, onComplete }: GameModeTransitionProps
             <div className={`absolute inset-0 rounded-2xl shadow-2xl border-4 p-2 flex items-center justify-center transition-colors ${
               isLight 
                 ? "bg-[#FAF6EA] border-[#254174]" 
-                : "bg-[#254174] border-[#254174]/60"
+                : "bg-[#254174] border-[#F2EBD1]"
             }`}>
-               <div className={`w-full h-full border-2 flex flex-col items-center justify-center text-center ${
+               <div className={`w-full h-full border-2 rounded-xl flex flex-col items-center justify-center text-center ${
                  isLight 
                    ? "border-[#254174]/40 bg-[#EDE4C8]" 
-                   : "border-[#254174]/40 bg-[#0B1B42]"
+                   : "border-[#F2EBD1]/40 bg-[#0B1B42]"
                }`}>
                  <h2 className={`font-black text-6xl tracking-widest ${
                    isLight ? "text-[#000522]" : "text-[#F2EBD1]"
