@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CardPack } from "./ui/card-pack";
 import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
+import { useTheme } from "../context/ThemeContext";
+import ThemeToggle from "./ui/ThemeToggle";
 
 const API_BASE = '/api/daily';
 
@@ -19,6 +21,7 @@ const LOADING_TEXT = ["LO", "AD", "IN", "G"];
 
 export default function DailyChallenge() {
   const { token, refreshUser, user } = useContext(AuthContext);
+  const { isLight } = useTheme();
   const navigate = useNavigate();
   const hasStartedRef = useRef(false);
 
@@ -185,20 +188,40 @@ export default function DailyChallenge() {
   const dealKey = showLoadingCards ? `loading-${Date.now()}` : `question-${currentFoodIndex}`;
 
   return (
-    <div className="w-screen h-screen overflow-hidden fixed top-0 left-0 bg-[#000522] text-[#F2EBD1] flex flex-col perspective-[1200px]">
+    <div className={`w-screen h-screen overflow-hidden fixed top-0 left-0 flex flex-col perspective-[1200px] transition-colors duration-500 ${
+      isLight ? "bg-[#F2EBD1] text-[#000522]" : "bg-[#000522] text-[#F2EBD1]"
+    }`}>
       
       {/* Dynamic Background: Blurs and dims when dealing/loading */}
       <div 
-        className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.6),transparent_70%)] transition-all duration-700 ${showLoadingCards || !currentQuestion ? 'backdrop-blur-xl bg-[#000522]/10' : ''}`} 
+        className={`absolute inset-0 transition-all duration-700 ${
+          isLight
+            ? "bg-[radial-gradient(circle_at_50%_30%,rgba(37,65,116,0.12),transparent_70%)]"
+            : "bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.6),transparent_70%)]"
+        } ${showLoadingCards || !currentQuestion ? 'backdrop-blur-xl bg-black/10' : ''}`} 
       />
 
       {/* Top Bar HUD */}
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-50">
         <div className="flex gap-4">
-          <button onClick={finishGame} className="px-4 py-2 bg-transparent border border-slate-200 text-[#F2EBD1] text-xs font-bold uppercase tracking-widest hover:bg-[#254174] hover:text-[#F2EBD1] transition-colors">
+          <button 
+            onClick={finishGame} 
+            className={`px-4 py-2 bg-transparent border text-xs font-bold uppercase tracking-widest transition-colors rounded-lg ${
+              isLight 
+                ? "border-[#254174] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1]" 
+                : "border-slate-200 text-[#F2EBD1] hover:bg-[#254174] hover:text-[#F2EBD1]"
+            }`}
+          >
             End Game
           </button>
-          <button onClick={fetchDailyChallenge} className="px-4 py-2 bg-transparent border border-slate-200 text-[#F2EBD1] text-xs font-bold uppercase tracking-widest hover:bg-[#254174] hover:text-[#F2EBD1] transition-colors">
+          <button 
+            onClick={fetchDailyChallenge} 
+            className={`px-4 py-2 bg-transparent border text-xs font-bold uppercase tracking-widest transition-colors rounded-lg ${
+              isLight 
+                ? "border-[#254174] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1]" 
+                : "border-slate-200 text-[#F2EBD1] hover:bg-[#254174] hover:text-[#F2EBD1]"
+            }`}
+          >
             Restart
           </button>
         </div>
@@ -209,18 +232,25 @@ export default function DailyChallenge() {
             <button onClick={() => navigate('/dashboard')} className="mt-2 text-sm underline">Go to Dashboard</button>
           </div>
         )}
-        <div className="flex gap-8 text-right">
+        <div className="flex items-center gap-6 text-right">
+          <ThemeToggle />
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Question</p>
+            <p className={`text-[10px] uppercase tracking-widest m-0 ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>
+              Question
+            </p>
             <p className="text-xl font-bold m-0">{(currentFoodIndex + 1) || 0} / {5}</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Accuracy</p>
+            <p className={`text-[10px] uppercase tracking-widest m-0 ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>
+              Accuracy
+            </p>
             <p className="text-xl font-bold m-0">{totalGuesses > 0 ? Math.round((rightGuesses/totalGuesses)*100) : 0}%</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-[#000522]/60 m-0">Score</p>
-            <p className="text-xl font-bold text-[#000522] m-0">{score}</p>
+            <p className={`text-[10px] uppercase tracking-widest m-0 ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>
+              Score
+            </p>
+            <p className={`text-xl font-bold m-0 ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{score}</p>
           </div>
         </div>
       </div>
@@ -259,7 +289,9 @@ export default function DailyChallenge() {
               }
               onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
               exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
-              className="absolute z-20 bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500"
+              className={`absolute z-20 rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-500 ${
+                isLight ? "bg-[#0B1B42]" : "bg-[#F2EBD1]"
+              }`}
               style={{
                 width: isLandscape ? 480 : 340,
                 height: isLandscape ? 340 : 480,
@@ -299,7 +331,9 @@ export default function DailyChallenge() {
               }
               onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
               exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
-              className="absolute z-20 w-[340px] h-[480px] bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
+              className={`absolute z-20 w-[340px] h-[480px] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500 ${
+                isLight ? "bg-[#0B1B42] text-[#F2EBD1]" : "bg-[#F2EBD1] text-[#000522]"
+              }`}
             >
               {enlargedCard === 'ingredients' && (
                 <button 
@@ -311,10 +345,14 @@ export default function DailyChallenge() {
                 </button>
               )}
               <div className="w-full h-full p-6 flex flex-col cursor-auto">
-                <div className="flex items-center justify-between border-b-2 border-[#254174]/40 pb-3 mb-3 pr-8">
+                <div className={`flex items-center justify-between border-b-2 pb-3 mb-3 pr-8 ${
+                  isLight ? "border-[#254174]/60" : "border-[#254174]/40"
+                }`}>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-black text-[#254174]">♠</span>
-                    <strong className="text-[#000522] uppercase text-lg tracking-widest font-black">
+                    <span className={`text-sm font-black ${isLight ? "text-[#F2EBD1]" : "text-[#254174]"}`}>♠</span>
+                    <strong className={`uppercase text-lg tracking-widest font-black ${
+                      isLight ? "text-[#F2EBD1]" : "text-[#000522]"
+                    }`}>
                       Ingredients
                     </strong>
                   </div>
@@ -327,7 +365,9 @@ export default function DailyChallenge() {
 
                 <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
                   {ingredientsList.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-48 text-center text-[#000522]/50">
+                    <div className={`flex flex-col items-center justify-center h-48 text-center ${
+                      isLight ? "text-[#F2EBD1]/50" : "text-[#000522]/50"
+                    }`}>
                       <span className="text-3xl mb-2">🌿</span>
                       <p className="font-bold text-xs uppercase tracking-widest">No Ingredients Listed</p>
                     </div>
@@ -336,12 +376,18 @@ export default function DailyChallenge() {
                       {ingredientsList.map((item, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-2.5 p-2.5 rounded-xl bg-[#000522]/[0.04] border border-[#254174]/15 hover:bg-[#000522]/[0.08] transition-colors"
+                          className={`flex items-start gap-2.5 p-2.5 rounded-xl border transition-colors ${
+                            isLight
+                              ? "bg-[#000522]/40 border-[#254174]/40 hover:bg-[#000522]/60"
+                              : "bg-[#000522]/[0.04] border-[#254174]/15 hover:bg-[#000522]/[0.08]"
+                          }`}
                         >
                           <span className="shrink-0 flex items-center justify-center min-w-[26px] h-[22px] px-1.5 rounded-md bg-[#254174] text-[#F2EBD1] text-[11px] font-black tracking-tight shadow-sm mt-0.5">
                             {String(idx + 1).padStart(2, '0')}
                           </span>
-                          <span className="text-[15px] text-[#000522] font-semibold leading-snug break-words flex-1">
+                          <span className={`text-[15px] font-semibold leading-snug break-words flex-1 ${
+                            isLight ? "text-[#F2EBD1]" : "text-[#000522]"
+                          }`}>
                             {item}
                           </span>
                         </li>
@@ -356,10 +402,19 @@ export default function DailyChallenge() {
 
         {/* Current Food Information (Floating Text) */}
         <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-500 pointer-events-none ${(showLoadingCards || answerResult) ? 'opacity-0' : 'opacity-100'}`}>
-           <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#F2EBD1] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+           <h1 
+             className={`text-5xl font-bold mb-2 drop-shadow-md leading-tight ${
+               isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+             }`} 
+             style={{ fontFamily: '"Playfair Display", serif' }}
+           >
              {food?.name || "..."}
            </h1>
-           <p className="text-[#000522]/60 font-bold text-lg uppercase tracking-widest mt-2">{food?.brand}</p>
+           <p className={`font-bold text-lg uppercase tracking-widest mt-2 ${
+             isLight ? "text-[#000522]/70" : "text-[#F2EBD1]/70"
+           }`}>
+             {food?.brand}
+           </p>
         </div>
 
         {/* Score Popup Animation */}
@@ -442,17 +497,23 @@ export default function DailyChallenge() {
                      </div>
                   </div>
 
-                  {/* FRONT OF CARD (White Side - Visible after guessing) */}
-                  <div className={`absolute inset-0 bg-[#F2EBD1] rounded-3xl shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-[#254174]/50'}`}>
-                     <h3 className={`text-xl font-black mt-2 mb-2 tracking-widest ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                  {/* FRONT OF CARD (White/Navy Side - Visible after guessing) */}
+                  <div className={`absolute inset-0 rounded-3xl shadow-2xl border-[6px] p-4 flex flex-col items-center justify-start text-center backface-hidden overflow-hidden ${
+                    isCorrect ? 'border-green-500' : isWrongGuess ? 'border-red-500' : 'border-[#254174]/50'
+                  } ${
+                    isLight ? 'bg-[#0B1B42]' : 'bg-[#F2EBD1]'
+                  }`}>
+                     <h3 className={`text-xl font-black mt-2 mb-2 tracking-widest ${isCorrect ? 'text-green-500' : 'text-red-500'}`}>
                        {isCorrect ? 'CORRECT' : 'YOUR GUESS'}
                      </h3>
-                     <div className="w-full h-[2px] bg-[#000522]/10 mb-2 shrink-0" />
-                     <p className="text-[#000522] font-black text-2xl mb-1 shrink-0">Tier {nova.level}</p>
+                     <div className={`w-full h-[2px] mb-2 shrink-0 ${isLight ? 'bg-[#F2EBD1]/20' : 'bg-[#000522]/10'}`} />
+                     <p className={`font-black text-2xl mb-1 shrink-0 ${isLight ? 'text-[#F2EBD1]' : 'text-[#000522]'}`}>
+                       Tier {nova.level}
+                     </p>
                      
                      {(food?.explanationText || answerResult?.explanationText) && (
                        <div className="flex-1 w-full mt-2 overflow-y-auto text-left border-t-2 border-[#254174]/50 pt-2 custom-scrollbar">
-                         <p className="text-[15px] text-[#000522]/80 leading-relaxed font-bold pb-2">
+                         <p className={`text-[15px] leading-relaxed font-bold pb-2 ${isLight ? 'text-[#F2EBD1]/90' : 'text-[#000522]/80'}`}>
                            {food?.explanationText || answerResult?.explanationText}
                          </p>
                        </div>
@@ -492,33 +553,44 @@ export default function DailyChallenge() {
 
       {/* Game Over Modal */}
       {showModal && (
-        <div className="absolute inset-0 z-[100] bg-[#000522]/60 backdrop-blur-md flex items-center justify-center">
+        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-[#F2EBD1] text-[#000522] p-10 rounded-[2rem] max-w-md w-full text-center shadow-2xl border-4 border-[#254174]/50"
+            className={`p-10 rounded-[2.5rem] max-w-md w-full text-center shadow-2xl border-4 border-[#254174]/50 transition-colors ${
+              isLight ? 'bg-[#E5DEC3] text-[#000522]' : 'bg-[#F2EBD1] text-[#000522]'
+            }`}
           >
-            <h2 className="text-5xl font-bold mb-6 text-[#000522]" style={{ fontFamily: '"Playfair Display", serif' }}>Challenge Complete!</h2>
+            <h2 className="text-5xl font-bold mb-6 text-[#000522]" style={{ fontFamily: '"Playfair Display", serif' }}>
+              Challenge Complete!
+            </h2>
             <div className="space-y-4 mb-8 text-lg font-bold">
-              <p className="flex justify-between border-b border-[#254174]/50 pb-2">
-                <span className="text-neutral-500 uppercase tracking-widest text-sm">Questions Played</span> 
+              <p className="flex justify-between border-b border-[#254174]/40 pb-2">
+                <span className="text-[#000522]/60 uppercase tracking-widest text-sm">Questions Played</span> 
                 <span>5 / 5</span>
               </p>
-              <p className="flex justify-between border-b border-[#254174]/50 pb-2">
-                <span className="text-neutral-500 uppercase tracking-widest text-sm">Right Guesses</span> 
+              <p className="flex justify-between border-b border-[#254174]/40 pb-2">
+                <span className="text-[#000522]/60 uppercase tracking-widest text-sm">Right Guesses</span> 
                 <span className="text-green-600">{rightGuesses}</span>
               </p>
               <p className="flex justify-between pb-2">
-                <span className="text-neutral-500 uppercase tracking-widest text-sm">Accuracy</span> 
+                <span className="text-[#000522]/60 uppercase tracking-widest text-sm">Accuracy</span> 
                 <span>{Math.round((rightGuesses / 5) * 100)}%</span>
               </p>
             </div>
-            <div className="bg-[#f3f4f6] p-4 rounded-2xl mb-6 text-left">
-               <h3 className="font-bold text-sm mb-1 uppercase tracking-widest">Come back tomorrow!</h3>
-               <p className="text-xs text-[#000522]/60">New foods will be available at midnight.</p>
+            <div className={`p-4 rounded-2xl mb-6 text-left border ${
+              isLight ? 'bg-[#F2EBD1] border-[#254174]/30' : 'bg-[#000522]/30 border-[#254174]/30'
+            }`}>
+               <h3 className="font-bold text-sm mb-1 uppercase tracking-widest text-[#254174]">Come back tomorrow!</h3>
+               <p className={`text-xs ${isLight ? 'text-[#000522]/70' : 'text-[#000522]/60'}`}>
+                 New foods will be available at midnight.
+               </p>
             </div>
             <div className="flex gap-4">
-              <button onClick={() => { refreshUser(); navigate('/dashboard'); }} className="flex-1 py-4 bg-transparent border-2 border-[#254174] text-[#000522] font-bold tracking-widest uppercase hover:bg-[#254174]/5 transition-colors rounded-lg">
+              <button 
+                onClick={() => { refreshUser(); navigate('/dashboard'); }} 
+                className="flex-1 py-4 bg-[#254174] text-[#F2EBD1] font-bold tracking-widest uppercase hover:bg-[#000522] transition-colors rounded-xl shadow-md"
+              >
                 Dashboard
               </button>
             </div>

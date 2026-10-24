@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CardPack } from "./ui/card-pack";
 import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
+import { useTheme } from "../context/ThemeContext";
+import ThemeToggle from "./ui/ThemeToggle";
 
 const API_BASE = '/api/time-attack';
 const GAME_DURATION = 60; // 60 seconds blitz
@@ -18,6 +20,7 @@ const NOVA_LEVELS = [
 
 export default function TimeAttack() {
   const { token, refreshUser, user } = useContext(AuthContext);
+  const { isLight } = useTheme();
   const navigate = useNavigate();
 
   // Game lifecycle: 'ready' | 'playing' | 'finishing' | 'finished'
@@ -229,10 +232,16 @@ export default function TimeAttack() {
   const isWarning = timeLeft > 10 && timeLeft <= 20;
 
   return (
-    <div className="w-screen h-screen overflow-hidden fixed top-0 left-0 bg-[#000522] text-[#F2EBD1] flex flex-col perspective-[1200px]">
+    <div className={`w-screen h-screen overflow-hidden fixed top-0 left-0 flex flex-col perspective-[1200px] transition-colors duration-500 ${
+      isLight ? "bg-[#F2EBD1] text-[#000522]" : "bg-[#000522] text-[#F2EBD1]"
+    }`}>
       
       {/* Dynamic Background Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.4),transparent_70%)]" />
+      <div className={`absolute inset-0 transition-all duration-700 ${
+        isLight
+          ? "bg-[radial-gradient(circle_at_50%_30%,rgba(37,65,116,0.12),transparent_70%)]"
+          : "bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.4),transparent_70%)]"
+      }`} />
 
       {/* Top Bar HUD */}
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-50">
@@ -244,13 +253,17 @@ export default function TimeAttack() {
               if (gameState === 'playing' && !window.confirm("Abandon current Time Attack run?")) return;
               navigate('/dashboard');
             }} 
-            className="px-4 py-2 bg-transparent border border-[#254174] text-[#F2EBD1] text-xs font-bold uppercase tracking-widest hover:bg-[#254174] transition-colors rounded-lg"
+            className={`px-4 py-2 bg-transparent border text-xs font-bold uppercase tracking-widest transition-colors rounded-lg ${
+              isLight 
+                ? "border-[#254174] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1]" 
+                : "border-[#254174] text-[#F2EBD1] hover:bg-[#254174]"
+            }`}
           >
             ← Exit
           </button>
           <div className="hidden sm:flex items-center gap-2">
-            <span className="text-xl font-bold text-[#F2EBD1]">♣</span>
-            <span className="text-sm font-black uppercase tracking-widest text-[#F2EBD1]/80">Time Attack</span>
+            <span className={`text-xl font-bold ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>♣</span>
+            <span className={`text-sm font-black uppercase tracking-widest ${isLight ? "text-[#000522]/80" : "text-[#F2EBD1]/80"}`}>Time Attack</span>
           </div>
         </div>
 
@@ -262,7 +275,9 @@ export default function TimeAttack() {
                 ? 'bg-red-950/80 border-red-500 animate-pulse text-red-400' 
                 : isWarning 
                   ? 'bg-amber-950/80 border-amber-500 text-amber-300' 
-                  : 'bg-[#0B1B42]/90 border-[#254174] text-[#F2EBD1]'
+                  : isLight
+                    ? 'bg-[#E5DEC3] border-[#254174] text-[#000522]'
+                    : 'bg-[#0B1B42]/90 border-[#254174] text-[#F2EBD1]'
             }`}>
               <span className="text-xs uppercase tracking-widest font-black opacity-70">Blitz</span>
               <span className="font-mono text-2xl font-black tracking-wider">
@@ -270,7 +285,9 @@ export default function TimeAttack() {
               </span>
             </div>
             {/* Countdown Bar */}
-            <div className="w-36 h-1.5 bg-[#000522]/80 rounded-full mt-2 overflow-hidden border border-[#254174]/40">
+            <div className={`w-36 h-1.5 rounded-full mt-2 overflow-hidden border ${
+              isLight ? "bg-[#000522]/10 border-[#254174]/20" : "bg-[#000522]/80 border-[#254174]/40"
+            }`}>
               <motion.div 
                 className={`h-full ${isUrgent ? 'bg-red-500' : isWarning ? 'bg-amber-400' : 'bg-[#254174]'}`}
                 initial={{ width: "100%" }}
@@ -283,15 +300,20 @@ export default function TimeAttack() {
 
         {/* Right: Counter & User Score */}
         <div className="flex items-center gap-4 text-right">
+          <ThemeToggle />
           {gameState === 'playing' && (
-            <div className="px-4 py-1.5 bg-[#0B1B42]/80 border border-[#254174]/60 rounded-xl shadow-lg">
-              <span className="text-[10px] uppercase font-bold tracking-widest text-[#F2EBD1]/60 block">Cards Dealt</span>
-              <span className="text-xl font-black text-[#F2EBD1]">{cardsAnswered}</span>
+            <div className={`px-4 py-1.5 border rounded-xl shadow-lg ${
+              isLight ? "bg-[#E5DEC3] border-[#254174]/40" : "bg-[#0B1B42]/80 border-[#254174]/60"
+            }`}>
+              <span className={`text-[10px] uppercase font-bold tracking-widest block ${
+                isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+              }`}>Cards Dealt</span>
+              <span className={`text-xl font-black ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{cardsAnswered}</span>
             </div>
           )}
           <div>
-            <p className="m-0 text-[10px] uppercase tracking-widest text-[#F2EBD1]/60">Player</p>
-            <p className="m-0 text-sm font-black text-[#F2EBD1]">{user?.username || 'Chef'}</p>
+            <p className={`m-0 text-[10px] uppercase tracking-widest ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>Player</p>
+            <p className={`m-0 text-sm font-black ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{user?.username || 'Chef'}</p>
           </div>
         </div>
       </div>
@@ -330,7 +352,9 @@ export default function TimeAttack() {
               }
               onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
               exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
-              className="absolute z-20 bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-300"
+              className={`absolute z-20 rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex items-center justify-center pointer-events-auto cursor-pointer transition-opacity duration-300 ${
+                isLight ? "bg-[#0B1B42]" : "bg-[#F2EBD1]"
+              }`}
               style={{
                 width: isLandscape ? 480 : 340,
                 height: isLandscape ? 340 : 480,
@@ -370,7 +394,9 @@ export default function TimeAttack() {
               }
               onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
               exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
-              className="absolute z-20 w-[340px] h-[480px] bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-300"
+              className={`absolute z-20 w-[340px] h-[480px] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-300 ${
+                isLight ? "bg-[#0B1B42] text-[#F2EBD1]" : "bg-[#F2EBD1] text-[#000522]"
+              }`}
             >
               {enlargedCard === 'ingredients' && (
                 <button 
@@ -382,10 +408,14 @@ export default function TimeAttack() {
                 </button>
               )}
               <div className="w-full h-full p-6 flex flex-col cursor-auto">
-                <div className="flex items-center justify-between border-b-2 border-[#254174]/40 pb-3 mb-3 pr-8">
+                <div className={`flex items-center justify-between border-b-2 pb-3 mb-3 pr-8 ${
+                  isLight ? "border-[#254174]/60" : "border-[#254174]/40"
+                }`}>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-black text-[#254174]">♣</span>
-                    <strong className="text-[#000522] uppercase text-lg tracking-widest font-black">
+                    <span className={`text-sm font-black ${isLight ? "text-[#F2EBD1]" : "text-[#254174]"}`}>♣</span>
+                    <strong className={`uppercase text-lg tracking-widest font-black ${
+                      isLight ? "text-[#F2EBD1]" : "text-[#000522]"
+                    }`}>
                       Ingredients
                     </strong>
                   </div>
@@ -398,7 +428,9 @@ export default function TimeAttack() {
 
                 <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
                   {ingredientsList.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-48 text-center text-[#000522]/50">
+                    <div className={`flex flex-col items-center justify-center h-48 text-center ${
+                      isLight ? "text-[#F2EBD1]/50" : "text-[#000522]/50"
+                    }`}>
                       <span className="text-3xl mb-2">🌿</span>
                       <p className="font-bold text-xs uppercase tracking-widest">No Ingredients Listed</p>
                     </div>
@@ -407,12 +439,18 @@ export default function TimeAttack() {
                       {ingredientsList.map((item, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-2.5 p-2.5 rounded-xl bg-[#000522]/[0.04] border border-[#254174]/15 hover:bg-[#000522]/[0.08] transition-colors"
+                          className={`flex items-start gap-2.5 p-2.5 rounded-xl border transition-colors ${
+                            isLight
+                              ? "bg-[#000522]/40 border-[#254174]/40 hover:bg-[#000522]/60"
+                              : "bg-[#000522]/[0.04] border-[#254174]/15 hover:bg-[#000522]/[0.08]"
+                          }`}
                         >
                           <span className="shrink-0 flex items-center justify-center min-w-[26px] h-[22px] px-1.5 rounded-md bg-[#254174] text-[#F2EBD1] text-[11px] font-black tracking-tight shadow-sm mt-0.5">
                             {String(idx + 1).padStart(2, '0')}
                           </span>
-                          <span className="text-[15px] text-[#000522] font-semibold leading-snug break-words flex-1">
+                          <span className={`text-[15px] font-semibold leading-snug break-words flex-1 ${
+                            isLight ? "text-[#F2EBD1]" : "text-[#000522]"
+                          }`}>
                             {item}
                           </span>
                         </li>
@@ -427,10 +465,14 @@ export default function TimeAttack() {
 
         {/* Current Food Information (Floating Text) */}
         <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-300 pointer-events-none ${gameState !== 'playing' ? 'opacity-0' : 'opacity-100'}`}>
-          <h1 className="text-5xl font-bold mb-2 drop-shadow-md text-[#F2EBD1] leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
+          <h1 className={`text-5xl font-bold mb-2 drop-shadow-md leading-tight ${
+            isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+          }`} style={{ fontFamily: '"Playfair Display", serif' }}>
             {currentFood?.name || "..."}
           </h1>
-          <p className="text-[#000522]/60 font-bold text-lg uppercase tracking-widest mt-2">{currentFood?.brand}</p>
+          <p className={`font-bold text-lg uppercase tracking-widest mt-2 ${
+            isLight ? "text-[#000522]/70" : "text-[#F2EBD1]/70"
+          }`}>{currentFood?.brand}</p>
         </div>
 
         {/* Score Popup Animation */}
@@ -514,21 +556,33 @@ export default function TimeAttack() {
 
       {/* Pre-Game Intro Modal */}
       {gameState === 'ready' && (
-        <div className="absolute inset-0 z-[100] bg-[#000522]/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            className="bg-[#0B1B42] text-[#F2EBD1] p-10 rounded-[2.5rem] max-w-lg w-full text-center shadow-[0_0_80px_rgba(37,65,116,0.5)] border-4 border-[#254174]"
+            className={`p-10 rounded-[2.5rem] max-w-lg w-full text-center shadow-2xl border-4 transition-colors ${
+              isLight
+                ? "bg-[#E5DEC3] text-[#000522] border-[#254174]/50 shadow-[0_0_60px_rgba(37,65,116,0.2)]"
+                : "bg-[#0B1B42] text-[#F2EBD1] border-[#254174] shadow-[0_0_80px_rgba(37,65,116,0.5)]"
+            }`}
           >
-            <div className="w-20 h-20 mx-auto rounded-full bg-[#254174]/30 border-2 border-[#254174] flex items-center justify-center text-4xl mb-6 shadow-inner text-[#F2EBD1]">
+            <div className={`w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center text-4xl mb-6 shadow-inner ${
+              isLight
+                ? "bg-[#254174]/15 border-[#254174] text-[#000522]"
+                : "bg-[#254174]/30 border-[#254174] text-[#F2EBD1]"
+            }`}>
               ♣
             </div>
             
-            <h2 className="text-4xl sm:text-5xl font-black mb-3 text-[#F2EBD1] tracking-wide" style={{ fontFamily: '"Playfair Display", serif' }}>
+            <h2 className={`text-4xl sm:text-5xl font-black mb-3 tracking-wide ${
+              isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+            }`} style={{ fontFamily: '"Playfair Display", serif' }}>
               Time Attack
             </h2>
-            <p className="text-[#F2EBD1]/70 font-semibold text-sm leading-relaxed mb-8 max-w-md mx-auto">
-              You have <strong className="text-amber-300">60 seconds</strong> on the clock. Rapidly classify each food into its NOVA Tier before the buzzer sounds. Speed and accuracy earn high-tier score multipliers!
+            <p className={`font-semibold text-sm leading-relaxed mb-8 max-w-md mx-auto ${
+              isLight ? "text-[#000522]/80" : "text-[#F2EBD1]/70"
+            }`}>
+              You have <strong className={isLight ? "text-amber-700" : "text-amber-300"}>60 seconds</strong> on the clock. Rapidly classify each food into its NOVA Tier before the buzzer sounds. Speed and accuracy earn high-tier score multipliers!
             </p>
 
             {error && (
@@ -541,13 +595,21 @@ export default function TimeAttack() {
               <button 
                 onClick={startSession} 
                 disabled={submitting}
-                className="flex-1 py-4 bg-[#F2EBD1] text-[#000522] font-black text-sm tracking-[0.2em] uppercase hover:bg-white hover:scale-105 transition-all rounded-xl shadow-xl disabled:opacity-50"
+                className={`flex-1 py-4 font-black text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all rounded-xl shadow-xl disabled:opacity-50 ${
+                  isLight
+                    ? "bg-[#254174] text-[#F2EBD1] hover:bg-[#0B1B42]"
+                    : "bg-[#F2EBD1] text-[#000522] hover:bg-white"
+                }`}
               >
                 {submitting ? 'Dealing...' : 'Begin Blitz (60s)'}
               </button>
               <button 
                 onClick={() => navigate('/dashboard')} 
-                className="py-4 px-6 bg-transparent border-2 border-[#254174] text-[#F2EBD1] font-bold text-xs tracking-widest uppercase hover:bg-[#254174]/30 transition-colors rounded-xl"
+                className={`py-4 px-6 bg-transparent border-2 font-bold text-xs tracking-widest uppercase transition-colors rounded-xl ${
+                  isLight
+                    ? "border-[#254174] text-[#000522] hover:bg-[#254174]/15"
+                    : "border-[#254174] text-[#F2EBD1] hover:bg-[#254174]/30"
+                }`}
               >
                 Dashboard
               </button>
@@ -558,50 +620,92 @@ export default function TimeAttack() {
 
       {/* Finishing Spinner */}
       {gameState === 'finishing' && (
-        <div className="absolute inset-0 z-[100] bg-[#000522]/80 backdrop-blur-md flex flex-col items-center justify-center text-center">
+        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-md flex flex-col items-center justify-center text-center">
           <motion.div 
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            className="w-16 h-16 border-4 border-[#254174] border-t-[#F2EBD1] rounded-full mb-6"
+            className={`w-16 h-16 border-4 rounded-full mb-6 ${
+              isLight ? "border-[#254174]/30 border-t-[#254174]" : "border-[#254174] border-t-[#F2EBD1]"
+            }`}
           />
-          <h2 className="text-3xl font-black tracking-widest text-[#F2EBD1] uppercase">Time's Up!</h2>
-          <p className="text-[#F2EBD1]/60 text-sm font-bold uppercase tracking-widest mt-2">Tallying your cards & bonuses...</p>
+          <h2 className={`text-3xl font-black tracking-widest uppercase ${
+            isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+          }`}>Time's Up!</h2>
+          <p className={`text-sm font-bold uppercase tracking-widest mt-2 ${
+            isLight ? "text-[#000522]/70" : "text-[#F2EBD1]/60"
+          }`}>Tallying your cards & bonuses...</p>
         </div>
       )}
 
       {/* Endgame Recap Modal */}
       {gameState === 'finished' && finalResults && (
-        <div className="absolute inset-0 z-[100] bg-[#000522]/85 backdrop-blur-lg flex items-center justify-center p-4">
+        <div className="absolute inset-0 z-[100] bg-black/60 backdrop-blur-lg flex items-center justify-center p-4">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            className="bg-[#0B1B42] text-[#F2EBD1] p-8 sm:p-10 rounded-[2.5rem] max-w-2xl w-full shadow-[0_0_90px_rgba(37,65,116,0.6)] border-4 border-[#254174] flex flex-col max-h-[90vh]"
+            className={`p-8 sm:p-10 rounded-[2.5rem] max-w-2xl w-full border-4 flex flex-col max-h-[90vh] transition-colors ${
+              isLight
+                ? "bg-[#E5DEC3] text-[#000522] border-[#254174]/60 shadow-[0_0_80px_rgba(37,65,116,0.3)]"
+                : "bg-[#0B1B42] text-[#F2EBD1] border-[#254174] shadow-[0_0_90px_rgba(37,65,116,0.6)]"
+            }`}
           >
             <div className="text-center mb-6 shrink-0">
-              <span className="text-4xl text-[#F2EBD1]">♣</span>
-              <h2 className="text-4xl font-black text-[#F2EBD1] mt-2 tracking-wide" style={{ fontFamily: '"Playfair Display", serif' }}>
+              <span className={`text-4xl ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>♣</span>
+              <h2 className={`text-4xl font-black mt-2 tracking-wide ${
+                isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+              }`} style={{ fontFamily: '"Playfair Display", serif' }}>
                 Blitz Complete!
               </h2>
-              <p className="text-xs uppercase tracking-widest text-[#F2EBD1]/60 font-bold mt-1">60-Second Time Attack Results</p>
+              <p className={`text-xs uppercase tracking-widest font-bold mt-1 ${
+                isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+              }`}>60-Second Time Attack Results</p>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 shrink-0">
-              <div className="bg-[#000522]/50 border border-[#254174]/60 p-4 rounded-2xl text-center">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F2EBD1]/60 block mb-1">Answered</span>
-                <span className="text-2xl font-black text-[#F2EBD1]">{finalResults.totalCards}</span>
+              <div className={`p-4 rounded-2xl text-center border ${
+                isLight 
+                  ? "bg-[#000522]/[0.06] border-[#254174]/30" 
+                  : "bg-[#000522]/50 border-[#254174]/60"
+              }`}>
+                <span className={`text-[10px] uppercase font-bold tracking-widest block mb-1 ${
+                  isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+                }`}>Answered</span>
+                <span className={`text-2xl font-black ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{finalResults.totalCards}</span>
               </div>
-              <div className="bg-[#000522]/50 border border-[#254174]/60 p-4 rounded-2xl text-center">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F2EBD1]/60 block mb-1">Correct</span>
-                <span className="text-2xl font-black text-emerald-400">{finalResults.correctCount}</span>
+              <div className={`p-4 rounded-2xl text-center border ${
+                isLight 
+                  ? "bg-[#000522]/[0.06] border-[#254174]/30" 
+                  : "bg-[#000522]/50 border-[#254174]/60"
+              }`}>
+                <span className={`text-[10px] uppercase font-bold tracking-widest block mb-1 ${
+                  isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+                }`}>Correct</span>
+                <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{finalResults.correctCount}</span>
               </div>
-              <div className="bg-[#000522]/50 border border-[#254174]/60 p-4 rounded-2xl text-center">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F2EBD1]/60 block mb-1">Accuracy</span>
-                <span className="text-2xl font-black text-amber-300">{finalResults.accuracy}%</span>
+              <div className={`p-4 rounded-2xl text-center border ${
+                isLight 
+                  ? "bg-[#000522]/[0.06] border-[#254174]/30" 
+                  : "bg-[#000522]/50 border-[#254174]/60"
+              }`}>
+                <span className={`text-[10px] uppercase font-bold tracking-widest block mb-1 ${
+                  isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+                }`}>Accuracy</span>
+                <span className={`text-2xl font-black ${isLight ? "text-amber-700" : "text-amber-300"}`}>{finalResults.accuracy}%</span>
               </div>
-              <div className="bg-[#000522]/50 border border-[#254174]/60 p-4 rounded-2xl text-center">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F2EBD1]/60 block mb-1">Score</span>
-                <span className={`text-2xl font-black ${finalResults.pointsEarned >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+              <div className={`p-4 rounded-2xl text-center border ${
+                isLight 
+                  ? "bg-[#000522]/[0.06] border-[#254174]/30" 
+                  : "bg-[#000522]/50 border-[#254174]/60"
+              }`}>
+                <span className={`text-[10px] uppercase font-bold tracking-widest block mb-1 ${
+                  isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+                }`}>Score</span>
+                <span className={`text-2xl font-black ${
+                  finalResults.pointsEarned >= 0 
+                    ? (isLight ? 'text-emerald-700' : 'text-emerald-400') 
+                    : 'text-red-500'
+                }`}>
                   {finalResults.pointsEarned >= 0 ? `+${finalResults.pointsEarned}` : finalResults.pointsEarned}
                 </span>
               </div>
@@ -609,7 +713,11 @@ export default function TimeAttack() {
 
             {/* Scrollable Cards Breakdown */}
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 mb-6 space-y-3 min-h-[160px]">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#F2EBD1]/50 sticky top-0 bg-[#0B1B42] py-1 z-10 border-b border-[#254174]/40">
+              <p className={`text-xs font-bold uppercase tracking-widest sticky top-0 py-1 z-10 border-b ${
+                isLight 
+                  ? "bg-[#E5DEC3] text-[#000522]/60 border-[#254174]/30" 
+                  : "bg-[#0B1B42] text-[#F2EBD1]/50 border-[#254174]/40"
+              }`}>
                 Card Breakdown ({finalResults.cardsPlayed?.length || 0})
               </p>
               {finalResults.cardsPlayed?.map((c, idx) => (
@@ -617,11 +725,13 @@ export default function TimeAttack() {
                   key={idx}
                   className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3.5 ${
                     c.isCorrect 
-                      ? 'bg-emerald-950/20 border-emerald-500/30' 
-                      : 'bg-red-950/20 border-red-500/30'
+                      ? (isLight ? 'bg-emerald-100/70 border-emerald-500/40' : 'bg-emerald-950/20 border-emerald-500/30') 
+                      : (isLight ? 'bg-red-100/70 border-red-500/40' : 'bg-red-950/20 border-red-500/30')
                   }`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#000522] border border-[#254174]/40 flex items-center justify-center shrink-0 overflow-hidden">
+                  <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 overflow-hidden ${
+                    isLight ? "bg-[#254174]/15 border-[#254174]/30 text-[#000522]" : "bg-[#000522] border-[#254174]/40 text-[#F2EBD1]"
+                  }`}>
                     {c.imageUrl ? (
                       <img src={c.imageUrl} alt={c.name} className="w-full h-full object-cover" />
                     ) : (
@@ -630,18 +740,22 @@ export default function TimeAttack() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="font-bold text-sm text-[#F2EBD1] truncate">{c.name}</p>
+                      <p className={`font-bold text-sm truncate ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{c.name}</p>
                       <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md shrink-0 ${
-                        c.isCorrect ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'
+                        c.isCorrect 
+                          ? (isLight ? 'bg-emerald-200 text-emerald-800' : 'bg-emerald-500/20 text-emerald-300')
+                          : (isLight ? 'bg-red-200 text-red-800' : 'bg-red-500/20 text-red-300')
                       }`}>
                         {c.isCorrect ? 'Correct' : `Guessed T${c.guessedLevel}`}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#F2EBD1]/60 font-semibold mt-0.5">
-                      Actual: <strong className="text-[#F2EBD1]">Tier {c.actualLevel}</strong> • Speed: {(c.responseTimeMs / 1000).toFixed(1)}s
+                    <p className={`text-[11px] font-semibold mt-0.5 ${isLight ? "text-[#000522]/70" : "text-[#F2EBD1]/60"}`}>
+                      Actual: <strong className={isLight ? "text-[#000522]" : "text-[#F2EBD1]"}>Tier {c.actualLevel}</strong> • Speed: {(c.responseTimeMs / 1000).toFixed(1)}s
                     </p>
                     {c.explanationText && (
-                      <p className="text-xs text-[#F2EBD1]/80 mt-1.5 leading-relaxed bg-[#000522]/30 p-2 rounded-lg">
+                      <p className={`text-xs mt-1.5 leading-relaxed p-2 rounded-lg ${
+                        isLight ? "text-[#000522]/90 bg-[#000522]/[0.05]" : "text-[#F2EBD1]/80 bg-[#000522]/30"
+                      }`}>
                         {c.explanationText}
                       </p>
                     )}
@@ -654,13 +768,21 @@ export default function TimeAttack() {
             <div className="flex gap-4 shrink-0">
               <button 
                 onClick={startSession} 
-                className="flex-1 py-4 bg-[#F2EBD1] text-[#000522] font-black text-xs sm:text-sm tracking-[0.2em] uppercase hover:bg-white transition-all rounded-xl shadow-lg"
+                className={`flex-1 py-4 font-black text-xs sm:text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all rounded-xl shadow-lg ${
+                  isLight
+                    ? "bg-[#254174] text-[#F2EBD1] hover:bg-[#0B1B42]"
+                    : "bg-[#F2EBD1] text-[#000522] hover:bg-white"
+                }`}
               >
                 Play Again
               </button>
               <button 
                 onClick={() => navigate('/dashboard')} 
-                className="flex-1 py-4 bg-transparent border-2 border-[#254174] text-[#F2EBD1] font-bold text-xs sm:text-sm tracking-widest uppercase hover:bg-[#254174]/30 transition-colors rounded-xl"
+                className={`flex-1 py-4 bg-transparent border-2 font-bold text-xs sm:text-sm tracking-widest uppercase transition-colors rounded-xl ${
+                  isLight
+                    ? "border-[#254174] text-[#000522] hover:bg-[#254174]/15"
+                    : "border-[#254174] text-[#F2EBD1] hover:bg-[#254174]/30"
+                }`}
               >
                 Dashboard
               </button>
