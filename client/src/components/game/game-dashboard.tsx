@@ -126,7 +126,7 @@ export default function GameDashboard() {
 
       {/* Bottom Hint */}
       <motion.div 
-        className={`absolute bottom-10 left-1/2 -translate-x-1/2 text-sm tracking-widest uppercase ${
+        className={`absolute bottom-12 left-1/2 -translate-x-1/2 text-sm tracking-widest uppercase ${
           isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
         }`}
       >

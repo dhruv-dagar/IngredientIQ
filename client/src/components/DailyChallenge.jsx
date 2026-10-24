@@ -551,7 +551,7 @@ export default function DailyChallenge() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-6 z-40"
+              className="absolute bottom-8 sm:bottom-10 z-40"
             >
               <button 
                 onClick={handleNext} 

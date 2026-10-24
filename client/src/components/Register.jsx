@@ -34,9 +34,6 @@ function Register() {
     <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-500 relative ${
       isLight ? "bg-[#F2EBD1]" : "bg-[#000522]"
     }`}>
-      {/* Top Right Theme Toggle */}
-      <ThemeToggle fixed />
-
       <div className={`w-full max-w-md rounded-3xl border p-10 flex flex-col items-center relative overflow-hidden transition-all duration-500 ${
         isLight
           ? "bg-[#E5DEC3] border-2 border-[#254174]/40 shadow-[0_0_80px_rgba(37,65,116,0.25)]"
@@ -51,6 +48,11 @@ function Register() {
         >
           ← Back
         </Link>
+        
+        {/* Theme Toggle inside the card at top right */}
+        <div className="absolute top-5 right-5 z-20">
+          <ThemeToggle />
+        </div>
         
         <span className={`text-5xl mb-4 ${
           isLight ? "text-[#254174]" : "text-[#F2EBD1] drop-shadow-[0_0_15px_rgba(242,235,209,0.8)]"
