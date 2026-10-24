@@ -506,16 +506,31 @@ export default function Game() {
                   onClick={() => handleCardClick(nova.level)}
                   style={{ transformStyle: "preserve-3d" }}
                 >
-                  {/* BACK OF CARD (Red Side - Visible before guessing) */}
-                  <div className="absolute inset-0 bg-[#254174] rounded-3xl shadow-2xl border-[6px] border-[#254174]/50 p-2 flex items-center justify-center backface-hidden" style={{ transform: "rotateY(180deg)" }}>
-                     <div className="w-full h-full border border-[#254174]/50/50 rounded-sm flex flex-col items-center justify-center text-center p-2">
+                  {/* BACK OF CARD (Visible before guessing) */}
+                  <div 
+                    className={`absolute inset-0 rounded-3xl shadow-2xl border-[6px] p-2 flex items-center justify-center backface-hidden transition-colors duration-300 ${
+                      isLight 
+                        ? "bg-[#FAF6EA] border-[#254174] shadow-[0_15px_35px_rgba(37,65,116,0.18)]" 
+                        : "bg-[#254174] border-[#254174]/50"
+                    }`} 
+                    style={{ transform: "rotateY(180deg)" }}
+                  >
+                     <div className={`w-full h-full border rounded-sm flex flex-col items-center justify-center text-center p-2 transition-colors ${
+                       isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#254174]/40"
+                     }`}>
                        {loading ? (
-                         <h2 className="text-[#F2EBD1] font-black text-7xl tracking-widest">{textContent}</h2>
+                         <h2 className={`font-black text-7xl tracking-widest ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{textContent}</h2>
                        ) : (
                          <>
-                           <span className="text-[#F2EBD1] text-5xl mb-4 drop-shadow-[0_0_10px_rgba(242,235,209,0.5)]">♠</span>
-                           <h2 className="text-[#F2EBD1] font-bold text-2xl mb-1">{textContent}</h2>
-                           <p className="text-[#F2EBD1]/90 text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight">{descContent}</p>
+                           <span className={`text-5xl mb-4 transition-all duration-300 ${
+                             isLight 
+                               ? "text-[#000522] drop-shadow-[0_2px_8px_rgba(0,5,34,0.15)]" 
+                               : "text-[#F2EBD1] drop-shadow-[0_0_10px_rgba(242,235,209,0.5)]"
+                           }`}>♠</span>
+                           <h2 className={`font-bold text-2xl mb-1 ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{textContent}</h2>
+                           <p className={`text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight ${
+                             isLight ? "text-[#000522]/80" : "text-[#F2EBD1]/90"
+                           }`}>{descContent}</p>
                          </>
                        )}
                      </div>

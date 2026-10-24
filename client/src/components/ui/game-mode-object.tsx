@@ -3,6 +3,7 @@ import { motion, useSpring } from "framer-motion";
 import { CardPack } from "./card-pack";
 import { GameModeConfig } from "@/lib/game-modes";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
 
 interface GameModeObjectProps {
   mode: GameModeConfig;
@@ -16,6 +17,7 @@ interface GameModeObjectProps {
 export function GameModeObject({ mode, relativeIndex, isActive, onClick, isDragging, isOpen }: GameModeObjectProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const { isLight } = useTheme();
 
   // Springs for smooth cursor tracking
   const rotateX = useSpring(0, { stiffness: 150, damping: 20 });
@@ -121,7 +123,11 @@ export function GameModeObject({ mode, relativeIndex, isActive, onClick, isDragg
       >
         <CardPack mode={mode} isOpen={isOpen && isActive} className={cn(
           "transition-shadow duration-500",
-          isActive && isHovered && !isOpen && "shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+          isActive && isHovered && !isOpen && (
+            isLight
+              ? "shadow-[0_25px_60px_rgba(37,65,116,0.25),0_10px_20px_rgba(0,5,34,0.12)]"
+              : "shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+          )
         )} />
       </motion.div>
     </motion.div>

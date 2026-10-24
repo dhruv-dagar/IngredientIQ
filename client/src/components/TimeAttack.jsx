@@ -530,17 +530,27 @@ export default function TimeAttack() {
                     onClick={() => handleCardClick(nova.level)}
                     style={{ transformStyle: "preserve-3d" }}
                   >
-                    {/* BACK OF CARD (Navy Blue Card Back with ♣ Club) */}
+                    {/* BACK OF CARD (Visible interactive card) */}
                     <div 
-                      className={`absolute inset-0 bg-[#254174] rounded-3xl shadow-2xl border-[6px] p-2 flex items-center justify-center transition-colors duration-200 ${
-                        isSelected ? 'border-amber-400 bg-[#0B1B42]' : 'border-[#254174]/60'
+                      className={`absolute inset-0 rounded-3xl shadow-2xl border-[6px] p-2 flex items-center justify-center transition-colors duration-200 ${
+                        isSelected 
+                          ? (isLight ? 'border-amber-500 bg-[#E5DEC3]' : 'border-amber-400 bg-[#0B1B42]')
+                          : (isLight ? 'border-[#254174] bg-[#FAF6EA] shadow-[0_15px_35px_rgba(37,65,116,0.18)]' : 'border-[#254174]/60 bg-[#254174]')
                       }`} 
                       style={{ transform: "rotateY(180deg)" }}
                     >
-                      <div className="w-full h-full border border-[#254174]/40 rounded-sm flex flex-col items-center justify-center text-center p-2">
-                        <span className="text-[#F2EBD1] text-5xl mb-4 drop-shadow-[0_0_10px_rgba(242,235,209,0.5)]">♣</span>
-                        <h2 className="text-[#F2EBD1] font-bold text-2xl mb-1">{nova.title}</h2>
-                        <p className="text-[#F2EBD1]/90 text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight">
+                      <div className={`w-full h-full border rounded-sm flex flex-col items-center justify-center text-center p-2 transition-colors ${
+                        isLight ? "border-[#254174]/40 bg-[#FAF6EA]" : "border-[#254174]/40"
+                      }`}>
+                        <span className={`text-5xl mb-4 transition-all duration-300 ${
+                          isLight 
+                            ? "text-[#000522] drop-shadow-[0_2px_8px_rgba(0,5,34,0.15)]" 
+                            : "text-[#F2EBD1] drop-shadow-[0_0_10px_rgba(242,235,209,0.5)]"
+                        }`}>♣</span>
+                        <h2 className={`font-bold text-2xl mb-1 ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>{nova.title}</h2>
+                        <p className={`text-[10px] font-bold uppercase tracking-[0.2em] px-2 leading-tight ${
+                          isLight ? "text-[#000522]/80" : "text-[#F2EBD1]/90"
+                        }`}>
                           {nova.desc}
                         </p>
                       </div>

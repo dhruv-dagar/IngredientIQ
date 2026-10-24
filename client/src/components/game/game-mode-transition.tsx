@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { GameModeConfig } from "@/lib/game-modes";
+import { useTheme } from "@/context/ThemeContext";
 
 interface GameModeTransitionProps {
   mode: GameModeConfig;
@@ -11,6 +12,7 @@ const LOADING_TEXT = ["LO", "AD", "IN", "G"];
 
 export function GameModeTransition({ mode, onComplete }: GameModeTransitionProps) {
   const [phase, setPhase] = useState(0);
+  const { isLight } = useTheme();
 
   useEffect(() => {
     // Phase 1: Deal the cards
@@ -59,10 +61,20 @@ export function GameModeTransition({ mode, onComplete }: GameModeTransitionProps
             }}
             style={{ transformStyle: "preserve-3d" }}
           >
-            {/* The Red Card matching Game.jsx */}
-            <div className="absolute inset-0 bg-[#b91c1c] rounded-2xl shadow-2xl border-4 border-slate-100/90 p-2 flex items-center justify-center">
-               <div className="w-full h-full border-2 border-slate-100/40 flex flex-col items-center justify-center text-center bg-[#a01313]">
-                 <h2 className="text-white font-black text-6xl tracking-widest">{text}</h2>
+            {/* The Dealing Card matching Game.jsx */}
+            <div className={`absolute inset-0 rounded-2xl shadow-2xl border-4 p-2 flex items-center justify-center transition-colors ${
+              isLight 
+                ? "bg-[#FAF6EA] border-[#254174]" 
+                : "bg-[#254174] border-[#254174]/60"
+            }`}>
+               <div className={`w-full h-full border-2 flex flex-col items-center justify-center text-center ${
+                 isLight 
+                   ? "border-[#254174]/40 bg-[#EDE4C8]" 
+                   : "border-[#254174]/40 bg-[#0B1B42]"
+               }`}>
+                 <h2 className={`font-black text-6xl tracking-widest ${
+                   isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+                 }`}>{text}</h2>
                </div>
             </div>
           </motion.div>
