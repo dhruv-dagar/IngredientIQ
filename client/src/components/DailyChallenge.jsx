@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { CardPack } from "./ui/card-pack";
 import { GAME_MODES } from "@/lib/game-modes";
+import { parseIngredients } from "@/lib/utils";
 
 const API_BASE = '/api/daily';
 
@@ -179,6 +180,7 @@ export default function DailyChallenge() {
   const currentQuestion = currentFoodIndex !== -1 ? foods[currentFoodIndex] : null;
   const food = currentQuestion;
   const endlessModeConfig = GAME_MODES.find(m => m.id === 'daily');
+  const ingredientsList = food ? parseIngredients(food.ingredientsText) : [];
 
   const dealKey = showLoadingCards ? `loading-${Date.now()}` : `question-${currentFoodIndex}`;
 
@@ -231,6 +233,19 @@ export default function DailyChallenge() {
            <CardPack mode={endlessModeConfig} isOpen={true} />
         </div>
 
+        {/* Backdrop overlay when card is enlarged */}
+        <AnimatePresence>
+          {enlargedCard && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setEnlargedCard(null)}
+              className="fixed inset-0 bg-[#000522]/75 backdrop-blur-sm z-30 cursor-pointer"
+            />
+          )}
+        </AnimatePresence>
+
         {/* Photo Card (Left) */}
         <AnimatePresence mode="wait">
           {!showLoadingCards && food && (
@@ -251,14 +266,15 @@ export default function DailyChallenge() {
                 transformOrigin: "center center"
               }}
             >
-                              {enlargedCard === 'photo' && (
-                 <button 
-                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
-                   className="absolute top-2 right-2 bg-[#254174] text-[#000522] rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-[#254174] font-black shadow-lg text-lg border-2 border-[#254174]/50"
-                 >
-                   ✕
-                 </button>
-               )}
+              {enlargedCard === 'photo' && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                  className="absolute top-3 right-3 bg-[#254174] text-[#F2EBD1] rounded-full w-9 h-9 flex items-center justify-center z-50 hover:bg-[#000522] font-black shadow-lg text-sm border-2 border-[#254174]/50 transition-colors"
+                  title="Close"
+                >
+                  ✕
+                </button>
+              )}
                <div className="w-full h-full bg-[#000522] flex items-center justify-center relative">
                  {food.imageUrl ? (
                    <img src={food.imageUrl} alt="Food" onLoad={handleImageLoad} className="w-full h-full object-contain rounded-md" />
@@ -285,22 +301,55 @@ export default function DailyChallenge() {
               exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
               className="absolute z-20 w-[340px] h-[480px] bg-[#F2EBD1] rounded-[2rem] shadow-2xl overflow-hidden border-4 border-[#254174]/50 flex flex-col pointer-events-auto cursor-pointer transition-opacity duration-500"
             >
-                              {enlargedCard === 'ingredients' && (
-                 <button 
-                   onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
-                   className="absolute top-2 right-2 bg-[#254174] text-[#000522] rounded-full w-10 h-10 flex items-center justify-center z-50 hover:bg-[#254174] font-black shadow-lg text-lg border-2 border-[#254174]/50"
-                 >
-                   ✕
-                 </button>
-               )}
-               <div className="w-full h-full p-8 flex flex-col cursor-auto">
-                  <strong className="text-[#000522] uppercase text-xl mb-4 tracking-widest text-center border-b-2 border-[#254174]/50 pb-4">Ingredients</strong>
-                  <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-2">
-                    <p className="text-[18px] text-[#000522]/80 leading-relaxed font-semibold">
-                      {food.ingredientsText || 'Not listed.'}
-                    </p>
+              {enlargedCard === 'ingredients' && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setEnlargedCard(null); }}
+                  className="absolute top-3 right-3 bg-[#254174] text-[#F2EBD1] rounded-full w-9 h-9 flex items-center justify-center z-50 hover:bg-[#000522] font-black shadow-lg text-sm border-2 border-[#254174]/50 transition-colors"
+                  title="Close"
+                >
+                  ✕
+                </button>
+              )}
+              <div className="w-full h-full p-6 flex flex-col cursor-auto">
+                <div className="flex items-center justify-between border-b-2 border-[#254174]/40 pb-3 mb-3 pr-8">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-[#254174]">♠</span>
+                    <strong className="text-[#000522] uppercase text-lg tracking-widest font-black">
+                      Ingredients
+                    </strong>
                   </div>
-               </div>
+                  {ingredientsList.length > 0 && (
+                    <span className="text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#254174] text-[#F2EBD1] shadow-sm">
+                      {ingredientsList.length} {ingredientsList.length === 1 ? 'item' : 'items'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex-1 w-full overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
+                  {ingredientsList.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-48 text-center text-[#000522]/50">
+                      <span className="text-3xl mb-2">🌿</span>
+                      <p className="font-bold text-xs uppercase tracking-widest">No Ingredients Listed</p>
+                    </div>
+                  ) : (
+                    <ol className="flex flex-col gap-2 pb-2">
+                      {ingredientsList.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2.5 p-2.5 rounded-xl bg-[#000522]/[0.04] border border-[#254174]/15 hover:bg-[#000522]/[0.08] transition-colors"
+                        >
+                          <span className="shrink-0 flex items-center justify-center min-w-[26px] h-[22px] px-1.5 rounded-md bg-[#254174] text-[#F2EBD1] text-[11px] font-black tracking-tight shadow-sm mt-0.5">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <span className="text-[15px] text-[#000522] font-semibold leading-snug break-words flex-1">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

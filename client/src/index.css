@@ -645,14 +645,18 @@ button:active {
   transform: scale(1.05);
 }
 
-/* Custom scrollbar for Explanation Text on cards */
+/* Custom scrollbar for Explanation Text and Ingredients on cards */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 5, 34, 0.04);
+  border-radius: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(37, 65, 116, 0.45);
   border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 65, 116, 0.75);
 }

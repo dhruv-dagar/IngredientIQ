@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IngredientIQ
 
 IngredientIQ is a web-based game where players identify the NOVA processing level of food products.
@@ -14,3 +15,7 @@ IngredientIQ is a web-based game where players identify the NOVA processing leve
 - `client/` - React frontend
 - `server/` - Node.js + Express backend
 - `data/` - Food data and approved game cards
+=======
+# Ingredient-iq-
+Project done by Shaffil Saini, Dhruv Dagar and Dhruv Tanwar
+>>>>>>> deployment/main
