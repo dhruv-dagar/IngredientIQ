@@ -10,6 +10,7 @@ const {
     calculateLevel,
     MIN_TOTAL_POINTS
 } = require("../services/scoringService");
+const { recordDailyActivity } = require("../services/streakService");
 
 const timeAttackRouter = Router();
 
@@ -240,6 +241,12 @@ timeAttackRouter.post("/finish", async (request, response, next) => {
 
             user.totalPoints = newTotalPoints;
             user.level = calculateLevel(newTotalPoints);
+
+            // Record daily active play streak if any cards were answered
+            if (session.cardsPlayed.length > 0) {
+                recordDailyActivity(user);
+            }
+
             await user.save();
 
             session.pointsEarned = totalPointsChange;
@@ -273,7 +280,9 @@ timeAttackRouter.post("/finish", async (request, response, next) => {
             pointsEarned: session.pointsEarned,
             user: {
                 totalPoints: user.totalPoints,
-                level: user.level
+                level: user.level,
+                dailyStreak: user.dailyStreak || 0,
+                maxDailyStreak: user.maxDailyStreak || 0
             },
             startedAt: session.startedAt,
             completedAt: session.completedAt,

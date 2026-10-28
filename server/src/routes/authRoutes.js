@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 const authMiddleware = require("../middleware/authMiddleware");
+const { calculateActiveStreak } = require("../services/streakService");
 
 const authRouter = Router();
 
@@ -49,7 +50,10 @@ authRouter.post("/register", async (request, response, next) => {
             username,
             passwordHash,
             totalPoints: 0,
-            level: 1
+            level: 1,
+            dailyStreak: 0,
+            maxDailyStreak: 0,
+            lastActiveDate: null
         });
 
         return response.status(201).json({
@@ -59,7 +63,10 @@ authRouter.post("/register", async (request, response, next) => {
                 id: user._id,
                 username: user.username,
                 totalPoints: user.totalPoints,
-                level: user.level
+                level: user.level,
+                dailyStreak: 0,
+                maxDailyStreak: 0,
+                lastActiveDate: null
             }
         });
     } catch (error) {
@@ -89,12 +96,9 @@ authRouter.post("/login", async (request, response, next) => {
             });
         }
 
-        const passwordMatches = await bcrypt.compare(
-            password,
-            user.passwordHash
-        );
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
 
-        if (!passwordMatches) {
+        if (!isMatch) {
             return response.status(401).json({
                 message: "Invalid username or password."
             });
@@ -111,6 +115,8 @@ authRouter.post("/login", async (request, response, next) => {
             }
         );
 
+        const activeStreak = calculateActiveStreak(user);
+
         return response.json({
             success: true,
             message: "Login successful.",
@@ -119,7 +125,10 @@ authRouter.post("/login", async (request, response, next) => {
                 id: user._id,
                 username: user.username,
                 totalPoints: user.totalPoints,
-                level: user.level
+                level: user.level,
+                dailyStreak: activeStreak,
+                maxDailyStreak: user.maxDailyStreak || 0,
+                lastActiveDate: user.lastActiveDate || null
             }
         });
     } catch (error) {
@@ -134,7 +143,7 @@ authRouter.post("/login", async (request, response, next) => {
 authRouter.get("/me", authMiddleware, async (request, response, next) => {
     try {
         const user = await User.findById(request.user.userId)
-            .select("username totalPoints level")
+            .select("username totalPoints level dailyStreak maxDailyStreak lastActiveDate")
             .lean();
 
         if (!user) {
@@ -143,13 +152,18 @@ authRouter.get("/me", authMiddleware, async (request, response, next) => {
             });
         }
 
+        const activeStreak = calculateActiveStreak(user);
+
         return response.json({
             success: true,
             user: {
                 id: user._id,
                 username: user.username,
                 totalPoints: user.totalPoints,
-                level: user.level
+                level: user.level,
+                dailyStreak: activeStreak,
+                maxDailyStreak: user.maxDailyStreak || 0,
+                lastActiveDate: user.lastActiveDate || null
             }
         });
     } catch (error) {
@@ -215,7 +229,10 @@ authRouter.post("/google", async (request, response, next) => {
                 email,
                 googleId,
                 totalPoints: 0,
-                level: 1
+                level: 1,
+                dailyStreak: 0,
+                maxDailyStreak: 0,
+                lastActiveDate: null
             });
         } else if (!user.googleId) {
             // Update existing user with googleId if email matched
@@ -234,6 +251,8 @@ authRouter.post("/google", async (request, response, next) => {
             }
         );
 
+        const activeStreak = calculateActiveStreak(user);
+
         return response.json({
             success: true,
             message: "Google Login successful.",
@@ -242,7 +261,10 @@ authRouter.post("/google", async (request, response, next) => {
                 id: user._id,
                 username: user.username,
                 totalPoints: user.totalPoints,
-                level: user.level
+                level: user.level,
+                dailyStreak: activeStreak,
+                maxDailyStreak: user.maxDailyStreak || 0,
+                lastActiveDate: user.lastActiveDate || null
             }
         });
     } catch (error) {

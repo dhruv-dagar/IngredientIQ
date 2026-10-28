@@ -5,6 +5,7 @@ const DailyChallenge = require("../models/DailyChallenge");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/authMiddleware");
 const { applyScore } = require("../services/scoringService");
+const { calculateActiveStreak } = require("../services/streakService");
 
 const dailyRouter = Router();
 
@@ -78,9 +79,16 @@ dailyRouter.get("/today", async (request, response, next) => {
             };
         });
 
+        const user = await User.findById(request.user.userId)
+            .select("dailyStreak maxDailyStreak lastActiveDate")
+            .lean();
+        const activeStreak = user ? calculateActiveStreak(user) : 0;
+
         return response.json({
             success: true,
             date: todayStr,
+            dailyStreak: activeStreak,
+            maxDailyStreak: user ? user.maxDailyStreak || 0 : 0,
             foods
         });
     } catch (error) {
@@ -154,7 +162,10 @@ dailyRouter.post("/answer", async (request, response, next) => {
             explanationText: food.explanationText,
             pointsChange: scoring.pointsChange,
             totalPoints: scoring.totalPoints,
-            level: scoring.level
+            level: scoring.level,
+            dailyStreak: scoring.dailyStreak,
+            maxDailyStreak: scoring.maxDailyStreak,
+            streakIncremented: scoring.streakIncremented
         });
 
     } catch (error) {

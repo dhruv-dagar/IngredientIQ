@@ -1,3 +1,5 @@
+const { recordDailyActivity } = require("./streakService");
+
 const POINTS_PER_CORRECT_ANSWER = 10;
 const WRONG_ANSWER_PENALTY = 2;
 const PENALTY_LEVEL = 4;
@@ -35,12 +37,20 @@ async function applyScore({ user, isCorrect }) {
 
     user.totalPoints = totalPoints;
     user.level = level;
+
+    // Record daily active play streak
+    const streakInfo = recordDailyActivity(user);
+
     await user.save();
 
     return {
         pointsChange,
         totalPoints,
-        level
+        level,
+        dailyStreak: user.dailyStreak,
+        maxDailyStreak: user.maxDailyStreak,
+        lastActiveDate: user.lastActiveDate,
+        streakIncremented: streakInfo.streakIncremented
     };
 }
 

@@ -202,7 +202,10 @@ gameRouter.post("/answers", async (request, response, next) => {
       explanationText: food.explanationText,
       pointsChange: scoring.pointsChange,
       totalPoints: scoring.totalPoints,
-      level: scoring.level
+      level: scoring.level,
+      dailyStreak: scoring.dailyStreak,
+      maxDailyStreak: scoring.maxDailyStreak,
+      streakIncremented: scoring.streakIncremented
     });
   } catch (error) {
     return next(error);

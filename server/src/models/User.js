@@ -37,6 +37,21 @@ const userSchema = new mongoose.Schema(
         level: {
             type: Number,
             default: 1
+        },
+
+        dailyStreak: {
+            type: Number,
+            default: 0
+        },
+
+        maxDailyStreak: {
+            type: Number,
+            default: 0
+        },
+
+        lastActiveDate: {
+            type: String,
+            default: null
         }
     },
     {
