@@ -12,6 +12,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(nextUser));
   };
 
+  const updateUser = (patch) => {
+    if (!patch) return;
+    setUser((prev) => {
+      if (!prev) return prev;
+      const updated = { ...prev, ...patch };
+      localStorage.setItem('user', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const refreshUser = async (activeToken = token) => {
     if (!activeToken) {
       setUser(null);
@@ -112,7 +122,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, googleLogin, logout, refreshUser, loading }}>
+    <AuthContext.Provider value={{ user, token, login, register, googleLogin, logout, refreshUser, updateUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

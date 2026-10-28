@@ -10,46 +10,35 @@ const today = new Date();
 const y = today.getFullYear();
 const m = today.getMonth();
 
-// Baseline demo days for rich visualization
-const defaultCompletedDays = new Set(
-  [1, 2, 3, 5, 6, 8, 9, 10, 12, 13, 15, 16, 17, 19, 20].map((d) =>
-    new Date(y, m, d).toDateString(),
-  ),
-);
-
 interface DayButtonProps extends React.ComponentProps<"button"> {
   day: CalendarDay;
   modifiers: Modifiers;
 }
 
 interface ParticleProps {
+  activeDays?: string[];
   userStreak?: number;
-  completedDaysSet?: Set<string>;
 }
 
-export default function Particle({ userStreak, completedDaysSet }: ParticleProps = {}) {
+export default function Particle({ activeDays = [], userStreak = 0 }: ParticleProps) {
   const { isLight } = useTheme();
 
-  // Combine default completed days with the user's active streak if available
-  const completedDays = React.useMemo(() => {
-    if (completedDaysSet) return completedDaysSet;
-    const set = new Set(defaultCompletedDays);
-    if (typeof userStreak === "number" && userStreak > 0) {
-      for (let i = 0; i < userStreak; i++) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        if (d.getMonth() === m && d.getFullYear() === y) {
-          set.add(d.toDateString());
-        }
-      }
-    }
-    return set;
-  }, [userStreak, completedDaysSet]);
+  // Active days set for instant O(1) lookup
+  const activeDaysSet = React.useMemo(() => {
+    return new Set(activeDays);
+  }, [activeDays]);
 
   const HabitDayButton = React.useCallback(
     ({ day, modifiers, children, ...props }: DayButtonProps) => {
-      const done = completedDays.has(day.date.toDateString());
+      // Format day.date as YYYY-MM-DD
+      const yyyy = day.date.getFullYear();
+      const mm = String(day.date.getMonth() + 1).padStart(2, "0");
+      const dd = String(day.date.getDate()).padStart(2, "0");
+      const dateKey = `${yyyy}-${mm}-${dd}`;
+
+      const done = activeDaysSet.has(dateKey);
       const isFuture = day.date > today;
+
       return (
         <button
           {...props}
@@ -75,10 +64,16 @@ export default function Particle({ userStreak, completedDaysSet }: ParticleProps
         </button>
       );
     },
-    [completedDays, isLight],
+    [activeDaysSet, isLight],
   );
 
-  const streak = [...completedDays].filter((d) => new Date(d) <= today && new Date(d).getMonth() === m).length;
+  // Count active days in the current month up to today
+  const currentMonthPrefix = `${y}-${String(m + 1).padStart(2, "0")}`;
+  const daysCompletedThisMonth = React.useMemo(() => {
+    return activeDays.filter(
+      (d) => d.startsWith(currentMonthPrefix) && new Date(d) <= today,
+    ).length;
+  }, [activeDays, currentMonthPrefix]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -100,7 +95,7 @@ export default function Particle({ userStreak, completedDaysSet }: ParticleProps
           Days completed this month
         </span>
         <span className="font-mono text-sm font-black">
-          {streak} / {today.getDate()}
+          {daysCompletedThisMonth} / {today.getDate()}
         </span>
       </div>
     </div>

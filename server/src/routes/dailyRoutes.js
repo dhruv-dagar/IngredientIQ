@@ -165,7 +165,9 @@ dailyRouter.post("/answer", async (request, response, next) => {
             level: scoring.level,
             dailyStreak: scoring.dailyStreak,
             maxDailyStreak: scoring.maxDailyStreak,
-            streakIncremented: scoring.streakIncremented
+            activeDays: scoring.activeDays,
+            streakIncremented: scoring.streakIncremented,
+            isFirstActivityToday: scoring.isFirstActivityToday
         });
 
     } catch (error) {

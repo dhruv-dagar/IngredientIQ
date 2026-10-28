@@ -25,12 +25,16 @@ assert.equal(user.dailyStreak, 1);
 assert.equal(user.maxDailyStreak, 1);
 assert.equal(user.lastActiveDate, "2026-10-28");
 assert.equal(r1.streakIncremented, true);
+assert.equal(r1.isFirstActivityToday, true);
+assert.deepEqual(user.activeDays, ["2026-10-28"]);
 
 // Same day (Day 1) second question
 const r1_again = recordDailyActivity(user, day1);
 assert.equal(user.dailyStreak, 1, "Same day play should not double-increment streak");
 assert.equal(user.maxDailyStreak, 1);
 assert.equal(r1_again.streakIncremented, false);
+assert.equal(r1_again.isFirstActivityToday, false);
+assert.deepEqual(user.activeDays, ["2026-10-28"]);
 
 // Day 2: 2026-10-29 (Consecutive Day)
 const day2 = new Date(2026, 9, 29);

@@ -50,7 +50,9 @@ async function applyScore({ user, isCorrect }) {
         dailyStreak: user.dailyStreak,
         maxDailyStreak: user.maxDailyStreak,
         lastActiveDate: user.lastActiveDate,
-        streakIncremented: streakInfo.streakIncremented
+        activeDays: user.activeDays || [],
+        streakIncremented: streakInfo.streakIncremented,
+        isFirstActivityToday: streakInfo.isFirstActivityToday
     };
 }
 

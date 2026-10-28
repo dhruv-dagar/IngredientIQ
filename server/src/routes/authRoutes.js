@@ -53,7 +53,8 @@ authRouter.post("/register", async (request, response, next) => {
             level: 1,
             dailyStreak: 0,
             maxDailyStreak: 0,
-            lastActiveDate: null
+            lastActiveDate: null,
+            activeDays: []
         });
 
         return response.status(201).json({
@@ -66,7 +67,8 @@ authRouter.post("/register", async (request, response, next) => {
                 level: user.level,
                 dailyStreak: 0,
                 maxDailyStreak: 0,
-                lastActiveDate: null
+                lastActiveDate: null,
+                activeDays: []
             }
         });
     } catch (error) {
@@ -128,7 +130,8 @@ authRouter.post("/login", async (request, response, next) => {
                 level: user.level,
                 dailyStreak: activeStreak,
                 maxDailyStreak: user.maxDailyStreak || 0,
-                lastActiveDate: user.lastActiveDate || null
+                lastActiveDate: user.lastActiveDate || null,
+                activeDays: user.activeDays || []
             }
         });
     } catch (error) {
@@ -143,7 +146,7 @@ authRouter.post("/login", async (request, response, next) => {
 authRouter.get("/me", authMiddleware, async (request, response, next) => {
     try {
         const user = await User.findById(request.user.userId)
-            .select("username totalPoints level dailyStreak maxDailyStreak lastActiveDate")
+            .select("username totalPoints level dailyStreak maxDailyStreak lastActiveDate activeDays")
             .lean();
 
         if (!user) {
@@ -163,7 +166,8 @@ authRouter.get("/me", authMiddleware, async (request, response, next) => {
                 level: user.level,
                 dailyStreak: activeStreak,
                 maxDailyStreak: user.maxDailyStreak || 0,
-                lastActiveDate: user.lastActiveDate || null
+                lastActiveDate: user.lastActiveDate || null,
+                activeDays: user.activeDays || []
             }
         });
     } catch (error) {
@@ -232,7 +236,8 @@ authRouter.post("/google", async (request, response, next) => {
                 level: 1,
                 dailyStreak: 0,
                 maxDailyStreak: 0,
-                lastActiveDate: null
+                lastActiveDate: null,
+                activeDays: []
             });
         } else if (!user.googleId) {
             // Update existing user with googleId if email matched
@@ -264,7 +269,8 @@ authRouter.post("/google", async (request, response, next) => {
                 level: user.level,
                 dailyStreak: activeStreak,
                 maxDailyStreak: user.maxDailyStreak || 0,
-                lastActiveDate: user.lastActiveDate || null
+                lastActiveDate: user.lastActiveDate || null,
+                activeDays: user.activeDays || []
             }
         });
     } catch (error) {

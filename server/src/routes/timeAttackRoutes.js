@@ -168,10 +168,22 @@ timeAttackRouter.post("/answer", async (request, response, next) => {
             }
         ]);
 
+        const user = await User.findById(request.user.userId);
+        let streakInfo = null;
+        if (user) {
+            streakInfo = recordDailyActivity(user);
+            await user.save();
+        }
+
         return response.json({
             success: true,
             questionNumber: questionNumber + 1,
-            nextCard: nextCard || null
+            nextCard: nextCard || null,
+            dailyStreak: streakInfo ? streakInfo.dailyStreak : 0,
+            maxDailyStreak: streakInfo ? streakInfo.maxDailyStreak : 0,
+            activeDays: streakInfo ? streakInfo.activeDays : [],
+            streakIncremented: streakInfo ? streakInfo.streakIncremented : false,
+            isFirstActivityToday: streakInfo ? streakInfo.isFirstActivityToday : false
         });
     } catch (error) {
         return next(error);
@@ -243,8 +255,9 @@ timeAttackRouter.post("/finish", async (request, response, next) => {
             user.level = calculateLevel(newTotalPoints);
 
             // Record daily active play streak if any cards were answered
+            let streakInfo = null;
             if (session.cardsPlayed.length > 0) {
-                recordDailyActivity(user);
+                streakInfo = recordDailyActivity(user);
             }
 
             await user.save();
@@ -282,7 +295,8 @@ timeAttackRouter.post("/finish", async (request, response, next) => {
                 totalPoints: user.totalPoints,
                 level: user.level,
                 dailyStreak: user.dailyStreak || 0,
-                maxDailyStreak: user.maxDailyStreak || 0
+                maxDailyStreak: user.maxDailyStreak || 0,
+                activeDays: user.activeDays || []
             },
             startedAt: session.startedAt,
             completedAt: session.completedAt,

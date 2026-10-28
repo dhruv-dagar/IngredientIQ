@@ -6,6 +6,7 @@ import { CardPack } from "./ui/card-pack";
 import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
 import { useTheme } from "../context/ThemeContext";
+import { useStreakNotification } from "../context/StreakNotificationContext";
 import ThemeToggle from "./ui/ThemeToggle";
 import StreakButton from "./ui/StreakButton";
 
@@ -20,8 +21,9 @@ const NOVA_LEVELS = [
 ];
 
 export default function TimeAttack() {
-  const { token, refreshUser, user } = useContext(AuthContext);
+  const { token, refreshUser, updateUser, user } = useContext(AuthContext);
   const { isLight } = useTheme();
+  const { triggerStreakNotification } = useStreakNotification();
   const navigate = useNavigate();
 
   // Game lifecycle: 'ready' | 'playing' | 'finishing' | 'finished'
@@ -166,6 +168,19 @@ export default function TimeAttack() {
         throw new Error(data.message || 'Failed to record answer');
       }
 
+      if (data.dailyStreak) {
+        if (updateUser) {
+          updateUser({
+            dailyStreak: data.dailyStreak,
+            maxDailyStreak: data.maxDailyStreak,
+            activeDays: data.activeDays
+          });
+        }
+        if (data.isFirstActivityToday || data.streakIncremented) {
+          triggerStreakNotification(data.dailyStreak);
+        }
+      }
+
       setCardsAnswered((prev) => prev + 1);
 
       // Flash quick popup
@@ -215,6 +230,15 @@ export default function TimeAttack() {
       if (!response.ok) throw new Error(data.message || 'Failed to finalize session');
 
       setFinalResults(data);
+      if (data.user && updateUser) {
+        updateUser({
+          totalPoints: data.user.totalPoints,
+          level: data.user.level,
+          dailyStreak: data.user.dailyStreak,
+          maxDailyStreak: data.user.maxDailyStreak,
+          activeDays: data.user.activeDays
+        });
+      }
       refreshUser();
       setGameState('finished');
     } catch (err) {

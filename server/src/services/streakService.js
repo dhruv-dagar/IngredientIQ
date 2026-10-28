@@ -37,11 +37,21 @@ function calculateActiveStreak(user, refDate = new Date()) {
 
 /**
  * Records daily question completion and updates the user's dailyStreak.
- * Mutates user.dailyStreak, user.maxDailyStreak, and user.lastActiveDate.
+ * Mutates user.dailyStreak, user.maxDailyStreak, user.lastActiveDate, and user.activeDays.
  */
 function recordDailyActivity(user, refDate = new Date()) {
     const { todayStr, yesterdayStr } = getStreakDateStrings(refDate);
     let streakIncremented = false;
+    let isFirstActivityToday = false;
+
+    // Track active days array
+    if (!Array.isArray(user.activeDays)) {
+        user.activeDays = [];
+    }
+    if (!user.activeDays.includes(todayStr)) {
+        user.activeDays.push(todayStr);
+        isFirstActivityToday = true;
+    }
 
     const currentStreak = Number.isFinite(user.dailyStreak) ? user.dailyStreak : 0;
     const currentMax = Number.isFinite(user.maxDailyStreak) ? user.maxDailyStreak : 0;
@@ -68,7 +78,9 @@ function recordDailyActivity(user, refDate = new Date()) {
         dailyStreak: user.dailyStreak,
         maxDailyStreak: user.maxDailyStreak,
         lastActiveDate: user.lastActiveDate,
-        streakIncremented
+        activeDays: user.activeDays,
+        streakIncremented,
+        isFirstActivityToday
     };
 }
 

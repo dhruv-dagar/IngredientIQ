@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { StreakNotificationProvider } from './context/StreakNotificationContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useContext } from 'react';
 import Landing from './components/Landing';
@@ -28,30 +29,32 @@ function App() {
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <AuthProvider>
         <ThemeProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route 
-                path="/dashboard" 
-                element={<ProtectedRoute><GameDashboard /></ProtectedRoute>} 
-              />
-              <Route 
-                path="/game" 
-                element={<ProtectedRoute><Game /></ProtectedRoute>} 
-              />
-              <Route 
-                path="/daily" 
-                element={<ProtectedRoute><DailyChallenge /></ProtectedRoute>} 
-              />
-              <Route 
-                path="/time-attack" 
-                element={<ProtectedRoute><TimeAttack /></ProtectedRoute>} 
-              />
-            </Routes>
-            <Footer />
-          </Router>
+          <StreakNotificationProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route 
+                  path="/dashboard" 
+                  element={<ProtectedRoute><GameDashboard /></ProtectedRoute>} 
+                />
+                <Route 
+                  path="/game" 
+                  element={<ProtectedRoute><Game /></ProtectedRoute>} 
+                />
+                <Route 
+                  path="/daily" 
+                  element={<ProtectedRoute><DailyChallenge /></ProtectedRoute>} 
+                />
+                <Route 
+                  path="/time-attack" 
+                  element={<ProtectedRoute><TimeAttack /></ProtectedRoute>} 
+                />
+              </Routes>
+              <Footer />
+            </Router>
+          </StreakNotificationProvider>
         </ThemeProvider>
       </AuthProvider>
     </GoogleOAuthProvider>

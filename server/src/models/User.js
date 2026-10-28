@@ -52,6 +52,11 @@ const userSchema = new mongoose.Schema(
         lastActiveDate: {
             type: String,
             default: null
+        },
+
+        activeDays: {
+            type: [String],
+            default: []
         }
     },
     {

@@ -6,6 +6,7 @@ import { CardPack } from "./ui/card-pack";
 import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
 import { useTheme } from "../context/ThemeContext";
+import { useStreakNotification } from "../context/StreakNotificationContext";
 import ThemeToggle from "./ui/ThemeToggle";
 import StreakButton from "./ui/StreakButton";
 
@@ -21,8 +22,9 @@ const NOVA_LEVELS = [
 const LOADING_TEXT = ["LO", "AD", "IN", "G"];
 
 export default function Game() {
-  const { token, refreshUser, user } = useContext(AuthContext);
+  const { token, refreshUser, updateUser, user } = useContext(AuthContext);
   const { isLight } = useTheme();
+  const { triggerStreakNotification } = useStreakNotification();
   const navigate = useNavigate();
   const hasStartedRef = useRef(false);
 
@@ -172,6 +174,19 @@ export default function Game() {
 
       setAnswerResult(data);
       setTotalGuesses((prev) => prev + 1);
+
+      if (data.dailyStreak) {
+        if (updateUser) {
+          updateUser({
+            dailyStreak: data.dailyStreak,
+            maxDailyStreak: data.maxDailyStreak,
+            activeDays: data.activeDays
+          });
+        }
+        if (data.isFirstActivityToday || data.streakIncremented) {
+          triggerStreakNotification(data.dailyStreak);
+        }
+      }
 
       if (data.isCorrect) {
         setRightGuesses((prev) => prev + 1);
