@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useStreakNotification } from '../../context/StreakNotificationContext';
 import { GameModeCarousel } from '../ui/game-mode-carousel';
 import { GameModeTransition } from './game-mode-transition';
 import { GAME_MODES, GameModeConfig } from '@/lib/game-modes';
@@ -19,11 +20,22 @@ const getBadge = (level: number) => {
 export default function GameDashboard() {
   const { user, logout, refreshUser } = useContext(AuthContext);
   const { isLight } = useTheme();
+  const { triggerStreakNotification } = useStreakNotification();
   const navigate = useNavigate();
 
   useEffect(() => {
     refreshUser();
   }, []);
+
+  useEffect(() => {
+    if (user?.dailyStreak && user.dailyStreak > 0) {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const isActiveToday = (user.activeDays && user.activeDays.includes(todayStr)) || user.lastActiveDate === todayStr;
+      if (isActiveToday) {
+        triggerStreakNotification(user.dailyStreak, user.id || user._id || user.username);
+      }
+    }
+  }, [user?.dailyStreak, user?.lastActiveDate, user?.activeDays, user?.id, user?._id, user?.username, triggerStreakNotification]);
 
   if (!user) return <div className="p-5">Loading...</div>;
   const badge = getBadge(user.level || 1);

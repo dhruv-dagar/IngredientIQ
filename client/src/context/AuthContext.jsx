@@ -68,6 +68,11 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token);
         localStorage.setItem('token', data.token);
         saveUser(data.user);
+        try {
+          Object.keys(sessionStorage).forEach((k) => {
+            if (k.startsWith('streak_notified_')) sessionStorage.removeItem(k);
+          });
+        } catch (e) {}
         return { success: true };
       }
       return { success: false, message: data.message };
@@ -105,6 +110,11 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token);
         localStorage.setItem('token', data.token);
         saveUser(data.user);
+        try {
+          Object.keys(sessionStorage).forEach((k) => {
+            if (k.startsWith('streak_notified_')) sessionStorage.removeItem(k);
+          });
+        } catch (e) {}
         return { success: true };
       }
       return { success: false, message: data.message };
@@ -119,6 +129,11 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    try {
+      Object.keys(sessionStorage).forEach((k) => {
+        if (k.startsWith('streak_notified_')) sessionStorage.removeItem(k);
+      });
+    } catch (e) {}
   };
 
   return (

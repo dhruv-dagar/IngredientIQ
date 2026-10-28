@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback, useRef } from 
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, X } from "lucide-react";
 import { useTheme } from "./ThemeContext";
+import { AuthContext } from "./AuthContext";
 
 const StreakNotificationContext = createContext({
   triggerStreakNotification: () => {}
@@ -10,22 +11,49 @@ const StreakNotificationContext = createContext({
 export function StreakNotificationProvider({ children }) {
   const [notification, setNotification] = useState(null);
   const { isLight } = useTheme();
+  const auth = useContext(AuthContext);
+  const currentUser = auth?.user;
   const timerRef = useRef(null);
 
-  const triggerStreakNotification = useCallback((dayNumber) => {
-    if (!dayNumber) return;
-    const todayStr = new Date().toISOString().split("T")[0];
-    const key = `streak_notified_${todayStr}_${dayNumber}`;
-    if (sessionStorage.getItem(key)) return; // Already notified in this session today
+  const triggerStreakNotification = useCallback((dayNumber, customUserId) => {
+    if (!dayNumber || Number(dayNumber) <= 0) return;
 
-    sessionStorage.setItem(key, "true");
-    setNotification({ dayNumber });
+    // Get today's ISO date string: YYYY-MM-DD
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+
+    // Get user identifier to guarantee independent notification per account
+    let userIdentifier = customUserId || currentUser?.id || currentUser?._id || currentUser?.username;
+    if (!userIdentifier) {
+      try {
+        const stored = localStorage.getItem("user");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          userIdentifier = parsed?.id || parsed?._id || parsed?.username;
+        }
+      } catch (e) {}
+    }
+    const safeUserKey = userIdentifier ? String(userIdentifier) : "user";
+    const sessionKey = `streak_notified_${safeUserKey}_${todayStr}`;
+
+    // Deduplicate per user per day in current browser session
+    try {
+      if (sessionStorage.getItem(sessionKey)) {
+        return;
+      }
+      sessionStorage.setItem(sessionKey, "true");
+    } catch (e) {}
+
+    setNotification({ dayNumber: Number(dayNumber) });
 
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       setNotification(null);
     }, 4500);
-  }, []);
+  }, [currentUser]);
 
   const dismissNotification = () => {
     if (timerRef.current) clearTimeout(timerRef.current);

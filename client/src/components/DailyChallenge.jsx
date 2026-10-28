@@ -142,9 +142,7 @@ export default function DailyChallenge() {
             activeDays: data.activeDays
           });
         }
-        if (data.isFirstActivityToday || data.streakIncremented) {
-          triggerStreakNotification(data.dailyStreak);
-        }
+        triggerStreakNotification(data.dailyStreak, user?.id || user?._id || user?.username);
       }
 
       if (data.isCorrect) {

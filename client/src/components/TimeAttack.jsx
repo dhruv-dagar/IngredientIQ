@@ -176,9 +176,7 @@ export default function TimeAttack() {
             activeDays: data.activeDays
           });
         }
-        if (data.isFirstActivityToday || data.streakIncremented) {
-          triggerStreakNotification(data.dailyStreak);
-        }
+        triggerStreakNotification(data.dailyStreak, user?.id || user?._id || user?.username);
       }
 
       setCardsAnswered((prev) => prev + 1);
@@ -238,6 +236,9 @@ export default function TimeAttack() {
           maxDailyStreak: data.user.maxDailyStreak,
           activeDays: data.user.activeDays
         });
+      }
+      if (data.user?.dailyStreak > 0) {
+        triggerStreakNotification(data.user.dailyStreak, user?.id || user?._id || user?.username);
       }
       refreshUser();
       setGameState('finished');
