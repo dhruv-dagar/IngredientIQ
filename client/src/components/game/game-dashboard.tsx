@@ -7,6 +7,7 @@ import { GameModeTransition } from './game-mode-transition';
 import { GAME_MODES, GameModeConfig } from '@/lib/game-modes';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
+import StreakButton from '../ui/StreakButton';
 
 const getBadge = (level: number) => {
   if (level === 1) return { icon: '🌱', title: 'Novice' };
@@ -92,6 +93,7 @@ export default function GameDashboard() {
         </div>
 
         <div className="flex items-center gap-3 mt-2">
+          <StreakButton />
           <ThemeToggle />
           <button 
             onClick={() => navigate('/')} 

@@ -7,6 +7,7 @@ import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
 import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ui/ThemeToggle";
+import StreakButton from "./ui/StreakButton";
 
 const API_BASE = '/api/time-attack';
 const GAME_DURATION = 60; // 60 seconds blitz
@@ -300,6 +301,7 @@ export default function TimeAttack() {
 
         {/* Right: Counter & User Score */}
         <div className="flex items-center gap-4 text-right">
+          <StreakButton />
           <ThemeToggle />
           {gameState === 'playing' && (
             <div className={`px-4 py-1.5 border rounded-xl shadow-lg ${

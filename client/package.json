@@ -20,6 +20,7 @@
     "lucide-react": "latest",
     "papaparse": "latest",
     "react": "latest",
+    "react-day-picker": "^10.0.2",
     "react-dom": "latest",
     "react-router-dom": "latest",
     "tailwind-merge": "latest",

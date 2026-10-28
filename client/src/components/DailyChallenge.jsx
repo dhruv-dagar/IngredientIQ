@@ -7,6 +7,7 @@ import { GAME_MODES } from "@/lib/game-modes";
 import { parseIngredients } from "@/lib/utils";
 import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ui/ThemeToggle";
+import StreakButton from "./ui/StreakButton";
 
 const API_BASE = '/api/daily';
 
@@ -233,6 +234,7 @@ export default function DailyChallenge() {
           </div>
         )}
         <div className="flex items-center gap-6 text-right">
+          <StreakButton />
           <ThemeToggle />
           <div>
             <p className={`text-[10px] uppercase tracking-widest m-0 ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>
