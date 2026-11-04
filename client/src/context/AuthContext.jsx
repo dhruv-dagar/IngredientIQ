@@ -39,17 +39,38 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       console.error(error);
-      logout();
       return false;
     }
+  };
+
+  const initGuest = async () => {
+    try {
+      const res = await fetch('/api/auth/guest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      if (data.success && data.token && data.user) {
+        setToken(data.token);
+        localStorage.setItem('token', data.token);
+        saveUser(data.user);
+        return data.user;
+      }
+    } catch (err) {
+      console.error("Auto guest session failed:", err);
+    }
+    return null;
   };
 
   useEffect(() => {
     const initializeAuth = async () => {
       if (token) {
-        await refreshUser(token);
+        const ok = await refreshUser(token);
+        if (!ok) {
+          await initGuest();
+        }
       } else {
-        setUser(null);
+        await initGuest();
       }
       setLoading(false);
     };
@@ -58,10 +79,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
+      const currentGuestId = user?.isGuest ? (user.id || user._id) : undefined;
       const res = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ 
+          username, 
+          password,
+          guestUserId: currentGuestId,
+          guestToken: user?.isGuest ? token : undefined
+        })
       });
       const data = await res.json();
       if (data.success) {
@@ -84,13 +114,29 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, password) => {
     try {
+      const currentGuestId = user?.isGuest ? (user.id || user._id) : undefined;
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ 
+          username, 
+          password,
+          guestUserId: currentGuestId,
+          guestToken: user?.isGuest ? token : undefined
+        })
       });
       const data = await res.json();
-      if (data.success) return { success: true };
+      if (data.success) {
+        if (data.token && data.user) {
+          setToken(data.token);
+          localStorage.setItem('token', data.token);
+          saveUser(data.user);
+        }
+        return { success: true };
+      }
       return { success: false, message: data.message };
     } catch (error) {
       console.error(error);
@@ -100,10 +146,18 @@ export const AuthProvider = ({ children }) => {
 
   const googleLogin = async (googleToken) => {
     try {
+      const currentGuestId = user?.isGuest ? (user.id || user._id) : undefined;
       const res = await fetch('/api/auth/google', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: googleToken })
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ 
+          token: googleToken,
+          guestUserId: currentGuestId,
+          guestToken: user?.isGuest ? token : undefined
+        })
       });
       const data = await res.json();
       if (data.success) {
@@ -124,7 +178,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
@@ -134,6 +188,8 @@ export const AuthProvider = ({ children }) => {
         if (k.startsWith('streak_notified_')) sessionStorage.removeItem(k);
       });
     } catch (e) {}
+    // Automatically reinitialize a clean guest session for seamless anonymous play
+    await initGuest();
   };
 
   return (

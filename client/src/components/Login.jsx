@@ -40,7 +40,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const { isLight } = useTheme();
   const navigate = useNavigate();
 
@@ -85,13 +85,26 @@ function Login() {
           ♠
         </span>
         <h2 
-          className={`text-4xl font-black mb-8 tracking-widest text-center ${
+          className={`text-4xl font-black mb-6 tracking-widest text-center ${
             isLight ? "text-[#000522]" : "text-[#F2EBD1]"
           }`} 
           style={{ fontFamily: '"Playfair Display", serif' }}
         >
           Welcome Back
         </h2>
+
+        {user?.isGuest && (user.totalPoints > 0 || user.dailyStreak > 0) && (
+          <div className={`w-full p-3 mb-4 rounded-xl border text-xs font-bold flex items-center gap-2.5 ${
+            isLight 
+              ? "bg-[#254174]/10 border-[#254174]/30 text-[#000522]" 
+              : "bg-[#000522]/60 border-[#254174]/50 text-[#F2EBD1]"
+          }`}>
+            <span className="text-base shrink-0">🔥</span>
+            <span>
+              Playing as <strong>{user.username}</strong> ({user.dailyStreak}d streak, {user.totalPoints} pts). Sign in to merge & preserve your progress!
+            </span>
+          </div>
+        )}
         
         {error && <p className="text-red-500 text-sm font-bold text-center mb-4">{error}</p>}
         
