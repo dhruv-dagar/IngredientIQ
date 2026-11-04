@@ -586,6 +586,26 @@ export default function DailyChallenge() {
           )}
         </AnimatePresence>
 
+        {/* Loading State Storage Notice */}
+        <AnimatePresence>
+          {showLoadingCards && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute bottom-12 inset-x-0 flex justify-center z-40 pointer-events-none px-4 select-none"
+            >
+              <p className={`text-[11px] sm:text-xs font-semibold tracking-wider text-center px-4 py-1.5 rounded-full border backdrop-blur-md shadow-sm ${
+                isLight 
+                  ? "bg-[#FAF6EA]/90 border-[#254174]/25 text-[#000522]/75" 
+                  : "bg-[#0B1B42]/90 border-[#254174]/40 text-[#F2EBD1]/75"
+              }`}>
+                Functional storage is used strictly to preserve game progress & streaks.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </div>
 
       {/* Game Over Modal */}

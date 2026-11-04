@@ -12,6 +12,7 @@ import Game from './components/Game';
 import DailyChallenge from './components/DailyChallenge';
 import TimeAttack from './components/TimeAttack';
 import Footer from './components/ui/Footer';
+import LoadingScreen from './components/ui/LoadingScreen';
 import './index.css';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
@@ -19,7 +20,7 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_C
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  if (loading) return <div style={{textAlign: 'center', padding: '40px'}}>Loading...</div>;
+  if (loading) return <LoadingScreen message="Loading IngredientIQ..." />;
   if (!user) return <Navigate to="/login" replace />;
   return children;
 };
