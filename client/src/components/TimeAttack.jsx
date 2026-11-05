@@ -375,7 +375,7 @@ export default function TimeAttack() {
               animate={
                 enlargedCard === 'photo' 
                 ? { y: "-50%", x: "-50%", top: "50%", left: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
-                : { y: 0, x: "-50%", top: "5%", left: "20%", rotateZ: -3, scale: 0.65, opacity: enlargedCard ? 0 : 1, zIndex: 20 }
+                : { y: 0, x: "-50%", top: "2%", left: "14%", rotateZ: -3, scale: 0.60, opacity: enlargedCard ? 0 : 1, zIndex: 20 }
               }
               onClick={() => enlargedCard !== 'photo' && setEnlargedCard('photo')}
               exit={{ y: -100, opacity: 0, rotateZ: -5, scale: 0.5 }}
@@ -417,7 +417,7 @@ export default function TimeAttack() {
               animate={
                 enlargedCard === 'ingredients'
                 ? { y: "-50%", x: "50%", top: "50%", right: "50%", rotateZ: 0, scale: 1.5, zIndex: 100, opacity: 1 }
-                : { y: 0, x: "50%", top: "5%", right: "20%", rotateZ: 3, scale: 0.65, opacity: enlargedCard ? 0 : 1, zIndex: 20 }
+                : { y: 0, x: "50%", top: "2%", right: "14%", rotateZ: 3, scale: 0.60, opacity: enlargedCard ? 0 : 1, zIndex: 20 }
               }
               onClick={() => enlargedCard !== 'ingredients' && setEnlargedCard('ingredients')}
               exit={{ y: -100, opacity: 0, rotateZ: 5, scale: 0.5 }}
@@ -491,15 +491,27 @@ export default function TimeAttack() {
         </AnimatePresence>
 
         {/* Current Food Information (Floating Text) */}
-        <div className={`absolute top-[42%] text-center z-20 px-8 w-full transition-opacity duration-300 pointer-events-none ${gameState !== 'playing' ? 'opacity-0' : 'opacity-100'}`}>
-          <h1 className={`text-5xl font-bold mb-2 drop-shadow-md leading-tight ${
-            isLight ? "text-[#000522]" : "text-[#F2EBD1]"
-          }`} style={{ fontFamily: '"Playfair Display", serif' }}>
+        <div className={`absolute top-[38%] left-1/2 -translate-x-1/2 text-center z-20 px-4 w-full max-w-[46vw] lg:max-w-xl transition-opacity duration-300 pointer-events-none ${gameState !== 'playing' ? 'opacity-0' : 'opacity-100'}`}>
+          <h1 
+            className={`font-bold mb-1.5 drop-shadow-md leading-tight break-words tracking-tight ${
+              (currentFood?.name?.length || 0) > 45
+                ? "text-xl sm:text-2xl md:text-3xl"
+                : (currentFood?.name?.length || 0) > 28
+                ? "text-2xl sm:text-3xl md:text-4xl"
+                : "text-3xl sm:text-4xl md:text-5xl"
+            } ${
+              isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+            }`} 
+            style={{ fontFamily: '"Playfair Display", serif' }}
+            title={currentFood?.name}
+          >
             {currentFood?.name || "..."}
           </h1>
-          <p className={`font-bold text-lg uppercase tracking-widest mt-2 ${
-            isLight ? "text-[#000522]/70" : "text-[#F2EBD1]/70"
-          }`}>{currentFood?.brand}</p>
+          <p className={`font-bold text-xs sm:text-sm md:text-base uppercase tracking-widest mt-1 opacity-75 line-clamp-1 ${
+            isLight ? "text-[#000522]" : "text-[#F2EBD1]"
+          }`}>
+            {currentFood?.brand}
+          </p>
         </div>
 
         {/* Score Popup Animation */}

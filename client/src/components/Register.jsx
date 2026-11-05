@@ -9,7 +9,7 @@ function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const { register } = useContext(AuthContext);
+  const { register, user } = useContext(AuthContext);
   const { isLight } = useTheme();
   const navigate = useNavigate();
 
@@ -60,13 +60,26 @@ function Register() {
           ♠
         </span>
         <h2 
-          className={`text-4xl font-black mb-8 tracking-widest text-center ${
+          className={`text-4xl font-black mb-6 tracking-widest text-center ${
             isLight ? "text-[#000522]" : "text-[#F2EBD1]"
           }`} 
           style={{ fontFamily: '"Playfair Display", serif' }}
         >
           Create Account
         </h2>
+
+        {user?.isGuest && (user.totalPoints > 0 || user.dailyStreak > 0) && (
+          <div className={`w-full p-3 mb-4 rounded-xl border text-xs font-bold flex items-center gap-2.5 ${
+            isLight 
+              ? "bg-[#254174]/10 border-[#254174]/30 text-[#000522]" 
+              : "bg-[#000522]/60 border-[#254174]/50 text-[#F2EBD1]"
+          }`}>
+            <span className="text-base shrink-0">🔥</span>
+            <span>
+              Playing as <strong>{user.username}</strong> ({user.dailyStreak}d streak, {user.totalPoints} pts). Register to upgrade this account!
+            </span>
+          </div>
+        )}
         
         {error && <p className="text-red-500 text-sm font-bold text-center mb-4">{error}</p>}
         

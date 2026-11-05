@@ -9,6 +9,7 @@ import { GAME_MODES, GameModeConfig } from '@/lib/game-modes';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '../ui/ThemeToggle';
 import StreakButton from '../ui/StreakButton';
+import LoadingScreen from '../ui/LoadingScreen';
 
 const getBadge = (level: number) => {
   if (level === 1) return { icon: '🌱', title: 'Novice' };
@@ -37,7 +38,7 @@ export default function GameDashboard() {
     }
   }, [user?.dailyStreak, user?.lastActiveDate, user?.activeDays, user?.id, user?._id, user?.username, triggerStreakNotification]);
 
-  if (!user) return <div className="p-5">Loading...</div>;
+  if (!user) return <LoadingScreen message="Loading Dashboard..." />;
   const badge = getBadge(user.level || 1);
 
   const handleSelectMode = (mode: GameModeConfig) => {
@@ -80,8 +81,15 @@ export default function GameDashboard() {
             <p className={`m-0 text-[10px] uppercase tracking-widest ${isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"}`}>
               Player
             </p>
-            <p className={`m-0 text-lg font-black ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>
+            <p className={`m-0 text-lg font-black flex items-center justify-end gap-1.5 ${isLight ? "text-[#000522]" : "text-[#F2EBD1]"}`}>
               {user.username}
+              {user?.isGuest && (
+                <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${
+                  isLight ? "bg-[#254174]/15 text-[#254174]" : "bg-[#254174]/40 text-[#F2EBD1]"
+                }`}>
+                  Guest
+                </span>
+              )}
             </p>
           </div>
           <div className={`w-px h-8 ${isLight ? "bg-[#254174]/30" : "bg-[#254174]/50"}`}></div>
@@ -105,6 +113,19 @@ export default function GameDashboard() {
         </div>
 
         <div className="flex items-center gap-3 mt-2">
+          {user?.isGuest && (
+            <button 
+              onClick={() => navigate('/login')} 
+              className={`px-4 py-2 rounded-full font-bold uppercase tracking-widest transition-all text-[10px] shadow-lg flex items-center gap-1.5 active:scale-95 ${
+                isLight
+                  ? "bg-[#254174] text-[#F2EBD1] hover:bg-[#000522]"
+                  : "bg-[#254174] text-[#F2EBD1] hover:bg-[#F2EBD1] hover:text-[#000522]"
+              }`}
+              title="Save your progress & streaks by signing in"
+            >
+              <span>💾</span> Save Progress
+            </button>
+          )}
           <StreakButton />
           <ThemeToggle />
           <button 
@@ -125,7 +146,7 @@ export default function GameDashboard() {
                 : "bg-[#254174] text-[#F2EBD1] hover:bg-[#F2EBD1] hover:text-[#000522]"
             }`}
           >
-            Log Out
+            {user?.isGuest ? 'Sign In' : 'Log Out'}
           </button>
         </div>
       </motion.div>

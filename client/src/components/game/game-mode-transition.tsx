@@ -81,6 +81,15 @@ export function GameModeTransition({ mode, onComplete }: GameModeTransitionProps
         ))}
       </div>
 
+      {/* Bottom Storage Notice */}
+      <div className="absolute bottom-10 inset-x-0 flex justify-center px-4 z-40 select-none pointer-events-none">
+        <p className={`text-[11px] sm:text-xs font-semibold tracking-wider text-center max-w-md ${
+          isLight ? "text-[#000522]/60" : "text-[#F2EBD1]/60"
+        }`}>
+          Functional storage is used strictly to preserve game progress & streaks.
+        </p>
+      </div>
+
     </div>
   );
 }

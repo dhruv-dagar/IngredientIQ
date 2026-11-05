@@ -10,11 +10,7 @@ function Landing() {
   const navigate = useNavigate();
 
   const handlePlay = () => {
-    if (user) {
-      navigate('/dashboard');
-    } else {
-      navigate('/login');
-    }
+    navigate('/dashboard');
   };
 
   return (
@@ -38,17 +34,44 @@ function Landing() {
         
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <button 
-            onClick={handlePlay}
-            disabled={loading}
-            className={`px-6 py-2.5 font-bold text-sm rounded-full transition-all shadow-lg active:scale-95 ${
-              isLight
-                ? "bg-[#000522] text-[#F2EBD1] hover:bg-[#254174] border border-[#000522]"
-                : "bg-[#F2EBD1] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1] border border-[#F2EBD1]"
-            }`}
-          >
-            {loading ? '...' : user ? 'Dashboard' : 'Log In'}
-          </button>
+          {user?.isGuest ? (
+            <>
+              <button 
+                onClick={() => navigate('/login')}
+                className={`px-4 py-2 font-bold text-xs rounded-full border transition-all ${
+                  isLight
+                    ? "border-[#254174] text-[#254174] hover:bg-[#254174] hover:text-[#F2EBD1]"
+                    : "border-[#254174] text-[#F2EBD1] hover:bg-[#254174]"
+                }`}
+                title="Log in to save guest progress"
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={handlePlay}
+                disabled={loading}
+                className={`px-6 py-2.5 font-bold text-sm rounded-full transition-all shadow-lg active:scale-95 ${
+                  isLight
+                    ? "bg-[#000522] text-[#F2EBD1] hover:bg-[#254174] border border-[#000522]"
+                    : "bg-[#F2EBD1] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1] border border-[#F2EBD1]"
+                }`}
+              >
+                Play Now
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={handlePlay}
+              disabled={loading}
+              className={`px-6 py-2.5 font-bold text-sm rounded-full transition-all shadow-lg active:scale-95 ${
+                isLight
+                  ? "bg-[#000522] text-[#F2EBD1] hover:bg-[#254174] border border-[#000522]"
+                  : "bg-[#F2EBD1] text-[#000522] hover:bg-[#254174] hover:text-[#F2EBD1] border border-[#F2EBD1]"
+              }`}
+            >
+              {loading ? '...' : user ? 'Dashboard' : 'Play Now'}
+            </button>
+          )}
         </div>
       </nav>
 

@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
 
         passwordHash: {
             type: String,
-            required: false // Optional for Google Auth users
+            required: false // Optional for Google Auth users and Guests
         },
 
         email: {
@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             unique: true,
             sparse: true
+        },
+
+        isGuest: {
+            type: Boolean,
+            default: false
         },
 
         totalPoints: {
