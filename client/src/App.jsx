@@ -14,7 +14,7 @@ import TimeAttack from './components/TimeAttack';
 import Footer from './components/ui/Footer';
 import './index.css';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "928711802475-mvkuhbdedbmd24vvfnvknpqpuqdq3no0.apps.googleusercontent.com";
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {

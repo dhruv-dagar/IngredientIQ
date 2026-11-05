@@ -389,7 +389,7 @@ authRouter.get("/me", authMiddleware, async (request, response, next) => {
 });
 
 const { OAuth2Client } = require("google-auth-library");
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "928711802475-mvkuhbdedbmd24vvfnvknpqpuqdq3no0.apps.googleusercontent.com");
 
 /*
  * GOOGLE LOGIN / REGISTER & GUEST MERGE
@@ -409,7 +409,7 @@ authRouter.post("/google", async (request, response, next) => {
         try {
             ticket = await googleClient.verifyIdToken({
                 idToken: token,
-                audience: process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                audience: process.env.GOOGLE_CLIENT_ID || "928711802475-mvkuhbdedbmd24vvfnvknpqpuqdq3no0.apps.googleusercontent.com"
             });
         } catch (verifyError) {
             console.error("Google Auth Error:", verifyError);
